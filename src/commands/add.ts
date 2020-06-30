@@ -6,8 +6,8 @@ import chalk from 'chalk'
 import { toKebabCase, createSpinner, run } from '../utils'
 import { isProjectInitialized, initProject } from './init'
 import { mkdirSync, readFileSync, writeFileSync } from 'fs'
-import { defaultHtml, defaultRootTsx, defaultAppTsx } from '../templates/ui'
-import { defaultIndexTs } from '../templates/node'
+import { defaultHtml, defaultRootTsx, defaultAppTsx, axWebManifestYml } from '../templates/ui'
+import { defaultIndexTs, axDockerManifestYml, dockerComposeAmd64, dockerComposeArm64v8, settingsSchema } from '../templates/node'
 
 type AppNameResult = {
   appName: string
@@ -39,7 +39,7 @@ const getConfirmInitProject = async () => {
   const questions: inquirer.QuestionCollection<ProjectInitResult> = [
     {
       type: 'confirm',
-      name: 'initConfirm',
+      name: 'confirm',
       message: 'You are not in the root of an existing project. Do you like to initialize a new project here?',
       default: false
     }
@@ -64,31 +64,38 @@ export const add = async (type: string, command: Command) => {
       const appName = toKebabCase(command.appName || await getAppName())
       mkdirSync(`./src/${appName}`, { recursive: true })
 
-      const instDepSpin = createSpinner('Install dependencies')
+      const instDepSpinDone = createSpinner('Install dependencies')
       await run(
         'npm install react react-dom @actyx/pond fp-ts@1.19.4 io-ts@1.10.1 io-ts-types@0.4.1 rxjs@5.5.12 @actyx-contrib/react-pond @actyx-contrib/registry @actyx/industrial-ui'
       )
-      instDepSpin()
+      instDepSpinDone()
 
-      const instDevDepSpin = createSpinner('Install dev dependencies')
+      const instDevDepSpinDone = createSpinner('Install dev dependencies')
       await run('npm install -D parcel-bundler @types/react @types/react-dom typescript')
-      instDevDepSpin()
+      instDevDepSpinDone()
 
-      const setupProject = createSpinner('Create template')
+      const setupProjectDone = createSpinner('Create template')
       writeFileSync(`./src/${appName}/index.html`, defaultHtml)
       writeFileSync(`./src/${appName}/root.tsx`, defaultRootTsx)
       writeFileSync(`./src/${appName}/App.tsx`, defaultAppTsx)
-      setupProject()
+      setupProjectDone()
 
-      const addScripts = createSpinner('Add project to package.json')
+
+      const addActyxDone = createSpinner('Add axtyx manifest')
+      writeFileSync(`./src/${appName}/ax-manifest.yml`, axWebManifestYml(appName))
+      writeFileSync(`./src/${appName}/settings-schema.json`, settingsSchema)
+      addActyxDone()
+
+      const addScriptsDone = createSpinner('Add project to package.json')
       const packageJson = JSON.parse(readFileSync('./package.json').toString())
       packageJson.scripts = {
         ...packageJson.scripts ,
         [`ui:${appName}:start`]: `parcel src/${appName}/index.html --out-dir build/${appName}/debug`,
         [`ui:${appName}:build`]: `parcel build src/${appName}/index.html --out-dir build/${appName}/release --public-url ./`,
+        [`ui:${appName}:package`]: `ax apps package src/${appName}/ax-manifest.yml`,
       }
       writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
-      addScripts()
+      addScriptsDone()
       break
     }
     case 'APP':
@@ -97,31 +104,37 @@ export const add = async (type: string, command: Command) => {
       const appName = toKebabCase(command.appName || await getAppName())
       mkdirSync(`./src/${appName}`, {recursive: true})
 
-      const instDepSpin = createSpinner('Install dependencies')
+      const instDepDone = createSpinner('Install dependencies')
       await run(
         'npm install @actyx/pond fp-ts@1.19.4 io-ts@1.10.1 io-ts-types@0.4.1 rxjs@5.5.12 @actyx-contrib/registry'
       )
-      instDepSpin()
+      instDepDone()
 
-      const instDevDepSpin = createSpinner('Install dev dependencies')
+      const instDevDepDone = createSpinner('Install dev dependencies')
       await run('npm install -D ts-node @types/node typescript')
-      instDevDepSpin()
+      instDevDepDone()
 
-
-      const setupProject = createSpinner('Create template')
+      const setupProjectDone = createSpinner('Create template')
       writeFileSync(`./src/${appName}/index.ts`, defaultIndexTs)
-      setupProject()
+      setupProjectDone()
 
-      const addScripts = createSpinner('Add project to package.json')
+      const addActyxDone = createSpinner('Add axtyx manifest')
+      writeFileSync(`./src/${appName}/ax-manifest.yml`, axDockerManifestYml(appName))
+      writeFileSync(`./src/${appName}/docker-compose-amd64.yml`, dockerComposeAmd64(appName))
+      writeFileSync(`./src/${appName}/docker-compose-arm64v8.yml`, dockerComposeArm64v8(appName))
+      writeFileSync(`./src/${appName}/settings-schema.json`, settingsSchema)
+      addActyxDone()
+
+      const addScriptsDone = createSpinner('Add project to package.json')
       const packageJson = JSON.parse(readFileSync('./package.json').toString())
       packageJson.scripts = {
         ...packageJson.scripts ,
-        [`node:${appName}:start`]: `ts-node src/${appName}/index.ts`,
-        [`node:${appName}:build`]: `tsc src/${appName}/index.ts -p tsconfig.json`,
-        [`node:${appName}:build:watch`]: `tsc src/${appName}/index.ts -p tsconfig.json -w`,
+        [`node:${appName}:start`]: `nodemon --watch src/${appName} --exec ts-node src/${appName}/index.ts`,
+        [`node:${appName}:build`]: `tsc src/${appName}/index.ts -p tsconfig.json --outDir build/${appName}`,
+        [`node:${appName}:package`]: `ax apps package src/${appName}/ax-manifest.yml`,
       }
       writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
-      addScripts()
+      addScriptsDone()
       break
     }
     default:

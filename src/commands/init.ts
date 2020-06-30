@@ -44,7 +44,7 @@ const setupNpm = async () => {
   await run('npm init -y')
   writeFileSync('.gitignore', defaultGitIgnore)
   await run(
-    'npm install -D @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint eslint-config-prettier eslint-plugin-prettier eslint-plugin-react prettier',
+    'npm install -D @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint eslint-config-prettier eslint-plugin-prettier eslint-plugin-react prettier nodemon',
   )
   writeFileSync(`./.editorconfig`, editorConfig)
   writeFileSync(`./.eslintrc.js`, eslintrcJs)

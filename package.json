@@ -1,13 +1,17 @@
 {
-  "name": "axp",
+  "name": "actyx-project-cli",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Cli tool to create and maintain your TypeScript based projects",
   "bin": {
     "axp": "bin/axp"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/actyx-contrib/actyx-project-cli"
+  },
   "scripts": {
     "start": "ts-node src/index.ts",
+    "prepack": "npm run build",
     "build": "tsc -p tsconfig.json"
   },
   "keywords": [],
