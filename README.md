@@ -22,30 +22,32 @@ axp init
 
 ### React application
 
-Create a new React-App with the `axp add ui` command. It will user *parcel* as build tool and setup *jest* for testings.
+Create a new React-App with the `axp add ui` command. It will user *parcel* as build tool and setup *jest* for tests.
 
 Additional to this. The actyx manifest for a WebView App is generated.
 
 ```bash
-axp add ui --name AwesomeUi
+axp add ui --name "awesome Ui"
 ```
 
 After executing this command you will find some new scripts in you package.json
 
-- `ui:appName:start` run the app in dev mode with automatic rebuild
-- `ui:appName:build` build the React application to deploy it
-- `ui:appName:package` use the ax-manifest to create a deployable package
+- `ui:<appName>:start` run the app in dev mode with automatic rebuild
+- `ui:<appName>:build` build the React application to deploy it
+- `ui:<appName>:package` use the ax-manifest to create a deployable package
 
 ### Node application
 
-The installed `axp` tool will create you a monorepo with linters and other useful tools in.
+Create a new nodeJs with the `axp add node` command. It will setup *jest* for tests.
+
+Additional to this. The actyx manifest for a docker App is generated.
 
 ```bash
-axp add ui --name AwesomeUi
+axp add node --name "awesome App"
 ```
 
 After executing this command you will find some new scripts in you package.json
 
-- `node:appName:start` run the app in dev mode with automatic rebuild
-- `node:appName:build` build the node js application to deploy it
-- `node:appName:package` use the ax-manifest to create a deployable package
+- `node:<appName>:start` run the `index.ts` in your application
+- `node:<appName>:build` build the node js application to deploy it
+- `node:<appName>:package` use the ax-manifest to create a deployable package
