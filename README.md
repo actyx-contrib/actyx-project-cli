@@ -27,7 +27,7 @@ Create a new React-App with the `axp add ui` command. It will user *parcel* as b
 Additional to this. The actyx manifest for a WebView App is generated.
 
 ```bash
-axp add ui --name "awesome Ui"
+axp add ui --appName "awesome Ui"
 ```
 
 After executing this command you will find some new scripts in you package.json
