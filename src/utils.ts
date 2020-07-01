@@ -1,5 +1,6 @@
 import { exec } from 'child_process'
 import chalk from 'chalk'
+import { readFileSync } from 'fs'
 
 export const removeDot = (fileList: string[]): string[] =>
   fileList.filter(e => e !== '.' && e !== '..')
@@ -32,8 +33,6 @@ export const createSpinner = (text: string): (() => void) => {
   }
 }
 
-//(new Spinner(text)).setSpinnerString(9).setSpinnerDelay(500).start()
-
 export const run = async (command: string): Promise<void> =>
   new Promise(res => {
     const proc = exec(command)
@@ -41,3 +40,16 @@ export const run = async (command: string): Promise<void> =>
     proc.on('error', res)
     proc.on('disconnect', res)
   })
+
+export const packageInstalled = (packages: string | string[]): boolean => {
+  const requiredPackages: string[] = Array.isArray(packages) ? packages : [packages]
+
+  const packageJson = JSON.parse(readFileSync('./package.json').toString())
+
+  const installedPackages = [
+    ...Object.keys(packageJson.dependencies),
+    ...Object.keys(packageJson.devDependencies),
+  ]
+
+  return requiredPackages.every(px => installedPackages.includes(px))
+}
