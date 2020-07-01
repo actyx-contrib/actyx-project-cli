@@ -1,10 +1,10 @@
 # Actyx-Project-CLI
 
-Create a new project within seconds and start something awesome! This tool gives you the opportunely to create a TypeScript Node.js or a React application with one command.
+Create a new project within seconds and start something awesome! This tool gives you the opportunity to create a TypeScript Node.js or a React application with one command.
 
 ## Install
 
-Install the Actyx-Project-CLI globally to have access to in wherever you are.
+Install the Actyx-Project-CLI globally to have access to wherever you are.
 
 ```bash
 npm install -g @actyx-contrib/actyx-project-cli
@@ -12,7 +12,7 @@ npm install -g @actyx-contrib/actyx-project-cli
 
 ## Init Project
 
-The installed `axp` tool will create you a monorepo with git, ESLint, and TypeScript. In this project you can add your apps with the `axp add <appType>` command.
+The installed `axp` tool will create you a monorepo with git, ESLint, and TypeScript. In this project, you can add your apps with the `axp add <appType>` command.
 
 The init step is optional and can you directly create an app with `axp add <appType>`
 
@@ -38,7 +38,7 @@ After executing this command you will find some new scripts in you package.json
 
 ## Node application
 
-Create a new nodeJs with the `axp add node` command. It will setup *jest* for tests.
+Create a new Node.js with the `axp add node` command. It will setup *jest* for tests.
 
 Additional to this. The actyx manifest for a docker App is generated.
 
