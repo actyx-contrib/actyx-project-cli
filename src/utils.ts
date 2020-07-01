@@ -41,8 +41,17 @@ export const run = async (command: string): Promise<void> =>
     proc.on('disconnect', res)
   })
 
+export const removeVersions = (npmPackageName: string): string => {
+  const repo = npmPackageName.split('/')
+  const packageName = repo.pop() || ''
+  const name = (packageName.includes('@') ? packageName.split('@')[0] : packageName)
+  const prefix = repo[0] ? repo[0] + '/' : ''
+  return prefix + name
+}
+
 export const packageInstalled = (packages: string | string[]): boolean => {
   const requiredPackages: string[] = Array.isArray(packages) ? packages : [packages]
+  const requiredPackagesWithoutVersion = requiredPackages.map(removeVersions)
 
   const packageJson = JSON.parse(readFileSync('./package.json').toString())
 
@@ -51,5 +60,5 @@ export const packageInstalled = (packages: string | string[]): boolean => {
     ...Object.keys(packageJson.devDependencies || {}),
   ]
 
-  return requiredPackages.every(px => installedPackages.includes(px))
+  return requiredPackagesWithoutVersion.every(px => installedPackages.includes(px))
 }
