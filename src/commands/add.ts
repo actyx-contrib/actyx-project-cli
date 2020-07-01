@@ -3,7 +3,7 @@ import { drawHeader } from '../drawings'
 import { Command } from 'commander'
 import inquirer from 'inquirer'
 import chalk from 'chalk'
-import { toKebabCase, createSpinner, run, packageInstalled } from '../utils'
+import { toKebabCase, createSpinner, run, packageInstalled, changeToProjectRoot } from '../utils'
 import { isProjectInitialized, initProject } from './init'
 import { mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { defaultHtml, defaultRootTsx, defaultAppTsx, axWebManifestYml } from '../templates/ui'
@@ -58,6 +58,8 @@ const getConfirmInitProject = async () => {
 export const add = async (type: string, command: Command): Promise<void> => {
   clear()
   drawHeader()
+
+  changeToProjectRoot() // ignore output, isProjectInitialized will take care
   if (!isProjectInitialized()) {
     const initProjectReply = await getConfirmInitProject()
     if (!initProjectReply) {
