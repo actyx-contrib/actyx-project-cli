@@ -1,5 +1,5 @@
 import { Command } from 'commander'
-import { initProject, add, addFeature, list, clean } from './commands'
+import { initProject, add, addFeature, list, clean, addFish } from './commands'
 
 export const cli = (): void => {
   const program = new Command()
