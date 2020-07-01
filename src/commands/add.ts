@@ -3,11 +3,13 @@ import { drawHeader } from '../drawings'
 import { Command } from 'commander'
 import inquirer from 'inquirer'
 import chalk from 'chalk'
-import { toKebabCase, createSpinner, run } from '../utils'
+import { toKebabCase, createSpinner, run, packageInstalled } from '../utils'
 import { isProjectInitialized, initProject } from './init'
 import { mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { defaultHtml, defaultRootTsx, defaultAppTsx, axWebManifestYml } from '../templates/ui'
 import { defaultIndexTs, axDockerManifestYml, dockerComposeAmd64, dockerComposeArm64v8, settingsSchema } from '../templates/node'
+import { addNewFeature } from './addFeature'
+import { uiPackages, uiDevPackages, nodePackages, nodeDevPackages } from '../templates/packages'
 
 type AppNameResult = {
   appName: string
@@ -64,22 +66,23 @@ export const add = async (type: string, command: Command) => {
       const appName = toKebabCase(command.appName || await getAppName())
       mkdirSync(`./src/${appName}`, { recursive: true })
 
-      const instDepSpinDone = createSpinner('Install dependencies')
-      await run(
-        'npm install react react-dom @actyx/pond fp-ts@1.19.4 io-ts@1.10.1 io-ts-types@0.4.1 rxjs@5.5.12 @actyx-contrib/react-pond @actyx-contrib/registry @actyx/industrial-ui'
-      )
-      instDepSpinDone()
+      if (!packageInstalled(uiPackages)) {
+        const instDepSpinDone = createSpinner('Install dependencies')
+        await run(`npm install ${uiPackages.join(' ')}`)
+        instDepSpinDone()
+      }
 
-      const instDevDepSpinDone = createSpinner('Install dev dependencies')
-      await run('npm install -D parcel-bundler @types/react @types/react-dom typescript')
-      instDevDepSpinDone()
+      if (!packageInstalled(uiDevPackages)) {
+        const instDevDepSpinDone = createSpinner('Install dev dependencies')
+        await run(`npm install -D ${uiDevPackages.join(' ')}`)
+        instDevDepSpinDone()
+      }
 
       const setupProjectDone = createSpinner('Create template')
       writeFileSync(`./src/${appName}/index.html`, defaultHtml)
       writeFileSync(`./src/${appName}/root.tsx`, defaultRootTsx)
       writeFileSync(`./src/${appName}/App.tsx`, defaultAppTsx)
       setupProjectDone()
-
 
       const addActyxDone = createSpinner('Add axtyx manifest')
       writeFileSync(`./src/${appName}/ax-manifest.yml`, axWebManifestYml(appName))
@@ -96,6 +99,10 @@ export const add = async (type: string, command: Command) => {
       }
       writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
       addScriptsDone()
+
+      if (command.jest) {
+        addNewFeature(appName, `./src/${appName}`, 'jest')
+      }
       break
     }
     case 'APP':
@@ -104,15 +111,17 @@ export const add = async (type: string, command: Command) => {
       const appName = toKebabCase(command.appName || await getAppName())
       mkdirSync(`./src/${appName}`, {recursive: true})
 
-      const instDepDone = createSpinner('Install dependencies')
-      await run(
-        'npm install @actyx/pond fp-ts@1.19.4 io-ts@1.10.1 io-ts-types@0.4.1 rxjs@5.5.12 @actyx-contrib/registry'
-      )
-      instDepDone()
+      if (!packageInstalled(nodePackages)) {
+        const instDepDone = createSpinner('Install dependencies')
+        await run(`npm install ${nodePackages.join(' ')}`)
+        instDepDone()
+      }
 
-      const instDevDepDone = createSpinner('Install dev dependencies')
-      await run('npm install -D ts-node @types/node typescript')
-      instDevDepDone()
+      if (!packageInstalled(nodeDevPackages)) {
+        const instDevDepDone = createSpinner('Install dev dependencies')
+        await run(`npm install -D ${nodeDevPackages.join(' ')}`)
+        instDevDepDone()
+      }
 
       const setupProjectDone = createSpinner('Create template')
       writeFileSync(`./src/${appName}/index.ts`, defaultIndexTs)
