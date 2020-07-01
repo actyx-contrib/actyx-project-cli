@@ -14,7 +14,6 @@
     "prepack": "npm run build",
     "build": "tsc -p tsconfig.json",
     "clean": "shx rm -rf lib"
-    "clean": "shx rm -rf lib",
   },
   "keywords": [],
   "author": "",
