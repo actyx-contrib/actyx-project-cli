@@ -68,7 +68,7 @@ export const add = async (type: string, command: Command): Promise<void> => {
 
   switch (type.toUpperCase()) {
     case 'UI': {
-      console.log(chalk.whiteBright('Create a new UI project with TypeScript and Parcel'))
+      console.log(chalk`{whiteBright Create a new UI project with TypeScript and Parcel}`)
       const appName = toKebabCase(command.appName || (await getAppName()))
       mkdirSync(`./src/${appName}`, { recursive: true })
 
@@ -109,11 +109,12 @@ export const add = async (type: string, command: Command): Promise<void> => {
       if (command.jest) {
         addNewFeature(appName, `./src/${appName}`, 'jest')
       }
+      console.log(chalk`{green done}`)
       break
     }
     case 'APP':
     case 'NODE': {
-      console.log(chalk.whiteBright('Create a new NodeJS project with TypeScript'))
+      console.log(chalk`{whiteBright Create a new NodeJS project with TypeScript}`)
       const appName = toKebabCase(command.appName || (await getAppName()))
       mkdirSync(`./src/${appName}`, { recursive: true })
 
@@ -150,6 +151,7 @@ export const add = async (type: string, command: Command): Promise<void> => {
       }
       writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
       addScriptsDone()
+      console.log(chalk`{green done}`)
       break
     }
     default:

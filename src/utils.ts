@@ -1,6 +1,7 @@
 import { exec } from 'child_process'
 import chalk from 'chalk'
-import { readFileSync } from 'fs'
+import { existsSync, readFileSync } from 'fs'
+import { parse, join, dirname } from 'path'
 
 export const removeDot = (fileList: string[]): string[] =>
   fileList.filter(e => e !== '.' && e !== '..')
@@ -61,4 +62,25 @@ export const packageInstalled = (packages: string | string[]): boolean => {
   ]
 
   return requiredPackagesWithoutVersion.every(px => installedPackages.includes(px))
+}
+
+export const changeToProjectRoot = (): boolean => {
+  const projectDir = findUp(['package.json'], process.cwd())
+  if (projectDir) {
+    process.chdir(projectDir)
+    return true
+  }
+  return false
+}
+
+export const findUp = (names: string[], currentDir: string): string | undefined => {
+  const foundName = names.find(name => existsSync(join(currentDir, name)))
+
+  if (foundName) {
+    return currentDir
+  } else if (currentDir === parse(currentDir).root) {
+    return undefined
+  } else {
+    return findUp(names, dirname(currentDir))
+  }
 }

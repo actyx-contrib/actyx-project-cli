@@ -1,6 +1,6 @@
 import { readdirSync, writeFileSync, mkdirSync } from 'fs'
 import chalk from 'chalk'
-import { createSpinner, run } from '../utils'
+import { createSpinner, run, changeToProjectRoot } from '../utils'
 import {
   editorConfig,
   eslintrcJs,
@@ -8,7 +8,7 @@ import {
   defaultTsConfig,
   prettierrcJs,
 } from '../templates/main'
-import { clear } from 'console'
+import clear from 'clear'
 import { drawHeader } from '../drawings'
 
 export const isProjectInitialized = (): boolean => {
@@ -20,6 +20,9 @@ export const isProjectInitialized = (): boolean => {
 export const initProject = async (): Promise<void> => {
   clear()
   drawHeader()
+
+  changeToProjectRoot() // ignore output, isProjectInitialized will take care
+
   if (isProjectInitialized()) {
     console.log(chalk.red('Project is already initialized'))
     return
@@ -59,6 +62,7 @@ const setupNpm = async () => {
   mkdirSync('./src/fish')
   writeFileSync(`./src/fish/index.ts`, '')
   spinnerDone()
+  console.log(chalk`{green done}`)
 }
 
 const setupTs = () => {

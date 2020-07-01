@@ -4,28 +4,28 @@ import { Command } from 'commander'
 import chalk from 'chalk'
 import inquirer from 'inquirer'
 import Table from 'cli-table3'
-import { isProjectInitialized } from './init'
 import { getProjects } from './list'
 import { readFileSync, writeFileSync } from 'fs'
+import { changeToProjectRoot } from '../utils'
 
 export const clean = async (_command: Command): Promise<void> => {
   clear()
   drawHeader()
-  if (!isProjectInitialized()) {
-    console.log(chalk.red('project is not initialized'))
+  if (!changeToProjectRoot()) {
+    console.log(chalk`{red project is not initialized}`)
     return
   }
 
   const { unRefProjects } = getProjects()
 
   if (unRefProjects.length === 0) {
-    console.log(chalk.green('nothing to clean up'))
+    console.log(chalk`{green Nothing to clean up}`)
     return
   }
   if (unRefProjects.length === 1) {
-    console.log(chalk.yellow('You have a unlinked project'))
+    console.log(chalk`{yellow You have a unlinked project}`)
   } else if (unRefProjects.length > 1) {
-    console.log(chalk.yellow(`You have ${unRefProjects.length} unlinked projects`))
+    console.log(chalk`{yellow You have ${unRefProjects.length} unlinked projects}`)
   }
 
   if (unRefProjects.length > 0) {
@@ -36,7 +36,7 @@ export const clean = async (_command: Command): Promise<void> => {
 
   const confirm = await getConfirm()
   if (!confirm) {
-    console.log(chalk.redBright('canceled'))
+    console.log(chalk`{redBright canceled}`)
   }
 
   const packageJson = JSON.parse(readFileSync('./package.json').toString())
@@ -47,6 +47,7 @@ export const clean = async (_command: Command): Promise<void> => {
   }, packageJson.scripts)
 
   writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
+  console.log(chalk`{green done}`)
 }
 
 type AppNameResult = {
