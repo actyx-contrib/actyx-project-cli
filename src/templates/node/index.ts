@@ -13,9 +13,9 @@ version: 1.0.0
 displayName: ${appName}
 description: "@ToDo: description"
 dockerCompose:
-    x86_64: ./src/${appName}/docker-compose-amd64.yml
-    aarch64: ./src/${appName}/docker-compose-arm64v8.yml
-settingsSchema: ./src/${appName}/settings-schema.json # <---- you could also inline the settings schema
+    x86_64: ./docker-compose-amd64.yml
+    aarch64: ./docker-compose-arm64v8.yml
+settingsSchema: ./settings-schema.json # <---- you could also inline the settings schema
 `
 
 export const dockerComposeAmd64 = (appName: string): string => `version: '2.0'

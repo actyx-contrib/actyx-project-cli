@@ -45,8 +45,8 @@ id: ${appName}
 version: 1.0.0
 displayName: ${appName}
 description: "@ToDo: description"
-#icon: ./src/${appName}/app-icon.png # Specifying the app icon is optional. If you don't specify an icon for your app, ActyxOS will automatically use a default icon.
-dist: ./build/
-main: ./index.html
-settingsSchema: ./src/${appName}/settings-schema.json
+#icon: ./app-icon.png # Specifying the app icon is optional. If you don't specify an icon for your app, ActyxOS will automatically use a default icon.
+dist: ../../build/${appName}/release
+main: ../../build/${appName}/release/index.html
+settingsSchema: ./settings-schema.json
 `
