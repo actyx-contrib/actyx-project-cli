@@ -43,7 +43,7 @@ Create a new Node.js with the `axp add node` command. It will setup *jest* for t
 Additional to this. The actyx manifest for a docker App is generated.
 
 ```bash
-axp add node --name "awesome App"
+axp add node --appName "awesome App"
 ```
 
 After executing this command you will find some new scripts in you package.json
