@@ -35,6 +35,17 @@ export const cli = (): void => {
     .description('Remove all unreferenced applications from the package.json')
     .alias('c')
     .action(clean)
+  program
+    .command('addFish <fishName>')
+    .description('create a new fish in the src/fish folder')
+    .alias('fish')
+    .option('--registry', 'add a createRegistry to the fish definition')
+    .option(
+      '--noExample',
+      'skip example onEvent and onCommand to build it with the VSCode plugin or write it your self',
+    )
+    .option('--noSnapshot', 'remove the snapshot template in the fish definition')
+    .action(addFish)
 
   program.parse(process.argv)
 }
