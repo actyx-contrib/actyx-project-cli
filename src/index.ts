@@ -1,13 +1,9 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import { Command } from 'commander'
-import { add } from './commands/add'
-import { initProject } from './commands/init'
-import { list } from './commands/list'
-import { clean } from './commands/clean'
-import { addFeature } from './commands/addFeature'
+import { initProject, add, addFeature, list, clean } from './commands'
 
 export const cli = (): void => {
   const program = new Command()
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   program.version(require('../package.json').version)
   program.option('--init', 'Initialize new project')
   program
@@ -21,6 +17,7 @@ export const cli = (): void => {
     .alias('a')
     .option('-n --appName <appName>', 'name for the new project')
     .option('--jest', 'add jest as testing framework')
+    .option('--test', 'add jest as testing framework')
     .action(add)
   program
     .command('addFeature <project> <feature>')
@@ -36,6 +33,7 @@ export const cli = (): void => {
   program
     .command('clean')
     .description('Remove all unreferenced applications from the package.json')
+    .alias('c')
     .action(clean)
 
   program.parse(process.argv)

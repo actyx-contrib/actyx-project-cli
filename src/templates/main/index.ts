@@ -21,6 +21,13 @@ export const eslintrcJs = `module.exports = {
       },
     ],
     '@typescript-eslint/semi': ['error', 'never'],
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        argsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_',
+      },
+    ],
   },
   settings: {
     react: {

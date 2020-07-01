@@ -29,7 +29,7 @@ export const createSpinner = (text: string): (() => void) => {
 
   return () => {
     process.stdout.cursorTo(0)
-    process.stdout.write(chalk.white('✅ ' + text + '\n'))
+    process.stdout.write(chalk`✅ ${text}\n`)
     clearInterval(spinner)
   }
 }
