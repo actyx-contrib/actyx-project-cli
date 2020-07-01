@@ -1,18 +1,18 @@
 # Actyx-Project-CLI
 
-Create a new project within seconds and start something awesome! This tool gives you the opportunely to create a nodeJS or a React application with one command
+Create a new project within seconds and start something awesome! This tool gives you the opportunity to create a TypeScript Node.js or a React application with one command.
 
-### install
+## Install
 
-Install the Actyx-Project-CLI globally to have access to in wherever you are.
+Install the Actyx-Project-CLI globally to have access to wherever you are.
 
 ```bash
 npm install -g @actyx-contrib/actyx-project-cli
 ```
 
-### init Project
+## Init Project
 
-The installed `axp` tool will create you a monorepo with git, esLint, and TypeScript. In this project you can add your apps with the `axp add <appType>` command.
+The installed `axp` tool will create you a monorepo with git, ESLint, and TypeScript. In this project, you can add your apps with the `axp add <appType>` command.
 
 The init step is optional and can you directly create an app with `axp add <appType>`
 
@@ -20,7 +20,7 @@ The init step is optional and can you directly create an app with `axp add <appT
 axp init
 ```
 
-### React application
+## React application
 
 Create a new React-App with the `axp add ui` command. It will user *parcel* as build tool and setup *jest* for tests.
 
@@ -36,14 +36,14 @@ After executing this command you will find some new scripts in you package.json
 - `ui:<appName>:build` build the React application to deploy it
 - `ui:<appName>:package` use the ax-manifest to create a deployable package
 
-### Node application
+## Node application
 
-Create a new nodeJs with the `axp add node` command. It will setup *jest* for tests.
+Create a new Node.js with the `axp add node` command. It will setup *jest* for tests.
 
 Additional to this. The actyx manifest for a docker App is generated.
 
 ```bash
-axp add node --name "awesome App"
+axp add node --appName "awesome App"
 ```
 
 After executing this command you will find some new scripts in you package.json

@@ -151,4 +151,3 @@ export const add = async (type: string, command: Command) => {
       return
   }
 }
-
