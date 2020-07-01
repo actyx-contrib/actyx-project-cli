@@ -17,6 +17,13 @@ type Project = {
   type: ProjectTypes
   name: string
 }
+type Projects = Array<Project>
+
+type AllProjects = {
+  existingProjects: Projects
+  unRefProjects: Projects
+  allScripts: Projects
+}
 
 const isProjectTypes = (t: string): t is ProjectTypes => t === 'ui' || t === 'node'
 
@@ -61,7 +68,7 @@ export const list = (_command: Command): void => {
   console.log(chalk.redBright('Use axp clean to cleanup your project'))
 }
 
-export const getProjects = () => {
+export const getProjects = (): AllProjects => {
   const pJson = JSON.parse(readFileSync('./package.json').toString()) as PackageJson
 
   const allScripts = Object.keys(pJson.scripts)
@@ -74,11 +81,6 @@ export const getProjects = () => {
     .filter((e): e is Project => e !== undefined)
 
   const unRefProjects = allScripts.filter(e => projects.includes(e.name) === false)
-
-  // const unRefProjects = projects
-  //   .map(name => [name, allScripts.find(e => e.name === name)])
-  //   .filter(e => e[1] === undefined)
-  //   .map(([name]) => name)
 
   return {
     existingProjects,

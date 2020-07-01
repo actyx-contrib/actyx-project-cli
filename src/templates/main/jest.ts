@@ -16,7 +16,7 @@ export const jestConfigJs = `module.exports = {
 }
 `
 
-export const jestExample = (appName: string) => `
+export const jestExample = (appName: string): string => `
 describe('${appName}', () => {
   describe('example', () => {
     it('do test', () => {

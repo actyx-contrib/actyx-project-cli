@@ -14,7 +14,7 @@ module.exports = {
   },
   rules: {
     '@typescript-eslint/explicit-function-return-type': [
-      'on',
+      'off',
       {
         allowHigherOrderFunctions: true,
       },
@@ -27,10 +27,5 @@ module.exports = {
         caughtErrorsIgnorePattern: '^_',
       },
     ],
-  },
-  settings: {
-    react: {
-      version: 'detect', // Tells eslint-plugin-react to automatically detect the version of React to use
-    },
   },
 }

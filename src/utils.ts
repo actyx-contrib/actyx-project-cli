@@ -44,7 +44,7 @@ export const run = async (command: string): Promise<void> =>
 export const removeVersions = (npmPackageName: string): string => {
   const repo = npmPackageName.split('/')
   const packageName = repo.pop() || ''
-  const name = (packageName.includes('@') ? packageName.split('@')[0] : packageName)
+  const name = packageName.includes('@') ? packageName.split('@')[0] : packageName
   const prefix = repo[0] ? repo[0] + '/' : ''
   return prefix + name
 }
