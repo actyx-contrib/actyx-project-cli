@@ -17,23 +17,26 @@ export const cli = () => {
     .action(initProject)
   program
     .command('add <type>')
-    .description('add a new UI or node application to the project')
+    .description('Add a new gui or node application to the project')
+    .usage('ui|node [--appName name] [--jest]')
     .alias('a')
     .option('-n --appName <appName>', 'name for the new project')
+    .option('--jest', 'add jest as testing framework')
     .action(add)
   program
     .command('addFeature <project> <feature>')
-    .description('add a new feature to an existing app in the project')
+    .usage('name test|jest')
+    .description('Add a new feature to an existing app in the project. (test|jest)')
     .alias('af')
     .action(addFeature)
   program
     .command('list')
-    .description('list all existing applications')
+    .description('List all existing applications')
     .alias('ls')
     .action(list)
   program
     .command('clean')
-    .description('clean all unreferenced applications from the package.json')
+    .description('Remove all unreferenced applications from the package.json')
     .action(clean)
 
   program.parse(process.argv)
@@ -43,5 +46,4 @@ export const main = () => {
   clear()
   drawHeader()
 }
-add
 

@@ -47,8 +47,8 @@ export const packageInstalled = (packages: string | string[]): boolean => {
   const packageJson = JSON.parse(readFileSync('./package.json').toString())
 
   const installedPackages = [
-    ...Object.keys(packageJson.dependencies),
-    ...Object.keys(packageJson.devDependencies),
+    ...Object.keys(packageJson.dependencies || {}),
+    ...Object.keys(packageJson.devDependencies || {}),
   ]
 
   return requiredPackages.every(px => installedPackages.includes(px))
