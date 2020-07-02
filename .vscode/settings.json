@@ -5,5 +5,14 @@
   },
   "files.autoSave": "onFocusChange",
   "telemetry.enableTelemetry": false,
-  "telemetry.enableCrashReporter": false
+  "telemetry.enableCrashReporter": false,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/lib":true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/lib": true
+  }
 }
