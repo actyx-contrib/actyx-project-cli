@@ -29,8 +29,8 @@ module.exports = ({ config }) => {
   return config;
 };`
 
-export const storybookAppStory = `import { storiesOf } from '@storybook/react';
-import * as React from 'react';
-import { App } from './App';
+export const storybookAppStory = `import { storiesOf } from '@storybook/react'
+import * as React from 'react'
+import { App } from './App'
 
 storiesOf('App', module).add('base', () => <App />);`
