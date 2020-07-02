@@ -101,7 +101,7 @@ export const addNewFeature = async (
         console.log(chalk`{red App ${appName} do not exist in Package.json.}`)
         return
       }
-      // const [projectType] = startScript.split(':')
+      const [projectType] = startScript.split(':')
       if (!packageInstalled(storybookDevPackages)) {
         const addStorybookDone = createSpinner('add storybook')
         await run(`npm install -D ${storybookDevPackages.join(' ')}`)
@@ -119,6 +119,11 @@ export const addNewFeature = async (
 
       if (!existsSync('.storybook/webpack.config.js')) {
         fse.outputFileSync('.storybook/webpack.config.js', storybookWebpack)
+      }
+      debugger
+      packageJson.scripts = {
+        ...packageJson.scripts,
+        [`${projectType}:${appName}:storybook`]: 'start-storybook -p 6006',
       }
       createExampleDone()
       break
