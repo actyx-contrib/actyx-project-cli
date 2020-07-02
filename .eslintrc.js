@@ -14,7 +14,7 @@ module.exports = {
   },
   rules: {
     '@typescript-eslint/explicit-function-return-type': [
-      'warning',
+      1,
       {
         allowHigherOrderFunctions: true,
       },
