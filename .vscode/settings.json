@@ -10,10 +10,8 @@
   "files.exclude": {
     "**/.git": true,
     "**/.DS_Store": true,
-    "**/lib":true
   },
   "search.exclude": {
     "**/node_modules": true,
-    "**/lib": true
   }
 }
