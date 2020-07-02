@@ -123,7 +123,10 @@ export const add = async (type: string, command: Command): Promise<void> => {
       writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
       addScriptsDone()
 
-      if (command.jest || command.test) {
+      if (command.test) {
+        await addNewFeature(appName, `./src/${appName}`, 'test')
+      }
+      if (command.jest) {
         await addNewFeature(appName, `./src/${appName}`, 'jest')
       }
       console.log(chalk`{green done}`)
@@ -169,10 +172,12 @@ export const add = async (type: string, command: Command): Promise<void> => {
       writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
       addScriptsDone()
 
-      if (command.jest || command.test) {
+      if (command.test) {
+        await addNewFeature(appName, `./src/${appName}`, 'test')
+      }
+      if (command.jest) {
         await addNewFeature(appName, `./src/${appName}`, 'jest')
       }
-
       console.log(chalk`{green done}`)
       break
     }

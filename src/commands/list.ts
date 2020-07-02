@@ -31,7 +31,7 @@ type Project = {
   type: ProjectTypes
   name: string
 }
-type Projects = Array<Project>
+type Projects = ReadonlyArray<Project>
 
 type AllProjects = {
   existingProjects: Projects
