@@ -75,7 +75,7 @@ export const addNewFeature = async (
         await run(`npm install -D ${jestDevPackages.join(' ')}`)
         addJestDone()
       }
-      // SPO
+
       const createExampleDone = createSpinner('setup jest config and example')
       if (!existsSync('./jest.config.js')) {
         writeFileSync('./jest.config.js', jestConfigJs)
