@@ -3,8 +3,7 @@ import { drawHeader } from '../drawings'
 import { Command } from 'commander'
 import chalk from 'chalk'
 import Table from 'cli-table3'
-import { removeDot } from '../utils'
-import { isProjectInitialized } from './init'
+import { removeDot, changeToProjectRoot } from '../utils'
 import { readdirSync, readFileSync } from 'fs'
 
 type PackageJson = {
@@ -44,8 +43,8 @@ const projectStartScripts = (name: string) =>
 export const list = (_command: Command): void => {
   clear()
   drawHeader()
-  if (!isProjectInitialized()) {
-    console.log(chalk.red('project is not initialized'))
+  if (!changeToProjectRoot()) {
+    console.log(chalk`{red project is not initialized}`)
     return
   }
 
@@ -55,17 +54,17 @@ export const list = (_command: Command): void => {
   console.log(table.toString())
 
   if (unRefProjects.length === 1) {
-    console.log(chalk.redBright('You have a unlinked project'))
+    console.log(chalk`{redBright ⚠️ You have a unlinked project}`)
   } else if (unRefProjects.length > 1) {
-    console.log(chalk.redBright('You have some unlinked projects'))
+    console.log(chalk`{redBright ⚠️ You have some unlinked projects}`)
   }
 
   if (unRefProjects.length > 0) {
     const unRefTable = new Table()
     unRefTable.push(...unRefProjects.map(e => [e.type, e.name]))
     console.log(unRefTable.toString())
+    console.log(chalk`{white Use} {redBright axp clean} {white to cleanup your project}`)
   }
-  console.log(chalk.redBright('Use axp clean to cleanup your project'))
 }
 
 export const getProjects = (): AllProjects => {

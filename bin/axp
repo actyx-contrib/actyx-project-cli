@@ -1,5 +1,17 @@
 #!/usr/bin/env node
+/* eslint-disable @typescript-eslint/no-var-requires */
 'use strict'
+
+try {
+  process.title =
+    'axp ' +
+    Array.from(process.argv)
+      .slice(1)
+      .join(' ')
+} catch (_) {
+  // If an error happened above, use the most basic title.
+  process.title = 'axp'
+}
 
 if (require.main === module) {
   require('../lib/index').cli(process.argv)

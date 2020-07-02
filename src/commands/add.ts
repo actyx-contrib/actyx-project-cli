@@ -3,7 +3,7 @@ import { drawHeader } from '../drawings'
 import { Command } from 'commander'
 import inquirer from 'inquirer'
 import chalk from 'chalk'
-import { toKebabCase, createSpinner, run, packageInstalled } from '../utils'
+import { toKebabCase, createSpinner, run, packageInstalled, changeToProjectRoot } from '../utils'
 import { isProjectInitialized, initProject } from './init'
 import { mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { defaultHtml, defaultRootTsx, defaultAppTsx, axWebManifestYml } from '../templates/ui'
@@ -58,6 +58,8 @@ const getConfirmInitProject = async () => {
 export const add = async (type: string, command: Command): Promise<void> => {
   clear()
   drawHeader()
+
+  changeToProjectRoot() // ignore output, isProjectInitialized will take care
   if (!isProjectInitialized()) {
     const initProjectReply = await getConfirmInitProject()
     if (!initProjectReply) {
@@ -68,7 +70,7 @@ export const add = async (type: string, command: Command): Promise<void> => {
 
   switch (type.toUpperCase()) {
     case 'UI': {
-      console.log(chalk.whiteBright('Create a new UI project with TypeScript and Parcel'))
+      console.log(chalk`{whiteBright Create a new UI project with TypeScript and Parcel}`)
       const appName = toKebabCase(command.appName || (await getAppName()))
       mkdirSync(`./src/${appName}`, { recursive: true })
 
@@ -109,11 +111,12 @@ export const add = async (type: string, command: Command): Promise<void> => {
       if (command.jest) {
         addNewFeature(appName, `./src/${appName}`, 'jest')
       }
+      console.log(chalk`{green done}`)
       break
     }
     case 'APP':
     case 'NODE': {
-      console.log(chalk.whiteBright('Create a new NodeJS project with TypeScript'))
+      console.log(chalk`{whiteBright Create a new NodeJS project with TypeScript}`)
       const appName = toKebabCase(command.appName || (await getAppName()))
       mkdirSync(`./src/${appName}`, { recursive: true })
 
@@ -150,6 +153,7 @@ export const add = async (type: string, command: Command): Promise<void> => {
       }
       writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
       addScriptsDone()
+      console.log(chalk`{green done}`)
       break
     }
     default:

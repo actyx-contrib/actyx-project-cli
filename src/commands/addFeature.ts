@@ -1,6 +1,6 @@
 import { Command } from 'commander'
 import chalk from 'chalk'
-import { createSpinner, run, toKebabCase, packageInstalled } from '../utils'
+import { createSpinner, run, toKebabCase, packageInstalled, changeToProjectRoot } from '../utils'
 import { existsSync, writeFileSync, readFileSync } from 'fs'
 import clear from 'clear'
 import { drawHeader } from '../drawings'
@@ -14,6 +14,11 @@ export const addFeature = async (
 ): Promise<void> => {
   clear()
   drawHeader()
+  if (!changeToProjectRoot()) {
+    console.log(chalk`{red project is not initialized}`)
+    return
+  }
+
   const projectPath = `./src/${toKebabCase(project)}`
   if (!existsSync(projectPath)) {
     console.log(
