@@ -16,7 +16,7 @@
 import { Command } from 'commander'
 import chalk from 'chalk'
 import { createSpinner, run, toKebabCase, packageInstalled, changeToProjectRoot } from '../utils'
-import { existsSync, writeFileSync, readFileSync } from 'fs'
+import { existsSync, writeFileSync, readFileSync, mkdirSync } from 'fs'
 import clear from 'clear'
 import { drawHeader } from '../drawings'
 import { jestExample, jestConfigJs } from '../templates/main/jest'
@@ -27,7 +27,6 @@ import {
   storybookWebpack,
   storybookAppStory,
 } from '../templates/ui/storybook'
-import * as fse from 'fs-extra'
 
 export const addFeature = async (
   project: string,
@@ -113,20 +112,22 @@ export const addNewFeature = async (
       }
 
       const createExampleDone = createSpinner('Setup storybook config and example')
-      if (!existsSync('.storybook/main.js')) {
-        fse.outputFileSync('.storybook/main.js', storybookMain)
-      }
 
-      if (!existsSync('.storybook/preview.js')) {
-        fse.outputFileSync('.storybook/preview.js', storybookPreview)
-      }
-
-      if (!existsSync('.storybook/webpack.config.js')) {
-        fse.outputFileSync('.storybook/webpack.config.js', storybookWebpack)
+      if (!existsSync('.storybook')) {
+        mkdirSync('.storybook', { recursive: true })
+        if (!existsSync('.storybook/main.js')) {
+          writeFileSync('.storybook/main.js', storybookMain)
+        }
+        if (!existsSync('.storybook/preview.js')) {
+          writeFileSync('.storybook/preview.js', storybookPreview)
+        }
+        if (!existsSync('.storybook/webpack.config.js')) {
+          writeFileSync('.storybook/webpack.config.js', storybookWebpack)
+        }
       }
 
       if (existsSync(`src/${appName}/App.tsx`) && !existsSync(`src/${appName}/App.stories.tsx`)) {
-        fse.outputFileSync(`src/${appName}/App.stories.tsx`, storybookAppStory)
+        writeFileSync(`src/${appName}/App.stories.tsx`, storybookAppStory)
       }
 
       packageJson.scripts = {
