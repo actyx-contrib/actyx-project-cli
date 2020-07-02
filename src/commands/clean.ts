@@ -12,7 +12,7 @@ export const clean = async (_command: Command): Promise<void> => {
   clear()
   drawHeader()
   if (!changeToProjectRoot()) {
-    console.log(chalk`{red project is not initialized}`)
+    console.log(chalk`{red Project is not initialized}`)
     return
   }
 
@@ -36,7 +36,7 @@ export const clean = async (_command: Command): Promise<void> => {
 
   const confirm = await getConfirm()
   if (!confirm) {
-    console.log(chalk`{redBright canceled}`)
+    console.log(chalk`{redBright Canceled}`)
   }
 
   const packageJson = JSON.parse(readFileSync('./package.json').toString())
@@ -47,7 +47,7 @@ export const clean = async (_command: Command): Promise<void> => {
   }, packageJson.scripts)
 
   writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
-  console.log(chalk`{green done}`)
+  console.log(chalk`{green Done}`)
 }
 
 type AppNameResult = {
