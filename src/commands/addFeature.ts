@@ -113,7 +113,7 @@ export const addNewFeature = async (
       }
 
       if (!packageInstalled(storybookDevPackages)) {
-        const addStorybookDone = createSpinner('Add storybook')
+        const addStorybookDone = createSpinner('Add Storybook')
         await run(`npm install -D ${storybookDevPackages.join(' ')}`)
         addStorybookDone()
       }
@@ -134,7 +134,7 @@ export const addNewFeature = async (
       }
 
       if (existsSync(`src/${appName}/App.tsx`) && !existsSync(`src/${appName}/App.stories.tsx`)) {
-        writeFileSync(`src/${appName}/App.stories.tsx`, storybookAppStory)
+        writeFileSync(`src/${appName}/App.stories.tsx`, storybookAppStory(appName))
       }
 
       packageJson.scripts = {
