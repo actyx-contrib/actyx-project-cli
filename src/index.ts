@@ -22,6 +22,7 @@ export const cli = () => {
     .alias('a')
     .option('-n --appName <appName>', 'name for the new project')
     .option('--jest', 'add jest as testing framework')
+    .option('--storybook', 'add Storybook for developing UI components in isolation')
     .action(add)
   program
     .command('addFeature <project> <feature>')
