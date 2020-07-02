@@ -49,4 +49,5 @@ export const storybookDevPackages = [
   'webpack',
   'webpack-cli',
   'webpack-dev-server',
+  'babel-loader',
 ]
