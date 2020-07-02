@@ -11,9 +11,9 @@
   },
   "scripts": {
     "tsc": "tsc",
-    "tsc:watch": "tsc --watch --pretty",
     "start": "ts-node src/index.ts",
     "prepack": "npm run build && npm run license:add",
+    "build:watch": "tsc --watch --pretty -p tsconfig.json",
     "build": "tsc -p tsconfig.json",
     "clean": "shx rm -rf lib",
     "lint": "tsc --noEmit && eslint -c .eslintrc.js . && prettier './src/**/*.ts' --check",
