@@ -21,7 +21,12 @@ import clear from 'clear'
 import { drawHeader } from '../drawings'
 import { jestExample, jestConfigJs } from '../templates/main/jest'
 import { jestDevPackages, storybookDevPackages } from '../templates/packages'
-import { storybookMain, storybookPreview, storybookWebpack } from '../templates/ui/storybook'
+import {
+  storybookMain,
+  storybookPreview,
+  storybookWebpack,
+  storybookAppStory,
+} from '../templates/ui/storybook'
 import * as fse from 'fs-extra'
 
 export const addFeature = async (
@@ -118,6 +123,10 @@ export const addNewFeature = async (
 
       if (!existsSync('.storybook/webpack.config.js')) {
         fse.outputFileSync('.storybook/webpack.config.js', storybookWebpack)
+      }
+
+      if (existsSync(`src/${appName}/App.tsx`) && !existsSync(`src/${appName}/App.stories.tsx`)) {
+        fse.outputFileSync(`src/${appName}/App.stories.tsx`, storybookAppStory)
       }
 
       packageJson.scripts = {
