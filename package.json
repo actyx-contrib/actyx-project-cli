@@ -1,7 +1,7 @@
 {
-  "name": "actyx-project-cli",
+  "name": "axp",
   "version": "1.0.0",
-  "description": "Cli tool to create and maintain your TypeScript based projects",
+  "description": "Actyx Project Cli tool to create and maintain your TypeScript based projects",
   "bin": {
     "axp": "bin/axp"
   },
