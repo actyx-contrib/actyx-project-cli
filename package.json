@@ -1,7 +1,7 @@
 {
-  "name": "actyx-project-cli",
+  "name": "axp",
   "version": "1.0.0",
-  "description": "Cli tool to create and maintain your TypeScript based projects",
+  "description": "Actyx Project Cli tool to create and maintain your TypeScript based projects",
   "bin": {
     "axp": "bin/axp"
   },
@@ -13,15 +13,18 @@
     "tsc": "tsc",
     "tsc:watch": "tsc --watch --pretty",
     "start": "ts-node src/index.ts",
-    "prepack": "npm run build",
+    "prepack": "npm run build && npm run license:add",
     "build": "tsc -p tsconfig.json",
     "clean": "shx rm -rf lib",
-    "lint": "eslint -c .eslintrc.js .",
-    "lint:fix": "eslint --fix -c .eslintrc.js ."
+    "lint": "tsc --noEmit && eslint -c .eslintrc.js . && prettier './src/**/*.ts' --check",
+    "lint:fix": "tsc --noEmit && eslint -c .eslintrc.js . --fix && prettier './src/**/*.ts' --write",
+    "license:add": "license-check-and-add add -f add-license-config.json",
+    "license:check": "license-check-and-add check -f add-license-config.json",
+    "license:check-dep": "license-checker --production --onlyAllow 'MIT; MIT OR X11; BSD; ISC; Apache-2.0;'"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["actyx" , "industry", "industry 4.0", "actyxOs", "project", "cli", "pond", "react"],
+  "author": "Actyx AG",
+  "license": "Apache-2.0",
   "dependencies": {
     "@actyx-contrib/react-pond": "^1.0.3",
     "@actyx-contrib/registry": "^1.0.1",
