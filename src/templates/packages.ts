@@ -41,4 +41,12 @@ export const nodeDevPackages = ['ts-node', 'nodemon', '@types/node', 'typescript
 
 export const jestDevPackages = ['jest', 'ts-jest', 'babel-jest', '@types/jest']
 
-export const storybookDevPackages = ['@storybook/addon-actions', '@storybook/react', '@storybook/theming']
+export const storybookDevPackages = [
+  '@storybook/addon-actions',
+  '@storybook/react',
+  '@storybook/theming',
+  'awesome-typescript-loader',
+  'webpack',
+  'webpack-cli',
+  'webpack-dev-server',
+]
