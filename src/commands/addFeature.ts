@@ -36,7 +36,18 @@ export const addNewFeature = async (
   feature: string,
 ): Promise<void> => {
   switch (feature.toLowerCase()) {
+    case 'test':
     case 'jest': {
+      const packageJson = JSON.parse(readFileSync('./package.json').toString())
+      const startScript = Object.keys(packageJson.scripts).find(k =>
+        k.includes(`:${appName}:start`),
+      )
+      if (!startScript) {
+        console.log(chalk`{red App ${appName} do not exist in Package.json.}`)
+        return
+      }
+      const [projectType] = startScript.split(':')
+
       if (!packageInstalled(jestDevPackages)) {
         const addJestDone = createSpinner('add jest as test framework')
         await run(`npm install -D ${jestDevPackages.join(' ')}`)
@@ -51,12 +62,12 @@ export const addNewFeature = async (
       createExampleDone()
 
       const addScriptsDone = createSpinner('Add jest to package.json')
-      const packageJson = JSON.parse(readFileSync('./package.json').toString())
+
       packageJson.scripts = {
         ...packageJson.scripts,
-        [`ui:${appName}:test`]: `TZ=UTC jest  --collectCoverageFrom="['./src/${appName}/**/*.{ts,tsx}', '!**/*.d.ts']" --coverageDirectory="<rootDir>/coverage/${appName}" ./src/${appName}`,
-        [`ui:${appName}:test:noCoverage`]: `TZ=UTC jest --coverage=false ./src/${appName}`,
-        [`ui:${appName}:test:watch`]: `TZ=UTC jest --coverage=false --watch ./src/${appName}`,
+        [`${projectType}:${appName}:test`]: `TZ=UTC jest  --collectCoverageFrom="['./src/${appName}/**/*.{ts,tsx}', '!**/*.d.ts']" --coverageDirectory="<rootDir>/coverage/${appName}" ./src/${appName}`,
+        [`${projectType}:${appName}:test:noCoverage`]: `TZ=UTC jest --coverage=false ./src/${appName}`,
+        [`${projectType}:${appName}:test:watch`]: `TZ=UTC jest --coverage=false --watch ./src/${appName}`,
       }
       writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
       addScriptsDone()
