@@ -105,6 +105,13 @@ export const addNewFeature = async (
         return
       }
       const [projectType] = startScript.split(':')
+      if (projectType !== 'ui') {
+        console.log(
+          chalk`{red App ${appName} cannot add Storybook, it can be added only to a UI project.}`,
+        )
+        return
+      }
+
       if (!packageInstalled(storybookDevPackages)) {
         const addStorybookDone = createSpinner('Add storybook')
         await run(`npm install -D ${storybookDevPackages.join(' ')}`)
