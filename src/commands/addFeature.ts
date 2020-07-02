@@ -21,6 +21,8 @@ import clear from 'clear'
 import { drawHeader } from '../drawings'
 import { jestExample, jestConfigJs } from '../templates/main/jest'
 import { jestDevPackages, storybookDevPackages } from '../templates/packages'
+import { storybookMain, storybookPreview, storybookWebpack } from '../templates/ui/storybook'
+import * as fse from 'fs-extra'
 
 export const addFeature = async (
   project: string,
@@ -68,7 +70,7 @@ export const addNewFeature = async (
         await run(`npm install -D ${jestDevPackages.join(' ')}`)
         addJestDone()
       }
-
+      // SPO
       const createExampleDone = createSpinner('setup jest config and example')
       if (!existsSync('./jest.config.js')) {
         writeFileSync('./jest.config.js', jestConfigJs)
@@ -90,6 +92,7 @@ export const addNewFeature = async (
       break
     }
     case 'storybook': {
+      // SPO
       const packageJson = JSON.parse(readFileSync('./package.json').toString())
       const startScript = Object.keys(packageJson.scripts).find(k =>
         k.includes(`:${appName}:start`),
@@ -104,7 +107,20 @@ export const addNewFeature = async (
         await run(`npm install -D ${storybookDevPackages.join(' ')}`)
         addStorybookDone()
       }
+      const createExampleDone = createSpinner('setup storybook config and example')
 
+      if (!existsSync('.storybook/main.js')) {
+        fse.outputFileSync('.storybook/main.js', storybookMain)
+      }
+
+      if (!existsSync('.storybook/preview.js')) {
+        fse.outputFileSync('.storybook/preview.js', storybookPreview)
+      }
+
+      if (!existsSync('.storybook/webpack.config.js')) {
+        fse.outputFileSync('.storybook/webpack.config.js', storybookWebpack)
+      }
+      createExampleDone()
       break
     }
     default:

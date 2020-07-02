@@ -22,7 +22,16 @@
     "license:check": "license-check-and-add check -f add-license-config.json",
     "license:check-dep": "license-checker --production --onlyAllow 'MIT; MIT OR X11; BSD; ISC; Apache-2.0;'"
   },
-  "keywords": ["actyx" , "industry", "industry 4.0", "actyxOs", "project", "cli", "pond", "react"],
+  "keywords": [
+    "actyx",
+    "industry",
+    "industry 4.0",
+    "actyxOs",
+    "project",
+    "cli",
+    "pond",
+    "react"
+  ],
   "author": "Actyx AG",
   "license": "Apache-2.0",
   "dependencies": {
@@ -37,6 +46,7 @@
     "commander": "^5.1.0",
     "figlet": "^1.4.0",
     "fp-ts": "^1.19.4",
+    "fs-extra": "^9.0.1",
     "inquirer": "^7.2.0",
     "io-ts": "^1.10.1",
     "io-ts-types": "^0.4.1",
@@ -50,6 +60,7 @@
     "@types/cli-spinner": "^0.2.0",
     "@types/commander": "^2.12.2",
     "@types/figlet": "^1.2.0",
+    "@types/fs-extra": "^9.0.1",
     "@types/inquirer": "^6.5.0",
     "@types/minimist": "^1.2.0",
     "@types/node": "^14.0.13",
