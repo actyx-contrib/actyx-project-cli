@@ -7,6 +7,15 @@ export const removeDot = (fileList: string[]): string[] =>
   fileList.filter(e => e !== '.' && e !== '..')
 
 export const toKebabCase = (input: string): string => input.split(' ').join('-')
+export const toPascalCase = (str: string): string => {
+  const parts = str.split(/\ -_/)
+  return parts
+    .map(p => {
+      const [first = '', ...rest] = p
+      return `${first.toUpperCase()}${rest.join('')}`
+    })
+    .join('')
+}
 
 export const createSpinner = (text: string): (() => void) => {
   const icons = '⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏'.split('')
