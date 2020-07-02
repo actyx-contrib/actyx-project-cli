@@ -3,11 +3,17 @@ import { drawHeader } from '../drawings'
 import { Command } from 'commander'
 import inquirer from 'inquirer'
 import chalk from 'chalk'
-import { toKebabCase, createSpinner, run, packageInstalled } from '../utils'
+import { toKebabCase, createSpinner, run, packageInstalled, changeToProjectRoot } from '../utils'
 import { isProjectInitialized, initProject } from './init'
 import { mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { defaultHtml, defaultRootTsx, defaultAppTsx, axWebManifestYml } from '../templates/ui'
-import { defaultIndexTs, axDockerManifestYml, dockerComposeAmd64, dockerComposeArm64v8, settingsSchema } from '../templates/node'
+import {
+  defaultIndexTs,
+  axDockerManifestYml,
+  dockerComposeAmd64,
+  dockerComposeArm64v8,
+  settingsSchema,
+} from '../templates/node'
 import { addNewFeature } from './addFeature'
 import { uiPackages, uiDevPackages, nodePackages, nodeDevPackages } from '../templates/packages'
 
@@ -30,28 +36,30 @@ const getAppName = async () => {
         } else {
           return 'Already existing. Please enter a new name'
         }
-      }
-    }
+      },
+    },
   ]
   return (await inquirer.prompt(questions)).appName
 }
-
 
 const getConfirmInitProject = async () => {
   const questions: inquirer.QuestionCollection<ProjectInitResult> = [
     {
       type: 'confirm',
       name: 'confirm',
-      message: 'You are not in the root of an existing project. Do you like to initialize a new project here?',
-      default: false
-    }
-  ];
-  return (await inquirer.prompt(questions)).confirm;
+      message:
+        'You are not in the root of an existing project. Do you like to initialize a new project here?',
+      default: false,
+    },
+  ]
+  return (await inquirer.prompt(questions)).confirm
 }
 
-export const add = async (type: string, command: Command) => {
+export const add = async (type: string, command: Command): Promise<void> => {
   clear()
   drawHeader()
+
+  changeToProjectRoot() // ignore output, isProjectInitialized will take care
   if (!isProjectInitialized()) {
     const initProjectReply = await getConfirmInitProject()
     if (!initProjectReply) {
@@ -62,8 +70,8 @@ export const add = async (type: string, command: Command) => {
 
   switch (type.toUpperCase()) {
     case 'UI': {
-      console.log(chalk.whiteBright('Create a new UI project with TypeScript and Parcel'))
-      const appName = toKebabCase(command.appName || await getAppName())
+      console.log(chalk`{whiteBright Create a new UI project with TypeScript and Parcel}`)
+      const appName = toKebabCase(command.appName || (await getAppName()))
       mkdirSync(`./src/${appName}`, { recursive: true })
 
       if (!packageInstalled(uiPackages)) {
@@ -92,7 +100,7 @@ export const add = async (type: string, command: Command) => {
       const addScriptsDone = createSpinner('Add project to package.json')
       const packageJson = JSON.parse(readFileSync('./package.json').toString())
       packageJson.scripts = {
-        ...packageJson.scripts ,
+        ...packageJson.scripts,
         [`ui:${appName}:start`]: `parcel src/${appName}/index.html --out-dir build/${appName}/debug`,
         [`ui:${appName}:build`]: `parcel build src/${appName}/index.html --out-dir build/${appName}/release --public-url ./`,
         [`ui:${appName}:package`]: `ax apps package src/${appName}/ax-manifest.yml`,
@@ -100,16 +108,20 @@ export const add = async (type: string, command: Command) => {
       writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
       addScriptsDone()
 
-      if (command.jest) {
-        addNewFeature(appName, `./src/${appName}`, 'jest')
+      if (command.test) {
+        await addNewFeature(appName, `./src/${appName}`, 'test')
       }
+      if (command.jest) {
+        await addNewFeature(appName, `./src/${appName}`, 'jest')
+      }
+      console.log(chalk`{green done}`)
       break
     }
     case 'APP':
     case 'NODE': {
-      console.log(chalk.whiteBright('Create a new NodeJS project with TypeScript'))
-      const appName = toKebabCase(command.appName || await getAppName())
-      mkdirSync(`./src/${appName}`, {recursive: true})
+      console.log(chalk`{whiteBright Create a new NodeJS project with TypeScript}`)
+      const appName = toKebabCase(command.appName || (await getAppName()))
+      mkdirSync(`./src/${appName}`, { recursive: true })
 
       if (!packageInstalled(nodePackages)) {
         const instDepDone = createSpinner('Install dependencies')
@@ -137,13 +149,21 @@ export const add = async (type: string, command: Command) => {
       const addScriptsDone = createSpinner('Add project to package.json')
       const packageJson = JSON.parse(readFileSync('./package.json').toString())
       packageJson.scripts = {
-        ...packageJson.scripts ,
+        ...packageJson.scripts,
         [`node:${appName}:start`]: `nodemon --watch src/${appName} --exec ts-node src/${appName}/index.ts`,
         [`node:${appName}:build`]: `tsc src/${appName}/index.ts -p tsconfig.json --outDir build/${appName}`,
         [`node:${appName}:package`]: `ax apps package src/${appName}/ax-manifest.yml`,
       }
       writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
       addScriptsDone()
+
+      if (command.test) {
+        await addNewFeature(appName, `./src/${appName}`, 'test')
+      }
+      if (command.jest) {
+        await addNewFeature(appName, `./src/${appName}`, 'jest')
+      }
+      console.log(chalk`{green done}`)
       break
     }
     default:

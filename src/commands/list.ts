@@ -3,8 +3,7 @@ import { drawHeader } from '../drawings'
 import { Command } from 'commander'
 import chalk from 'chalk'
 import Table from 'cli-table3'
-import { removeDot } from '../utils'
-import { isProjectInitialized } from './init'
+import { removeDot, changeToProjectRoot } from '../utils'
 import { readdirSync, readFileSync } from 'fs'
 
 type PackageJson = {
@@ -16,6 +15,13 @@ type ProjectTypes = 'ui' | 'node'
 type Project = {
   type: ProjectTypes
   name: string
+}
+type Projects = ReadonlyArray<Project>
+
+type AllProjects = {
+  existingProjects: Projects
+  unRefProjects: Projects
+  allScripts: Projects
 }
 
 const isProjectTypes = (t: string): t is ProjectTypes => t === 'ui' || t === 'node'
@@ -37,8 +43,8 @@ const projectStartScripts = (name: string) =>
 export const list = (_command: Command): void => {
   clear()
   drawHeader()
-  if (!isProjectInitialized()) {
-    console.log(chalk.red('project is not initialized'))
+  if (!changeToProjectRoot()) {
+    console.log(chalk`{red project is not initialized}`)
     return
   }
 
@@ -48,20 +54,20 @@ export const list = (_command: Command): void => {
   console.log(table.toString())
 
   if (unRefProjects.length === 1) {
-    console.log(chalk.redBright('You have a unlinked project'))
+    console.log(chalk`{redBright ⚠️ You have a unlinked project}`)
   } else if (unRefProjects.length > 1) {
-    console.log(chalk.redBright('You have some unlinked projects'))
+    console.log(chalk`{redBright ⚠️ You have some unlinked projects}`)
   }
 
   if (unRefProjects.length > 0) {
     const unRefTable = new Table()
     unRefTable.push(...unRefProjects.map(e => [e.type, e.name]))
     console.log(unRefTable.toString())
+    console.log(chalk`{white Use} {redBright axp clean} {white to cleanup your project}`)
   }
-  console.log(chalk.redBright('Use axp clean to cleanup your project'))
 }
 
-export const getProjects = () => {
+export const getProjects = (): AllProjects => {
   const pJson = JSON.parse(readFileSync('./package.json').toString()) as PackageJson
 
   const allScripts = Object.keys(pJson.scripts)
@@ -74,11 +80,6 @@ export const getProjects = () => {
     .filter((e): e is Project => e !== undefined)
 
   const unRefProjects = allScripts.filter(e => projects.includes(e.name) === false)
-
-  // const unRefProjects = projects
-  //   .map(name => [name, allScripts.find(e => e.name === name)])
-  //   .filter(e => e[1] === undefined)
-  //   .map(([name]) => name)
 
   return {
     existingProjects,

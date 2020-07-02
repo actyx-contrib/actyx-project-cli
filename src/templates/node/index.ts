@@ -3,6 +3,13 @@ import { Pond } from '@actyx/pond'
 
 Pond.default().then(pond => {
   // start something awesome here
+
+  // First time you are here?
+  // Checkout https://developer.actyx.com/docs/pond/getting-started
+  //
+  // You will find some help and examples on:
+  // https://developer.actyx.com/docs/pond/guides/hello-world
+  // https://developer.actyx.com/blog
 })
 `
 
@@ -24,7 +31,7 @@ services:
     image: ${appName}
 `
 
-export const dockerComposeArm64v8 = (appName: string): string =>`version: '2.0'
+export const dockerComposeArm64v8 = (appName: string): string => `version: '2.0'
 services:
   app:
     image: ${appName}
