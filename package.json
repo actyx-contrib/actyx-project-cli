@@ -11,11 +11,14 @@
   },
   "scripts": {
     "start": "ts-node src/index.ts",
-    "prepack": "npm run build",
+    "prepack": "npm run build && npm run license:add",
     "build": "tsc -p tsconfig.json",
     "clean": "shx rm -rf lib",
     "lint": "eslint -c .eslintrc.js .",
-    "lint:fix": "eslint --fix -c .eslintrc.js ."
+    "lint:fix": "eslint --fix -c .eslintrc.js .",
+    "license:add": "license-check-and-add add -f add-license-config.json",
+    "license:check": "license-check-and-add check -f add-license-config.json",
+    "license:check-dep": "license-checker --production --onlyAllow 'MIT; MIT OR X11; BSD; ISC; Apache-2.0;'"
   },
   "keywords": [],
   "author": "",
