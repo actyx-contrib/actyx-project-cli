@@ -139,7 +139,7 @@ export const addNewFeature = async (
 
       packageJson.scripts = {
         ...packageJson.scripts,
-        [`${projectType}:${appName}:storybook`]: 'start-storybook -p 6006',
+        storybook: 'start-storybook -p 6006',
       }
       writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
       createExampleDone()
