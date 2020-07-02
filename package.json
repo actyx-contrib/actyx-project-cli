@@ -1,7 +1,7 @@
 {
-  "name": "actyx-project-cli",
+  "name": "axp",
   "version": "1.0.0",
-  "description": "Cli tool to create and maintain your TypeScript based projects",
+  "description": "Actyx Project Cli tool to create and maintain your TypeScript based projects",
   "bin": {
     "axp": "bin/axp"
   },
@@ -20,9 +20,9 @@
     "license:check": "license-check-and-add check -f add-license-config.json",
     "license:check-dep": "license-checker --production --onlyAllow 'MIT; MIT OR X11; BSD; ISC; Apache-2.0;'"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["actyx" , "industry", "industry 4.0", "actyxOs", "project", "cli", "pond", "react"],
+  "author": "Actyx AG",
+  "license": "Apache-2.0",
   "dependencies": {
     "@actyx-contrib/react-pond": "^1.0.3",
     "@actyx-contrib/registry": "^1.0.1",
