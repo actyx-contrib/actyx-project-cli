@@ -10,8 +10,10 @@
     "url": "https://github.com/actyx-contrib/actyx-project-cli"
   },
   "scripts": {
+    "tsc": "tsc",
     "start": "ts-node src/index.ts",
     "prepack": "npm run build && npm run license:add",
+    "build:watch": "tsc --watch --pretty -p tsconfig.json",
     "build": "tsc -p tsconfig.json",
     "clean": "shx rm -rf lib",
     "lint": "tsc --noEmit && eslint -c .eslintrc.js . && prettier './src/**/*.ts' --check",
@@ -20,7 +22,16 @@
     "license:check": "license-check-and-add check -f add-license-config.json",
     "license:check-dep": "license-checker --production --onlyAllow 'MIT; MIT OR X11; BSD; ISC; Apache-2.0;'"
   },
-  "keywords": ["actyx" , "industry", "industry 4.0", "actyxOs", "project", "cli", "pond", "react"],
+  "keywords": [
+    "actyx",
+    "industry",
+    "industry 4.0",
+    "actyxOs",
+    "project",
+    "cli",
+    "pond",
+    "react"
+  ],
   "author": "Actyx AG",
   "license": "Apache-2.0",
   "dependencies": {

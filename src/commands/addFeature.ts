@@ -16,11 +16,17 @@
 import { Command } from 'commander'
 import chalk from 'chalk'
 import { createSpinner, run, toKebabCase, packageInstalled, changeToProjectRoot } from '../utils'
-import { existsSync, writeFileSync, readFileSync } from 'fs'
+import { existsSync, writeFileSync, readFileSync, mkdirSync } from 'fs'
 import clear from 'clear'
 import { drawHeader } from '../drawings'
 import { jestExample, jestConfigJs } from '../templates/main/jest'
-import { jestDevPackages } from '../templates/packages'
+import { jestDevPackages, storybookDevPackages } from '../templates/packages'
+import {
+  storybookMain,
+  storybookPreview,
+  storybookWebpack,
+  storybookAppStory,
+} from '../templates/ui/storybook'
 
 export const addFeature = async (
   project: string,
@@ -89,7 +95,56 @@ export const addNewFeature = async (
 
       break
     }
+    case 'storybook': {
+      const packageJson = JSON.parse(readFileSync('./package.json').toString())
+      const startScript = Object.keys(packageJson.scripts).find(k =>
+        k.includes(`:${appName}:start`),
+      )
+      if (!startScript) {
+        console.log(chalk`{red App ${appName} do not exist in Package.json.}`)
+        return
+      }
+      const [projectType] = startScript.split(':')
+      if (projectType !== 'ui') {
+        console.log(
+          chalk`{red App ${appName} cannot add Storybook, it can be added only to a UI project.}`,
+        )
+        return
+      }
 
+      if (!packageInstalled(storybookDevPackages)) {
+        const addStorybookDone = createSpinner('Add Storybook')
+        await run(`npm install -D ${storybookDevPackages.join(' ')}`)
+        addStorybookDone()
+      }
+
+      const createExampleDone = createSpinner('Setup storybook config and example')
+
+      if (!existsSync('.storybook')) {
+        mkdirSync('.storybook', { recursive: true })
+        if (!existsSync('.storybook/main.js')) {
+          writeFileSync('.storybook/main.js', storybookMain)
+        }
+        if (!existsSync('.storybook/preview.js')) {
+          writeFileSync('.storybook/preview.js', storybookPreview)
+        }
+        if (!existsSync('.storybook/webpack.config.js')) {
+          writeFileSync('.storybook/webpack.config.js', storybookWebpack)
+        }
+      }
+
+      if (existsSync(`src/${appName}/App.tsx`) && !existsSync(`src/${appName}/App.stories.tsx`)) {
+        writeFileSync(`src/${appName}/App.stories.tsx`, storybookAppStory(appName))
+      }
+
+      packageJson.scripts = {
+        ...packageJson.scripts,
+        storybook: 'start-storybook -p 6006',
+      }
+      writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
+      createExampleDone()
+      break
+    }
     default:
       console.log(chalk`{red Feature ${feature} is not supported}`)
       return

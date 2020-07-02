@@ -107,7 +107,7 @@ export const add = async (type: string, command: Command): Promise<void> => {
       writeFileSync(`./src/${appName}/App.tsx`, defaultAppTsx)
       setupProjectDone()
 
-      const addActyxDone = createSpinner('Add axtyx manifest')
+      const addActyxDone = createSpinner('Add Actyx manifest')
       writeFileSync(`./src/${appName}/ax-manifest.yml`, axWebManifestYml(appName))
       writeFileSync(`./src/${appName}/settings-schema.json`, settingsSchema)
       addActyxDone()
@@ -128,6 +128,9 @@ export const add = async (type: string, command: Command): Promise<void> => {
       }
       if (command.jest) {
         await addNewFeature(appName, `./src/${appName}`, 'jest')
+      }
+      if (command.storybook) {
+        await addNewFeature(appName, `./src/${appName}`, 'storybook')
       }
       console.log(chalk`{green done}`)
       break
@@ -154,7 +157,7 @@ export const add = async (type: string, command: Command): Promise<void> => {
       writeFileSync(`./src/${appName}/index.ts`, defaultIndexTs)
       setupProjectDone()
 
-      const addActyxDone = createSpinner('Add axtyx manifest')
+      const addActyxDone = createSpinner('Add Actyx manifest')
       writeFileSync(`./src/${appName}/ax-manifest.yml`, axDockerManifestYml(appName))
       writeFileSync(`./src/${appName}/docker-compose-amd64.yml`, dockerComposeAmd64(appName))
       writeFileSync(`./src/${appName}/docker-compose-arm64v8.yml`, dockerComposeArm64v8(appName))
