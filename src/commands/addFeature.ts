@@ -102,12 +102,12 @@ export const addNewFeature = async (
       }
       const [projectType] = startScript.split(':')
       if (!packageInstalled(storybookDevPackages)) {
-        const addStorybookDone = createSpinner('add storybook')
+        const addStorybookDone = createSpinner('Add storybook')
         await run(`npm install -D ${storybookDevPackages.join(' ')}`)
         addStorybookDone()
       }
-      const createExampleDone = createSpinner('setup storybook config and example')
 
+      const createExampleDone = createSpinner('Setup storybook config and example')
       if (!existsSync('.storybook/main.js')) {
         fse.outputFileSync('.storybook/main.js', storybookMain)
       }
@@ -119,6 +119,7 @@ export const addNewFeature = async (
       if (!existsSync('.storybook/webpack.config.js')) {
         fse.outputFileSync('.storybook/webpack.config.js', storybookWebpack)
       }
+
       packageJson.scripts = {
         ...packageJson.scripts,
         [`${projectType}:${appName}:storybook`]: 'start-storybook -p 6006',
