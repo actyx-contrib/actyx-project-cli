@@ -114,6 +114,9 @@ export const add = async (type: string, command: Command): Promise<void> => {
       if (command.jest) {
         await addNewFeature(appName, `./src/${appName}`, 'jest')
       }
+      if (command.storybook) {
+        await addNewFeature(appName, `./src/${appName}`, 'storybook')
+      }
       console.log(chalk`{green done}`)
       break
     }

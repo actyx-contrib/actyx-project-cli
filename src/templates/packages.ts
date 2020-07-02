@@ -11,6 +11,7 @@ export const uiPackages = [
   '@actyx/industrial-ui',
 ]
 export const uiDevPackages = ['parcel-bundler', '@types/react', '@types/react-dom', 'typescript']
+
 export const nodePackages = [
   '@actyx/pond',
   'fp-ts@1.19.5',
@@ -20,5 +21,9 @@ export const nodePackages = [
   '@actyx/os-sdk',
   '@actyx-contrib/registry',
 ]
+
 export const nodeDevPackages = ['ts-node', 'nodemon', '@types/node', 'typescript']
+
 export const jestDevPackages = ['jest', 'ts-jest', 'babel-jest', '@types/jest']
+
+export const storybookDevPackages = ['@storybook/addon-actions', '@storybook/react', '@storybook/theming']

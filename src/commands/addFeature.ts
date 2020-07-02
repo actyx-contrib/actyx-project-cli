@@ -5,7 +5,7 @@ import { existsSync, writeFileSync, readFileSync } from 'fs'
 import clear from 'clear'
 import { drawHeader } from '../drawings'
 import { jestExample, jestConfigJs } from '../templates/main/jest'
-import { jestDevPackages } from '../templates/packages'
+import { jestDevPackages, storybookDevPackages } from '../templates/packages'
 
 export const addFeature = async (
   project: string,
@@ -74,7 +74,24 @@ export const addNewFeature = async (
 
       break
     }
+    case 'storybook': {
+      const packageJson = JSON.parse(readFileSync('./package.json').toString())
+      const startScript = Object.keys(packageJson.scripts).find(k =>
+        k.includes(`:${appName}:start`),
+      )
+      if (!startScript) {
+        console.log(chalk`{red App ${appName} do not exist in Package.json.}`)
+        return
+      }
+      // const [projectType] = startScript.split(':')
+      if (!packageInstalled(storybookDevPackages)) {
+        const addStorybookDone = createSpinner('add storybook')
+        await run(`npm install -D ${storybookDevPackages.join(' ')}`)
+        addStorybookDone()
+      }
 
+      break
+    }
     default:
       console.log(chalk`{red Feature ${feature} is not supported}`)
       return
