@@ -92,7 +92,6 @@ export const addNewFeature = async (
       break
     }
     case 'storybook': {
-      // SPO
       const packageJson = JSON.parse(readFileSync('./package.json').toString())
       const startScript = Object.keys(packageJson.scripts).find(k =>
         k.includes(`:${appName}:start`),
@@ -120,11 +119,11 @@ export const addNewFeature = async (
       if (!existsSync('.storybook/webpack.config.js')) {
         fse.outputFileSync('.storybook/webpack.config.js', storybookWebpack)
       }
-      debugger
       packageJson.scripts = {
         ...packageJson.scripts,
         [`${projectType}:${appName}:storybook`]: 'start-storybook -p 6006',
       }
+      writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
       createExampleDone()
       break
     }
