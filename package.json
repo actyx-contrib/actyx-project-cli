@@ -10,6 +10,8 @@
     "url": "https://github.com/actyx-contrib/actyx-project-cli"
   },
   "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch --pretty",
     "start": "ts-node src/index.ts",
     "prepack": "npm run build",
     "build": "tsc -p tsconfig.json",
