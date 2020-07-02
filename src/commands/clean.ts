@@ -1,15 +1,14 @@
-import clear from "clear"
-import { drawHeader } from "../drawings"
-import { Command } from "commander"
-import chalk from "chalk";
-import inquirer from "inquirer";
+import clear from 'clear'
+import { drawHeader } from '../drawings'
+import { Command } from 'commander'
+import chalk from 'chalk'
+import inquirer from 'inquirer'
 import Table from 'cli-table3'
-import { isProjectInitialized } from "./init";
-import { getProjects } from "./list";
-import { readFileSync, writeFileSync } from 'fs';
+import { isProjectInitialized } from './init'
+import { getProjects } from './list'
+import { readFileSync, writeFileSync } from 'fs'
 
-
-export const clean = async (_command: Command) => {
+export const clean = async (_command: Command): Promise<void> => {
   clear()
   drawHeader()
   if (!isProjectInitialized()) {
@@ -60,8 +59,8 @@ const getConfirm = async () => {
       type: 'confirm',
       name: 'cleanupConfirm',
       message: 'Do you like to execute the clean up?',
-      default: false
-    }
-  ];
-  return (await inquirer.prompt(questions)).cleanupConfirm;
+      default: false,
+    },
+  ]
+  return (await inquirer.prompt(questions)).cleanupConfirm
 }

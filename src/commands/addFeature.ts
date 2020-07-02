@@ -7,19 +7,29 @@ import { drawHeader } from '../drawings'
 import { jestExample, jestConfigJs } from '../templates/main/jest'
 import { jestDevPackages } from '../templates/packages'
 
-export const addFeature = async (project: string, feature: string, _command: Command) => {
+export const addFeature = async (
+  project: string,
+  feature: string,
+  _command: Command,
+): Promise<void> => {
   clear()
   drawHeader()
   const projectPath = `./src/${toKebabCase(project)}`
   if (!existsSync(projectPath)) {
-    console.log(chalk`{red Project ${projectPath} do not exist.} {white Use} {yellow axp list} {white to get all existing projects}`);
+    console.log(
+      chalk`{red Project ${projectPath} do not exist.} {white Use} {yellow axp list} {white to get all existing projects}`,
+    )
     return
   }
 
   addNewFeature(project, `./src/${project}`, feature)
 }
 
-export const addNewFeature = async (appName: string, projectPath: string, feature: string) => {
+export const addNewFeature = async (
+  appName: string,
+  projectPath: string,
+  feature: string,
+): Promise<void> => {
   switch (feature.toLowerCase()) {
     case 'jest': {
       if (!packageInstalled(jestDevPackages)) {
@@ -38,7 +48,7 @@ export const addNewFeature = async (appName: string, projectPath: string, featur
       const addScriptsDone = createSpinner('Add jest to package.json')
       const packageJson = JSON.parse(readFileSync('./package.json').toString())
       packageJson.scripts = {
-        ...packageJson.scripts ,
+        ...packageJson.scripts,
         [`ui:${appName}:test`]: `TZ=UTC jest  --collectCoverageFrom="['./src/${appName}/**/*.{ts,tsx}', '!**/*.d.ts']" --coverageDirectory="<rootDir>/coverage/${appName}" ./src/${appName}`,
         [`ui:${appName}:test:noCoverage`]: `TZ=UTC jest --coverage=false ./src/${appName}`,
         [`ui:${appName}:test:watch`]: `TZ=UTC jest --coverage=false --watch ./src/${appName}`,
@@ -54,4 +64,3 @@ export const addNewFeature = async (appName: string, projectPath: string, featur
       return
   }
 }
-

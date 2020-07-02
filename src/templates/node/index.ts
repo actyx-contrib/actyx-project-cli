@@ -31,7 +31,7 @@ services:
     image: ${appName}
 `
 
-export const dockerComposeArm64v8 = (appName: string): string =>`version: '2.0'
+export const dockerComposeArm64v8 = (appName: string): string => `version: '2.0'
 services:
   app:
     image: ${appName}

@@ -1,5 +1,4 @@
-import clear from 'clear'
-import { drawHeader } from './drawings'
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { Command } from 'commander'
 import { add } from './commands/add'
 import { initProject } from './commands/init'
@@ -7,8 +6,8 @@ import { list } from './commands/list'
 import { clean } from './commands/clean'
 import { addFeature } from './commands/addFeature'
 
-export const cli = () => {
-  const program = new Command();
+export const cli = (): void => {
+  const program = new Command()
   program.version(require('../package.json').version)
   program.option('--init', 'Initialize new project')
   program
@@ -41,9 +40,3 @@ export const cli = () => {
 
   program.parse(process.argv)
 }
-
-export const main = () => {
-  clear()
-  drawHeader()
-}
-

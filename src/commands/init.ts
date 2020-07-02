@@ -1,7 +1,13 @@
 import { readdirSync, writeFileSync, mkdirSync } from 'fs'
 import chalk from 'chalk'
 import { createSpinner, run } from '../utils'
-import { editorConfig, eslintrcJs, defaultGitIgnore, defaultTsConfig, prettierrcJs } from '../templates/main'
+import {
+  editorConfig,
+  eslintrcJs,
+  defaultGitIgnore,
+  defaultTsConfig,
+  prettierrcJs,
+} from '../templates/main'
 import { clear } from 'console'
 import { drawHeader } from '../drawings'
 
