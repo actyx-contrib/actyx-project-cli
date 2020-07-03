@@ -56,8 +56,9 @@ export const clean = async (_command: Command): Promise<void> => {
 
   const packageJson = JSON.parse(readFileSync('./package.json').toString())
   packageJson.scripts = unRefProjects.reduce((acc, appName) => {
-    delete acc[`${appName.type}:${appName.name}:start`]
-    delete acc[`${appName.type}:${appName.name}:build`]
+    Object.keys(acc)
+      .filter(k => k.startsWith(`${appName.type}:${appName.name}:`))
+      .forEach(k => delete acc[k])
     return acc
   }, packageJson.scripts)
 
@@ -69,7 +70,7 @@ type AppNameResult = {
   cleanupConfirm: boolean
 }
 
-const getConfirm = async () => {
+const getConfirm = async (): Promise<boolean> => {
   const questions: inquirer.QuestionCollection<AppNameResult> = [
     {
       type: 'confirm',

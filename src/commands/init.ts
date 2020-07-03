@@ -59,7 +59,7 @@ export const setupGit = async (): Promise<void> => {
   spinnerDone()
 }
 
-const setupNpm = async () => {
+const setupNpm = async (): Promise<void> => {
   if (readdirSync('.').includes('node_modules')) {
     return
   }
@@ -80,7 +80,7 @@ const setupNpm = async () => {
   console.log(chalk`{green done}`)
 }
 
-const setupTs = () => {
+const setupTs = (): void => {
   if (readdirSync('.').includes('tsconfig.json')) {
     return
   }

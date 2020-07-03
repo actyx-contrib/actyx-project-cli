@@ -42,6 +42,7 @@ export const addFish = async (fishName: string, command: Command): Promise<void>
   }
 
   createFish(fishName, options)
+  console.log(chalk`{green done}`)
 }
 
 export const toSemantics = (str: string): string => {
@@ -53,14 +54,19 @@ export const createFish = (fish: string, options: CreateFishBodyOptions): void =
   const fishName = `${name}Fish`
 
   const fishFile = `./src/fish/${fishName}.ts`
-  const fishIndexFile = `./src/fish/index.ts`
+  console.log(
+    chalk`{whiteBright Create new fish} {blue ${fishName}} {whiteBright in} {yellow ${fishFile}}`,
+  )
   if (existsSync(fishFile)) {
     console.log(chalk`{yellow Fish ${fishName} do already exists}`)
     return
   }
-
   writeFileSync(fishFile, createFishBody(fishName, toSemantics(name), options))
 
+  const fishIndexFile = `./src/fish/index.ts`
+  console.log(
+    chalk`{whiteBright Export} {blue ${fishName}} {whiteBright in } {yellow ${fishIndexFile}}`,
+  )
   const indexTsContent = existsSync(fishIndexFile)
     ? readFileSync(fishIndexFile).toString() + '\n'
     : ''

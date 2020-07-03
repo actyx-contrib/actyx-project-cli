@@ -17,11 +17,17 @@ import { exec } from 'child_process'
 import chalk from 'chalk'
 import { existsSync, readFileSync } from 'fs'
 import { parse, join, dirname } from 'path'
+import { getProjects } from './commands/list'
 
 export const removeDot = (fileList: string[]): string[] =>
   fileList.filter(e => e !== '.' && e !== '..')
 
-export const toKebabCase = (input: string): string => input.split(' ').join('-')
+export const toKebabCaseFileName = (input: string): string =>
+  input
+    .split(/[\ \',\.]/)
+    .join('-')
+    .toLowerCase()
+
 export const toPascalCase = (str: string): string => {
   const parts = str.split(/\ -_/)
   return parts
@@ -35,7 +41,7 @@ export const toPascalCase = (str: string): string => {
 export const createSpinner = (text: string): (() => void) => {
   const icons = '⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏'.split('')
   let idx = 0
-  const drawNext = () => {
+  const drawNext = (): void => {
     process.stdout.cursorTo(0)
     if (idx++ >= icons.length - 1) {
       idx = 0
@@ -51,7 +57,7 @@ export const createSpinner = (text: string): (() => void) => {
     }
   }, 80)
 
-  return () => {
+  return (): void => {
     process.stdout.cursorTo(0)
     process.stdout.write(chalk`✅ ${text}\n`)
     clearInterval(spinner)
@@ -108,3 +114,6 @@ export const findUp = (names: string[], currentDir: string): string | undefined 
     return findUp(names, dirname(currentDir))
   }
 }
+
+export const doAppExist = (appName: string): boolean =>
+  getProjects().allScripts.find(p => p.name === appName) !== undefined
