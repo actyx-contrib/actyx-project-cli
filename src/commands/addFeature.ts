@@ -103,7 +103,7 @@ const addJest = async (appName: string, projectPath: string): Promise<void> => {
 
   packageJson.scripts = {
     ...packageJson.scripts,
-    [`${projectType}:${appName}:test`]: `TZ=UTC jest  --collectCoverageFrom="['./src/${appName}/**/*.{ts,tsx}', '!**/*.d.ts']" --coverageDirectory="<rootDir>/coverage/${appName}" ./src/${appName}`,
+    [`${projectType}:${appName}:test`]: `TZ=UTC jest  --collectCoverageFrom="['!src/**/*.stories.tsx', './src/${appName}/**/*.{ts,tsx}', '!**/*.d.ts']" --coverageDirectory="<rootDir>/coverage/${appName}" ./src/${appName}`,
     [`${projectType}:${appName}:test:noCoverage`]: `TZ=UTC jest --coverage=false ./src/${appName}`,
     [`${projectType}:${appName}:test:watch`]: `TZ=UTC jest --coverage=false --watch ./src/${appName}`,
   }
