@@ -78,6 +78,7 @@ export const defaultGitIgnore = `node_modules
 build
 dist
 .cache
+parcel-debug-*
 `
 
 export const defaultTsConfig = `{
