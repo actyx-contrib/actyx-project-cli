@@ -52,7 +52,7 @@ const decodeName = (name: string): Project | undefined => {
   }
 }
 
-const projectStartScripts = (name: string) =>
+const isProjectStartScripts = (name: string): boolean =>
   (name.startsWith('ui:') || name.startsWith('node')) && name.endsWith(':start')
 
 export const list = (_command: Command): void => {
@@ -86,7 +86,7 @@ export const getProjects = (): AllProjects => {
   const pJson = JSON.parse(readFileSync('./package.json').toString()) as PackageJson
 
   const allScripts = Object.keys(pJson.scripts)
-    .filter(projectStartScripts)
+    .filter(isProjectStartScripts)
     .map(decodeName)
     .filter((p): p is Project => p !== undefined)
   const projects = removeDot(readdirSync('./src'))
