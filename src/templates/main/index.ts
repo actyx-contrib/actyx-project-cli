@@ -144,10 +144,9 @@ export const defaultTsConfig = `{
     // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
 
     /* Advanced Options */
-    "forceConsistentCasingInFileNames": true  /* Disallow inconsistently-cased references to the same file. */
+    "forceConsistentCasingInFileNames": true, /* Disallow inconsistently-cased references to the same file. */
+    "skipLibCheck": true
   },
-  "include": ["./src/**/*"],
-  "exclude": [ "./node_modules"],
-  "skipLibCheck": true
+  "include": ["./src/**/*"]
 }
 `
