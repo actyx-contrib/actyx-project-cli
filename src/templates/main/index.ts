@@ -145,6 +145,8 @@ export const defaultTsConfig = `{
     /* Advanced Options */
     "forceConsistentCasingInFileNames": true  /* Disallow inconsistently-cased references to the same file. */
   },
-  "include": ["./src/**/*"]
+  "include": ["./src/**/*"],
+  "exclude": [ "node_modules"],
+  "skipLibCheck": true
 }
 `
