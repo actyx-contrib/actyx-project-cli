@@ -78,6 +78,7 @@ export const defaultGitIgnore = `node_modules
 build
 dist
 .cache
+parcel-debug-*
 `
 
 export const defaultTsConfig = `{
@@ -143,7 +144,8 @@ export const defaultTsConfig = `{
     // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
 
     /* Advanced Options */
-    "forceConsistentCasingInFileNames": true  /* Disallow inconsistently-cased references to the same file. */
+    "forceConsistentCasingInFileNames": true, /* Disallow inconsistently-cased references to the same file. */
+    "skipLibCheck": true                      /* Skip type checking of all declaration files */
   },
   "include": ["./src/**/*"]
 }

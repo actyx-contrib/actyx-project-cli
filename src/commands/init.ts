@@ -64,7 +64,7 @@ const setupNpm = async () => {
     return
   }
 
-  const spinnerDone = createSpinner('setup npm project')
+  const spinnerDone = createSpinner('Setup npm project')
   await run('npm init -y')
   writeFileSync('.gitignore', defaultGitIgnore)
   await run(
