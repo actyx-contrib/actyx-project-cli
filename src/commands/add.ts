@@ -24,6 +24,7 @@ import {
   run,
   packageInstalled,
   changeToProjectRoot,
+  doAppExist,
 } from '../utils'
 import { isProjectInitialized, initProject } from './init'
 import { mkdirSync, readFileSync, writeFileSync } from 'fs'
@@ -55,7 +56,7 @@ const getAppName = async (): Promise<string> => {
       validate: (value: string): boolean | string => {
         if (value.length === 0) {
           return 'Please enter a new name'
-        } else if (getProjects().allScripts.find(p => p.name === value)) {
+        } else if (doAppExist(value)) {
           return 'Already existing. Please enter a new name'
         } else {
           return true
@@ -110,7 +111,7 @@ const addUI = async (command: Command): Promise<void> => {
   console.log(chalk`{whiteBright Create a new UI project with TypeScript and Parcel}`)
   const appName = toKebabCaseFileName(command.appName || (await getAppName()))
 
-  if (getProjects().allScripts.find(p => p.name === appName)) {
+  if (doAppExist(appName)) {
     console.log(chalk`{red ${appName}} is already existing. Please use another name`)
     return
   }

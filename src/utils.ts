@@ -17,6 +17,7 @@ import { exec } from 'child_process'
 import chalk from 'chalk'
 import { existsSync, readFileSync } from 'fs'
 import { parse, join, dirname } from 'path'
+import { getProjects } from './commands/list'
 
 export const removeDot = (fileList: string[]): string[] =>
   fileList.filter(e => e !== '.' && e !== '..')
@@ -113,3 +114,6 @@ export const findUp = (names: string[], currentDir: string): string | undefined 
     return findUp(names, dirname(currentDir))
   }
 }
+
+export const doAppExist = (appName: string): boolean =>
+  getProjects().allScripts.find(p => p.name === appName) !== undefined
