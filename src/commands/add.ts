@@ -38,7 +38,6 @@ import {
 } from '../templates/node'
 import { addNewFeature } from './addFeature'
 import { uiPackages, uiDevPackages, nodePackages, nodeDevPackages } from '../templates/packages'
-import { getProjects } from './list'
 
 type AppNameResult = {
   appName: string
