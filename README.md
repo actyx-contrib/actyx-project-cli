@@ -1,4 +1,4 @@
-<img width="130px" src="https://raw.githubusercontent.com/actyx-contrib/axp/master/axp-icon.png">
+<img width="130px" src="https://raw.githubusercontent.com/actyx-contrib/actyx-project-cli/master/axp-icon.png?token=AATHWQLXCUBBKEM6TMDEXYC674JUG">
 
 # Actyx-Project-CLI
 
