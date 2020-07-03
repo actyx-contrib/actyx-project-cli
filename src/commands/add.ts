@@ -53,7 +53,6 @@ const getAppName = async (): Promise<string> => {
       type: 'input',
       message: 'Enter the name of your new project:',
       validate: (value: string): boolean | string => {
-        console.log(value)
         if (value.length === 0) {
           return 'Please enter a new name'
         } else if (getProjects().allScripts.find(p => p.name === value)) {
