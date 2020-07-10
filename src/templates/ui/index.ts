@@ -45,10 +45,10 @@ export const defaultHtml = (appName: string): string => `<!DOCTYPE html>
           -webkit-transform: translateZ(0);
           -ms-transform: translateZ(0);
           transform: translateZ(0);
-          -webkit-animation: load8 1s infinite linear;
-          animation: load8 1s infinite linear;
+          -webkit-animation: loadAnim 1s infinite linear;
+          animation: loadAnim 1s infinite linear;
       }
-      @-webkit-keyframes load8 {
+      @-webkit-keyframes loadAnim {
           0% {
             -webkit-transform: rotate(0deg);
             transform: rotate(0deg);
@@ -58,7 +58,7 @@ export const defaultHtml = (appName: string): string => `<!DOCTYPE html>
             transform: rotate(360deg);
         }
     }
-    @keyframes load8 {
+    @keyframes loadAnim {
         0% {
           -webkit-transform: rotate(0deg);
           transform: rotate(0deg);
