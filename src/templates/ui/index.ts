@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export const defaultHtml = `<!DOCTYPE html>
+export const defaultHtml = (appName: string) => `<!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actyx-Pond-Demo!</title>
+    <title>${appName}</title>
   </head>
   <body>
     <div id="root"></div>
