@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export const defaultHtml = (appName: string) => `<!DOCTYPE html>
+export const defaultHtml = (appName: string): string => `<!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8">
