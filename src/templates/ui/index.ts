@@ -20,7 +20,7 @@ export const defaultHtml = (appName: string): string => `<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${appName}</title>
     <style>
-      .app {
+      .wrapper {
         width: 100vw;
         height: 100vh;
         display: flex;
@@ -72,8 +72,10 @@ export const defaultHtml = (appName: string): string => `<!DOCTYPE html>
   </head>
   <body>
     <div id="root">
-      <div class="loader">
-        Loading...
+      <div class="wrapper">
+        <div class="loader">
+          Loading...
+        </div>
       </div>
     </div>
     <script src="root.tsx" type="text/javascript"></script>
