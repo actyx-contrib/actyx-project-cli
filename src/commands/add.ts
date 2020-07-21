@@ -205,7 +205,7 @@ const addNode = async (command: Command): Promise<void> => {
     ...packageJson.scripts,
     [`node:${appName}:start`]: `nodemon --watch src/${appName} --exec ts-node src/${appName}/index.ts`,
     [`node:${appName}:build`]: `tsc src/${appName}/index.ts --outDir build/${appName}`,
-    [`node:${appName}:docker:build`]: `npm run node:${appName}:build && docker build -t ${appName} src/${appName}/`,
+    [`node:${appName}:docker:build`]: `npm run node:${appName}:build && docker build -t ${appName} -f src/${appName}/Dockerfile .`,
     [`node:${appName}:package`]: `ax apps package src/${appName}/ax-manifest.yml`,
   }
   writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))

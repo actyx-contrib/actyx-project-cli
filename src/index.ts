@@ -22,7 +22,7 @@ export const cli = (): void => {
   program.version('Actyx Project tool V:' + axpVersion)
   program
     .command('init')
-    .option('-v <version>', 'Define the actyx pond version. (default: 1)')
+    .option('-v <version>', 'Define the actyx pond version. [1, 2] (default: 1)')
     .description('Initialize axp project')
     .action(initProject)
   program
@@ -37,8 +37,8 @@ export const cli = (): void => {
     .action(add)
   program
     .command('addFeature <project> <feature>')
-    .usage('name test|jest')
-    .description('Add a new feature to an existing app in the project. (test|jest)')
+    .usage('name test|jest|storybook')
+    .description('Add a new feature to an existing app in the project. (test|jest|storybook)')
     .alias('af')
     .action(addFeature)
   program
@@ -53,7 +53,7 @@ export const cli = (): void => {
     .action(clean)
   program
     .command('addFish <fishName>')
-    .description('create a new fish in the src/fish folder')
+    .description('create a new fish in the src/fish folder (currently: Pond V1 only)')
     .alias('fish')
     .option('--registry', 'add a createRegistry to the fish definition')
     .option(

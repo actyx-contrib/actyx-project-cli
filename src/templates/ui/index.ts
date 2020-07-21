@@ -90,7 +90,7 @@ import { App } from './App'
 
 ReactDOM.render(
   <React.StrictMode>
-    <Pond loadComponent={<div>Connect to ActyxOS</div>}>
+    <Pond loadComponent={<div>Connecting to ActyxOS</div>}>
       <App />
     </Pond>
   </React.StrictMode>,

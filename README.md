@@ -14,17 +14,22 @@ npm install -g @actyx-contrib/axp
 
 ## 🛠️ Init Project
 
-The installed `axp` tool will create you a monorepo with git, ESLint, and TypeScript. In this project, you can add your apps with the `axp add <appType>` command.
+The installed `axp` tool will create you a monorepo with git, ESLint, and TypeScript.
+
+In this project, you can add your apps with the `axp add <appType>` command.
 
 ```bash
+# Pond Version 1
 axp init
+# Pond Version 2
+axp init -v 2
 ```
 
 The init step is optional. You can directly create an new app with `axp add [ui|node]`
 
 ## 📑 React application
 
-Create a new React-App with the `axp add ui` command. It will user *parcel* as build tool and setup *jest* for tests.
+Create a new React-App with the `axp add ui` command. It will user _parcel_ as build tool and setup _jest_ for tests.
 
 Additional to this. The actyx manifest for a WebView App is generated.
 
@@ -40,7 +45,7 @@ After executing this command you will find some new scripts in you package.json
 
 ## 📑 Node application
 
-Create a new Node.js with the `axp add node` command. It will setup *jest* for tests.
+Create a new Node.js with the `axp add node` command. It will setup _jest_ for tests.
 
 Additional to this. The actyx manifest for a docker App is generated.
 
@@ -58,6 +63,8 @@ After executing this command you will find some new scripts in you package.json
 
 If you are not able to install the VisualStudio Code [Actyx-Pond](https://marketplace.visualstudio.com/items?itemName=Actyx.actyx-pond) extension. You can create templates for your new fish with `axp`.
 
+In the current version, this in only supported for Pond V1
+
 ```bash
 axp addFish materialRequest --registry
 ```
@@ -72,29 +79,29 @@ Following options are available when you add a fish:
 
 This list is a overview of the existing commands. Use the integrated help to get detailed information about the commands
 
-| command | shortcut | Function  |
-|---|---|---|
-| `axp init` | `axp --init` | Initialize a new project in the current directory |
-| `axp add <type> [-n Name] [--test] [--jest]` | `axp a` | Create a new application with the given type and name |
-| `axp addFeature <project> <feature>` | `axp af` | Add a new feature to the project (test|jest|storybook) |
-| `axp list` | `axp ls` | List all existing projects and check if some unreferenced projects are in the package.json |
-| `axp clean` | `axp c` | Remove unreferenced commands in the package.json |
-| `axp addFish [options] <fishName>` | `axp fish` | Create a new fish in the src/fish folder. Available options are: --registry --noExample --noSnapshot|
-| `axp help` | `axp -h` | Show the general help output |
-| `axp <command> --help` | `<shortcut> -h` | Show the help output for a given command |
-| `axp --version` | `axp -V` | axp version |
+| command                                      | shortcut          | Function                                                                                             |
+| -------------------------------------------- | ----------------- | ---------------------------------------------------------------------------------------------------- |
+| `axp init`                                   | `axp --init -v 2` | Initialize a new project in the current directory                                                    |
+| `axp add <type> [-n Name] [--test] [--jest]` | `axp a`           | Create a new application with the given type and name                                                |
+| `axp addFeature <project> <feature>`         | `axp af`          | Add a new feature to the project (test / jest / storybook)                                           |
+| `axp list`                                   | `axp ls`          | List all existing projects and check if some unreferenced projects are in the package.json           |
+| `axp clean`                                  | `axp c`           | Remove unreferenced commands in the package.json                                                     |
+| `axp addFish [options] <fishName>`           | `axp fish`        | Create a new fish in the src/fish folder. Available options are: --registry --noExample --noSnapshot |
+| `axp help`                                   | `axp -h`          | Show the general help output                                                                         |
+| `axp <command> --help`                       | `<shortcut> -h`   | Show the help output for a given command                                                             |
+| `axp --version`                              | `axp -V`          | axp version                                                                                          |
 
 ## 🤓 Developer tools
 
 The best way to work and test the project is to run the `npm run build:watch` and `npm link` it once. From this moment on, you can manipulate the code and try the `axp` cli command in any directory
 
-| Script | Description  |
-|---|---|
-| `npm run clean` | Clean lib and coverage folders |
-| `npm run build` | Build project |
-| `npm run build:watch` | Build project watch mode |
-| `npm run lint` | Check for lint issues |
-| `npm run lint:fix` | Check and automatically fix lint issues |
-| `npm run license:add` | Append license information to every relevant files |
-| `npm run license:check` | Check if license information is present on every relevant files |
+| Script                      | Description                                                       |
+| --------------------------- | ----------------------------------------------------------------- |
+| `npm run clean`             | Clean lib and coverage folders                                    |
+| `npm run build`             | Build project                                                     |
+| `npm run build:watch`       | Build project watch mode                                          |
+| `npm run lint`              | Check for lint issues                                             |
+| `npm run lint:fix`          | Check and automatically fix lint issues                           |
+| `npm run license:add`       | Append license information to every relevant files                |
+| `npm run license:check`     | Check if license information is present on every relevant files   |
 | `npm run license:check-dep` | Check the licenses for project dependencies and produce a summary |
