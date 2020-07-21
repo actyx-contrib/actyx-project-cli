@@ -134,7 +134,7 @@ const addUI = async (command: Command): Promise<void> => {
   }
 
   const setupProjectDone = createSpinner('Create template')
-  writeFileSync(`./src/${appName}/index.html`, defaultHtml)
+  writeFileSync(`./src/${appName}/index.html`, defaultHtml(appName))
   writeFileSync(`./src/${appName}/root.tsx`, defaultRootTsx)
   writeFileSync(`./src/${appName}/App.tsx`, defaultAppTsx)
   setupProjectDone()
