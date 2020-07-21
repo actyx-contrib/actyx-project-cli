@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export const defaultIndexTs = `
-import { Pond } from '@actyx/pond'
+export const defaultIndexTs = `import { Pond } from '@actyx/pond'
 
 Pond.default().then(pond => {
   // start something awesome here
@@ -26,6 +25,16 @@ Pond.default().then(pond => {
   // https://developer.actyx.com/docs/pond/guides/hello-world
   // https://developer.actyx.com/blog
 })
+`
+
+export const dockerfile = (appName: string): string => `FROM node:10-alpine
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+RUN npm install --production
+COPY build/${appName}/. .
+
+CMD ["node", "index.js"]
 `
 
 export const axDockerManifestYml = (appName: string): string => `manifestVersion: "1.0"

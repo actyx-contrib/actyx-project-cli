@@ -15,14 +15,14 @@
  */
 import { Command } from 'commander'
 import { initProject, add, addFeature, list, clean, addFish } from './commands'
+import { axpVersion } from './utils'
 
 export const cli = (): void => {
   const program = new Command()
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  program.version(require('../package.json').version)
-  program.option('--init', 'Initialize new project')
+  program.version('Actyx Project tool V:' + axpVersion)
   program
     .command('init')
+    .option('-v <version>', 'Define the actyx pond version. (default: 1)')
     .description('Initialize axp project')
     .action(initProject)
   program

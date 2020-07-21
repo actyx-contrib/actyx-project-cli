@@ -25,6 +25,8 @@ import {
   packageInstalled,
   changeToProjectRoot,
   doAppExist,
+  getPondVersion,
+  delay,
 } from '../utils'
 import { isProjectInitialized, initProject } from './init'
 import { mkdirSync, readFileSync, writeFileSync } from 'fs'
@@ -35,6 +37,7 @@ import {
   dockerComposeAmd64,
   dockerComposeArm64v8,
   settingsSchema,
+  dockerfile,
 } from '../templates/node'
 import { addNewFeature } from './addFeature'
 import { uiPackages, uiDevPackages, nodePackages, nodeDevPackages } from '../templates/packages'
@@ -89,7 +92,7 @@ export const add = async (type: string, command: Command): Promise<void> => {
     if (!initProjectReply) {
       return
     }
-    await initProject()
+    await initProject(command)
   }
 
   switch (type.toUpperCase()) {
@@ -117,9 +120,10 @@ const addUI = async (command: Command): Promise<void> => {
 
   mkdirSync(`./src/${appName}`, { recursive: true })
 
-  if (!packageInstalled(uiPackages)) {
+  const pondVersion = getPondVersion()
+  if (!packageInstalled(uiPackages(pondVersion))) {
     const instDepSpinDone = createSpinner('Install dependencies')
-    await run(`npm install ${uiPackages.join(' ')}`)
+    await run(`npm install ${uiPackages(pondVersion).join(' ')}`)
     instDepSpinDone()
   }
 
@@ -168,9 +172,10 @@ const addNode = async (command: Command): Promise<void> => {
   const appName = toKebabCaseFileName(command.appName || (await getAppName()))
   mkdirSync(`./src/${appName}`, { recursive: true })
 
-  if (!packageInstalled(nodePackages)) {
+  const pondVersion = getPondVersion()
+  if (!packageInstalled(nodePackages(pondVersion))) {
     const instDepDone = createSpinner('Install dependencies')
-    await run(`npm install ${nodePackages.join(' ')}`)
+    await run(`npm install ${nodePackages(pondVersion).join(' ')}`)
     instDepDone()
   }
 
@@ -185,18 +190,22 @@ const addNode = async (command: Command): Promise<void> => {
   setupProjectDone()
 
   const addActyxDone = createSpinner('Add Actyx manifest')
+  writeFileSync(`./src/${appName}/Dockerfile`, dockerfile(appName))
   writeFileSync(`./src/${appName}/ax-manifest.yml`, axDockerManifestYml(appName))
   writeFileSync(`./src/${appName}/docker-compose-amd64.yml`, dockerComposeAmd64(appName))
   writeFileSync(`./src/${appName}/docker-compose-arm64v8.yml`, dockerComposeArm64v8(appName))
   writeFileSync(`./src/${appName}/settings-schema.json`, settingsSchema)
   addActyxDone()
 
+  await delay(100)
+
   const addScriptsDone = createSpinner('Add project to package.json')
   const packageJson = JSON.parse(readFileSync('./package.json').toString())
   packageJson.scripts = {
     ...packageJson.scripts,
     [`node:${appName}:start`]: `nodemon --watch src/${appName} --exec ts-node src/${appName}/index.ts`,
-    [`node:${appName}:build`]: `tsc src/${appName}/index.ts -p tsconfig.json --outDir build/${appName}`,
+    [`node:${appName}:build`]: `tsc src/${appName}/index.ts --outDir build/${appName}`,
+    [`node:${appName}:docker:build`]: `npm run node:${appName}:build && docker build -t ${appName} src/${appName}/`,
     [`node:${appName}:package`]: `ax apps package src/${appName}/ax-manifest.yml`,
   }
   writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))

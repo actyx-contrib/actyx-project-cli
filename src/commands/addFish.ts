@@ -16,7 +16,7 @@
 import { existsSync, writeFileSync, readFileSync } from 'fs'
 import chalk from 'chalk'
 import { Command } from 'commander'
-import { changeToProjectRoot, toPascalCase } from '../utils'
+import { changeToProjectRoot, toPascalCase, PondVersions, getPondVersion } from '../utils'
 import { clear } from 'console'
 import { drawHeader } from '../drawings'
 
@@ -29,6 +29,11 @@ const optionString = (option: boolean | undefined, placeHolder: string): string 
 }
 
 export const addFish = async (fishName: string, command: Command): Promise<void> => {
+  const pondVersion = getPondVersion()
+  if (pondVersion == PondVersions.Version2) {
+    console.log(chalk`{red add fish is only available for version 1 right now}`)
+    return
+  }
   clear()
   drawHeader()
   if (!changeToProjectRoot()) {

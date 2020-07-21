@@ -15,9 +15,12 @@
  */
 import { exec } from 'child_process'
 import chalk from 'chalk'
-import { existsSync, readFileSync } from 'fs'
+import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { parse, join, dirname } from 'path'
 import { getProjects } from './commands/list'
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+export const axpVersion = require('../package.json').version
 
 export const removeDot = (fileList: string[]): string[] =>
   fileList.filter(e => e !== '.' && e !== '..')
@@ -80,7 +83,7 @@ export const removeVersions = (npmPackageName: string): string => {
   return prefix + name
 }
 
-export const packageInstalled = (packages: string | string[]): boolean => {
+export const packageInstalled = (packages: string | ReadonlyArray<string>): boolean => {
   const requiredPackages: string[] = Array.isArray(packages) ? packages : [packages]
   const requiredPackagesWithoutVersion = requiredPackages.map(removeVersions)
 
@@ -117,3 +120,44 @@ export const findUp = (names: string[], currentDir: string): string | undefined 
 
 export const doAppExist = (appName: string): boolean =>
   getProjects().allScripts.find(p => p.name === appName) !== undefined
+
+export const delay = (ms: number): Promise<void> => new Promise(res => setTimeout(() => res(), ms))
+
+export enum PondVersions {
+  Version1 = 1,
+  Version2 = 2,
+}
+export const defaultPondVersions = PondVersions.Version1
+export const parsePondVersion = (version: string): PondVersions => {
+  switch (parseInt(version)) {
+    case 1:
+      return PondVersions.Version1
+    case 2:
+      return PondVersions.Version2
+    default:
+      return defaultPondVersions
+  }
+}
+export const getPondVersion = (): PondVersions => {
+  try {
+    const packageJson = JSON.parse(readFileSync('./package.json').toString())
+    if (!packageJson.axp) {
+      // axp is added in V2 the rest would be V1
+      storePondVersion(PondVersions.Version1)
+      return PondVersions.Version1
+    } else {
+      return parsePondVersion(packageJson.axp.pondVersion)
+    }
+  } catch (_) {
+    return defaultPondVersions
+  }
+}
+export const storePondVersion = (version: PondVersions): void => {
+  const packageJson = JSON.parse(readFileSync('./package.json').toString())
+  packageJson.axp = {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    axpVersion: axpVersion,
+    pondVersion: version,
+  }
+  writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
+}

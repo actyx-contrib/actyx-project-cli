@@ -15,7 +15,13 @@
  */
 import { readdirSync, writeFileSync, mkdirSync } from 'fs'
 import chalk from 'chalk'
-import { createSpinner, run, changeToProjectRoot } from '../utils'
+import {
+  createSpinner,
+  run,
+  changeToProjectRoot,
+  parsePondVersion,
+  storePondVersion,
+} from '../utils'
 import {
   editorConfig,
   eslintrcJs,
@@ -25,6 +31,7 @@ import {
 } from '../templates/main'
 import clear from 'clear'
 import { drawHeader } from '../drawings'
+import { Command } from 'commander'
 
 export const isProjectInitialized = (): boolean => {
   const content = readdirSync('.')
@@ -32,7 +39,7 @@ export const isProjectInitialized = (): boolean => {
   return req.every(e => content.includes(e))
 }
 
-export const initProject = async (): Promise<void> => {
+export const initProject = async (command: Command): Promise<void> => {
   clear()
   drawHeader()
 
@@ -45,7 +52,9 @@ export const initProject = async (): Promise<void> => {
 
   await setupGit()
   await setupNpm()
+  storePondVersion(parsePondVersion(command.opts().V))
   setupTs()
+  console.log(chalk`{green done}`)
 }
 
 export const checkGitProject = (): boolean => readdirSync('.').includes('.git')
@@ -77,7 +86,6 @@ const setupNpm = async (): Promise<void> => {
   mkdirSync('./src/fish')
   writeFileSync(`./src/fish/index.ts`, '')
   spinnerDone()
-  console.log(chalk`{green done}`)
 }
 
 const setupTs = (): void => {

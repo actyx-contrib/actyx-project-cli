@@ -78,8 +78,8 @@ export const addNewFeature = async (
 }
 
 const addJest = async (appName: string, projectPath: string): Promise<void> => {
-  const packageJson = JSON.parse(readFileSync('./package.json').toString())
-  const startScript = Object.keys(packageJson.scripts).find(k => k.includes(`:${appName}:start`))
+  const scripts = JSON.parse(readFileSync('./package.json').toString()).scripts
+  const startScript = Object.keys(scripts).find(k => k.includes(`:${appName}:start`))
   if (!startScript) {
     console.log(chalk`{red App ${appName} do not exist in Package.json.}`)
     return
@@ -101,6 +101,7 @@ const addJest = async (appName: string, projectPath: string): Promise<void> => {
 
   const addScriptsDone = createSpinner('Add jest to package.json')
 
+  const packageJson = JSON.parse(readFileSync('./package.json').toString())
   packageJson.scripts = {
     ...packageJson.scripts,
     [`${projectType}:${appName}:test`]: `TZ=UTC jest  --collectCoverageFrom="['!src/**/*.stories.tsx', './src/${appName}/**/*.{ts,tsx}', '!**/*.d.ts']" --coverageDirectory="<rootDir>/coverage/${appName}" ./src/${appName}`,
@@ -112,8 +113,8 @@ const addJest = async (appName: string, projectPath: string): Promise<void> => {
 }
 
 const addStorybook = async (appName: string): Promise<void> => {
-  const packageJson = JSON.parse(readFileSync('./package.json').toString())
-  const startScript = Object.keys(packageJson.scripts).find(k => k.includes(`:${appName}:start`))
+  const scripts = JSON.parse(readFileSync('./package.json').toString()).scripts
+  const startScript = Object.keys(scripts).find(k => k.includes(`:${appName}:start`))
   if (!startScript) {
     console.log(chalk`{red App ${appName} do not exist in Package.json.}`)
     return
@@ -151,6 +152,7 @@ const addStorybook = async (appName: string): Promise<void> => {
     writeFileSync(`src/${appName}/App.stories.tsx`, storybookAppStory(appName))
   }
 
+  const packageJson = JSON.parse(readFileSync('./package.json').toString())
   packageJson.scripts = {
     ...packageJson.scripts,
     storybook: 'start-storybook -p 6006',
