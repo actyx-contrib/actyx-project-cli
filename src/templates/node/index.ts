@@ -60,7 +60,7 @@ services:
 export const dockerComposeArm64v8 = (appName: string): string => `version: '2.0'
 services:
   app:
-    image: ${appName}
+    image: ${appName}-aarch64
 `
 
 export const settingsSchema = `{

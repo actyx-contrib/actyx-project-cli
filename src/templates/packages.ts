@@ -22,9 +22,9 @@ export const uiPackages = (version: PondVersions): ReadonlyArray<string> => {
         'react',
         'react-dom',
         '@actyx/pond@1.1',
-        'fp-ts@1.19.5',
-        'io-ts@1.10.4',
-        'io-ts-types@0.4.8',
+        'fp-ts@1.19.4',
+        'io-ts@1.10.1',
+        'io-ts-types@0.4.1',
         'rxjs@5.5.12',
         '@actyx-contrib/react-pond',
         '@actyx-contrib/registry',
@@ -35,7 +35,7 @@ export const uiPackages = (version: PondVersions): ReadonlyArray<string> => {
         'react',
         'react-dom',
         '@actyx/industrial-ui',
-        '@actyx/pond@2.0.0-rc1',
+        '@actyx/pond@2.0',
         //'@actyx-contrib/react-pond@2',
       ]
   }
@@ -48,15 +48,15 @@ export const nodePackages = (version: PondVersions): ReadonlyArray<string> => {
     case PondVersions.Version1:
       return [
         '@actyx/pond@1.1',
-        'fp-ts@1.19.5',
-        'io-ts@1.10.4',
-        'io-ts-types@0.4.8',
+        'fp-ts@1.19.4',
+        'io-ts@1.10.1',
+        'io-ts-types@0.4.1',
         'rxjs@5.5.12',
         '@actyx/os-sdk',
         '@actyx-contrib/registry',
       ]
     case PondVersions.Version2:
-      return ['@actyx/pond@2.0.0-rc1', '@actyx/os-sdk']
+      return ['@actyx/pond@2.0', '@actyx/os-sdk']
   }
 }
 
