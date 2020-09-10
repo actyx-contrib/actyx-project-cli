@@ -35,8 +35,8 @@ export const uiPackages = (version: PondVersions): ReadonlyArray<string> => {
         'react',
         'react-dom',
         '@actyx/industrial-ui',
-        '@actyx/pond@2.0',
-        '@actyx-contrib/react-pond@2',
+        '@actyx/pond',
+        '@actyx-contrib/react-pond@next',
       ]
   }
 }
