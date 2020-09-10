@@ -22,7 +22,7 @@ export const cli = (): void => {
   program.version('Actyx Project tool V:' + axpVersion)
   program
     .command('init')
-    .option('-v <version>', 'Define the actyx pond version. [1, 2] (default: 1)')
+    .option('-v <version>', 'Define the actyx pond version. [1, 2] (default: 2)')
     .description('Initialize axp project')
     .action(initProject)
   program

@@ -127,7 +127,7 @@ export enum PondVersions {
   Version1 = 1,
   Version2 = 2,
 }
-export const defaultPondVersions = PondVersions.Version1
+export const defaultPondVersions = PondVersions.Version2
 export const parsePondVersion = (version: string): PondVersions => {
   switch (parseInt(version)) {
     case 1:
