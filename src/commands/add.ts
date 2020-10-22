@@ -38,6 +38,7 @@ import {
   dockerComposeArm64v8,
   settingsSchema,
   dockerfile,
+  packageJsonProd,
 } from '../templates/node'
 import { addNewFeature } from './addFeature'
 import { uiPackages, uiDevPackages, nodePackages, nodeDevPackages } from '../templates/packages'
@@ -205,7 +206,7 @@ const addNode = async (command: Command): Promise<void> => {
   packageJson.scripts = {
     ...packageJson.scripts,
     [`node:${appName}:start`]: `nodemon --watch src/${appName} --exec ts-node src/${appName}/index.ts`,
-    [`node:${appName}:build`]: `tsc src/${appName}/index.ts --outDir build/${appName}`,
+    [`node:${appName}:build`]: `tsc src/${appName}/index.ts --outDir build/${appName} --esModuleInterop --skipLibCheck`,
     [`node:${appName}:docker:build`]: `npm run node:${appName}:build && docker build -t ${appName} -f src/${appName}/Dockerfile .`,
     [`node:${appName}:docker:build-aarch64`]: `npm run node:${appName}:build && docker buildx build --platform linux/arm64 -t ${appName}-aarch64 -f src/${appName}/Dockerfile --load .`,
     [`node:${appName}:package`]: `ax apps package src/${appName}/ax-manifest.yml`,

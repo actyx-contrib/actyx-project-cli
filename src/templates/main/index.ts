@@ -79,6 +79,7 @@ build
 dist
 .cache
 parcel-debug-*
+src/*/release
 `
 
 export const defaultTsConfig = `{
