@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { PondVersions } from "../../utils"
+import { PondVersions } from '../../utils'
 export const defaultIndexTs = `import { Pond } from '@actyx/pond'
 
 Pond.default().then((pond) => {
@@ -47,7 +47,7 @@ export const packageJsonProd = (appName: string, pondVersion: PondVersions): str
   "main": "${appName}/index.js",
   "license": "ISC",
   "dependencies": {
-    "@actyx/pond": ${pondVersion === PondVersions.Version1 ? '"1.1"' : '"2"' }
+    "@actyx/pond": ${pondVersion === PondVersions.Version1 ? '"1.1"' : '"2"'}
   }
 }
 `
