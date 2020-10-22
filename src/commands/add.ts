@@ -150,7 +150,7 @@ const addUI = async (command: Command): Promise<void> => {
   packageJson.scripts = {
     ...packageJson.scripts,
     [`ui:${appName}:start`]: `parcel src/${appName}/index.html --out-dir build/${appName}/debug`,
-    [`ui:${appName}:build`]: `parcel build src/${appName}/index.html --out-dir build/${appName}/release --public-url ./`,
+    [`ui:${appName}:build`]: `parcel build src/${appName}/index.html --out-dir src/${appName}/release --public-url ./`,
     [`ui:${appName}:package`]: `ax apps package src/${appName}/ax-manifest.yml`,
   }
   writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
@@ -196,7 +196,7 @@ const addNode = async (command: Command): Promise<void> => {
   writeFileSync(`./src/${appName}/docker-compose-amd64.yml`, dockerComposeAmd64(appName))
   writeFileSync(`./src/${appName}/docker-compose-arm64v8.yml`, dockerComposeArm64v8(appName))
   writeFileSync(`./src/${appName}/settings-schema.json`, settingsSchema)
-  writeFileSync(`./src/${appName}/package-prod.json`, packageJsonProd(appName))
+  writeFileSync(`./src/${appName}/package-prod.json`, packageJsonProd(appName, pondVersion))
   addActyxDone()
 
   await delay(100)
