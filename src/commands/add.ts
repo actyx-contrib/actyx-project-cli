@@ -195,6 +195,7 @@ const addNode = async (command: Command): Promise<void> => {
   writeFileSync(`./src/${appName}/docker-compose-amd64.yml`, dockerComposeAmd64(appName))
   writeFileSync(`./src/${appName}/docker-compose-arm64v8.yml`, dockerComposeArm64v8(appName))
   writeFileSync(`./src/${appName}/settings-schema.json`, settingsSchema)
+  writeFileSync(`./src/${appName}/package-prod.json`, packageJsonProd(appName))
   addActyxDone()
 
   await delay(100)
