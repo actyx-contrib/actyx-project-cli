@@ -133,7 +133,7 @@ version: 1.0.0
 displayName: ${appName}
 description: "@ToDo: description"
 #icon: ./app-icon.png # Specifying the app icon is optional. If you don't specify an icon for your app, ActyxOS will automatically use a default icon.
-dist: ../../build/${appName}/release
-main: index.html # App entry point in dist directory
+dist: release
+main: release/index.html # App entry point in dist directory
 settingsSchema: ./settings-schema.json
 `

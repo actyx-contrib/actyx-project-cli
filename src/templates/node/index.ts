@@ -17,7 +17,6 @@ export const defaultIndexTs = `import { Pond } from '@actyx/pond'
 
 Pond.default().then((pond) => {
   // start something awesome here
-  //
   // -------------------------------
   //
   // For the first time here?
@@ -29,14 +28,27 @@ Pond.default().then((pond) => {
 })
 `
 
-export const dockerfile = (appName: string): string => `FROM node:10-alpine
+export const dockerfile = (appName: string): string => `FROM node:10-alpine as build
 WORKDIR /usr/src/app
 
-COPY package*.json ./
+COPY src/${appName}/package-prod.json ./package.json
 RUN npm install --production
 COPY build/${appName}/. .
 
-CMD ["node", "index.js"]
+FROM node:10-alpine
+COPY --from=build /usr/src/app /
+CMD ["node", "${appName}/index.js"]
+`
+
+export const packageJsonProd = (appName: string): string => `{
+  "name": "${appName}",
+  "version": "1.0.0",
+  "main": "${appName}/index.js",
+  "license": "ISC",
+  "dependencies": {
+    "@actyx/pond": "2"
+  }
+}
 `
 
 export const axDockerManifestYml = (appName: string): string => `manifestVersion: "1.0"
@@ -48,7 +60,7 @@ description: "@ToDo: description"
 dockerCompose:
     x86_64: ./docker-compose-amd64.yml
     aarch64: ./docker-compose-arm64v8.yml
-settingsSchema: ./settings-schema.json # <---- you could also inline the settings schema
+settingsSchema: ./settings-schema.json
 `
 
 export const dockerComposeAmd64 = (appName: string): string => `version: '2.0'
