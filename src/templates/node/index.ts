@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { PondVersions } from '../../utils'
 export const defaultIndexTs = `import { Pond } from '@actyx/pond'
 
 Pond.default().then((pond) => {
@@ -40,13 +41,13 @@ COPY --from=build /usr/src/app /
 CMD ["node", "${appName}/index.js"]
 `
 
-export const packageJsonProd = (appName: string): string => `{
+export const packageJsonProd = (appName: string, pondVersion: PondVersions): string => `{
   "name": "${appName}",
   "version": "1.0.0",
   "main": "${appName}/index.js",
   "license": "ISC",
   "dependencies": {
-    "@actyx/pond": "2"
+    "@actyx/pond": ${pondVersion === PondVersions.Version1 ? '"1.1"' : '"2"'}
   }
 }
 `
