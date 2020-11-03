@@ -36,7 +36,7 @@ export const uiPackages = (version: PondVersions): ReadonlyArray<string> => {
         'react-dom',
         '@actyx/industrial-ui',
         '@actyx/pond',
-        '@actyx-contrib/react-pond@next',
+        '@actyx-contrib/react-pond@2',
       ]
   }
 }
@@ -56,7 +56,7 @@ export const nodePackages = (version: PondVersions): ReadonlyArray<string> => {
         '@actyx-contrib/registry',
       ]
     case PondVersions.Version2:
-      return ['@actyx/pond@2.0', '@actyx/os-sdk']
+      return ['@actyx/pond@2', '@actyx/os-sdk']
   }
 }
 
