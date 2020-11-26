@@ -120,19 +120,7 @@ const addUI = async (command: Command): Promise<void> => {
   }
 
   mkdirSync(`./src/${appName}`, { recursive: true })
-
   const pondVersion = getPondVersion()
-  if (!packageInstalled(uiPackages(pondVersion))) {
-    const instDepSpinDone = createSpinner('Install dependencies')
-    await run(`npm install ${uiPackages(pondVersion).join(' ')}`)
-    instDepSpinDone()
-  }
-
-  if (!packageInstalled(uiDevPackages)) {
-    const instDevDepSpinDone = createSpinner('Install dev dependencies')
-    await run(`npm install -D ${uiDevPackages.join(' ')}`)
-    instDevDepSpinDone()
-  }
 
   const setupProjectDone = createSpinner('Create template')
   writeFileSync(`./src/${appName}/index.html`, defaultHtml(appName))
@@ -144,6 +132,18 @@ const addUI = async (command: Command): Promise<void> => {
   writeFileSync(`./src/${appName}/ax-manifest.yml`, axWebManifestYml(appName))
   writeFileSync(`./src/${appName}/settings-schema.json`, settingsSchema)
   addActyxDone()
+
+  if (!packageInstalled(uiPackages(pondVersion))) {
+    const instDepSpinDone = createSpinner('Install dependencies')
+    await run(`npm install ${uiPackages(pondVersion).join(' ')}`)
+    instDepSpinDone()
+  }
+
+  if (!packageInstalled(uiDevPackages)) {
+    const instDevDepSpinDone = createSpinner('Install dev dependencies')
+    await run(`npm install -D ${uiDevPackages.join(' ')}`)
+    instDevDepSpinDone()
+  }
 
   const addScriptsDone = createSpinner('Add project to package.json')
   const packageJson = JSON.parse(readFileSync('./package.json').toString())
@@ -174,17 +174,6 @@ const addNode = async (command: Command): Promise<void> => {
   mkdirSync(`./src/${appName}`, { recursive: true })
 
   const pondVersion = getPondVersion()
-  if (!packageInstalled(nodePackages(pondVersion))) {
-    const instDepDone = createSpinner('Install dependencies')
-    await run(`npm install ${nodePackages(pondVersion).join(' ')}`)
-    instDepDone()
-  }
-
-  if (!packageInstalled(nodeDevPackages)) {
-    const instDevDepDone = createSpinner('Install dev dependencies')
-    await run(`npm install -D ${nodeDevPackages.join(' ')}`)
-    instDevDepDone()
-  }
 
   const setupProjectDone = createSpinner('Create template')
   writeFileSync(`./src/${appName}/index.ts`, defaultIndexTs)
@@ -199,6 +188,17 @@ const addNode = async (command: Command): Promise<void> => {
   writeFileSync(`./src/${appName}/package-prod.json`, packageJsonProd(appName, pondVersion))
   addActyxDone()
 
+  if (!packageInstalled(nodePackages(pondVersion))) {
+    const instDepDone = createSpinner('Install dependencies')
+    await run(`npm install ${nodePackages(pondVersion).join(' ')}`)
+    instDepDone()
+  }
+
+  if (!packageInstalled(nodeDevPackages)) {
+    const instDevDepDone = createSpinner('Install dev dependencies')
+    await run(`npm install -D ${nodeDevPackages.join(' ')}`)
+    instDevDepDone()
+  }
   await delay(100)
 
   const addScriptsDone = createSpinner('Add project to package.json')

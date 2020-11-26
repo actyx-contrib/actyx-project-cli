@@ -142,9 +142,8 @@ export const getPondVersion = (): PondVersions => {
   try {
     const packageJson = JSON.parse(readFileSync('./package.json').toString())
     if (!packageJson.axp) {
-      // axp is added in V2 the rest would be V1
-      storePondVersion(PondVersions.Version1)
-      return PondVersions.Version1
+      storePondVersion(defaultPondVersions)
+      return defaultPondVersions
     } else {
       return parsePondVersion(packageJson.axp.pondVersion)
     }
