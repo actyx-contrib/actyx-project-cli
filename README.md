@@ -20,8 +20,9 @@ In this project, you can add your apps with the `axp add <appType>` command.
 
 ```bash
 # Pond Version 1
-axp init
+axp init -v 1
 # Pond Version 2
+axp init
 axp init -v 2
 ```
 
@@ -59,37 +60,20 @@ After executing this command you will find some new scripts in you package.json
 - `node:<appName>:build` build the node js application to deploy it
 - `node:<appName>:package` use the ax-manifest to create a deployable package
 
-## 🐟 Add a new actyx fish
-
-If you are not able to install the VisualStudio Code [Actyx-Pond](https://marketplace.visualstudio.com/items?itemName=Actyx.actyx-pond) extension. You can create templates for your new fish with `axp`.
-
-In the current version, this in only supported for Pond V1
-
-```bash
-axp addFish materialRequest --registry
-```
-
-Following options are available when you add a fish:
-
-- `registry` Add a createRegistry to the fish definition
-- `noExample` Skip example onEvent and onCommand to build it with the VSCode plugin or write it your self
-- `noSnapshot` Remove the snapshot template in the fish definition
-
 ## 📖 Commands
 
 This list is a overview of the existing commands. Use the integrated help to get detailed information about the commands
 
-| command                                      | shortcut          | Function                                                                                             |
-| -------------------------------------------- | ----------------- | ---------------------------------------------------------------------------------------------------- |
-| `axp init`                                   | `axp --init -v 2` | Initialize a new project in the current directory                                                    |
-| `axp add <type> [-n Name] [--test] [--jest]` | `axp a`           | Create a new application with the given type and name                                                |
-| `axp addFeature <project> <feature>`         | `axp af`          | Add a new feature to the project (test / jest / storybook)                                           |
-| `axp list`                                   | `axp ls`          | List all existing projects and check if some unreferenced projects are in the package.json           |
-| `axp clean`                                  | `axp c`           | Remove unreferenced commands in the package.json                                                     |
-| `axp addFish [options] <fishName>`           | `axp fish`        | Create a new fish in the src/fish folder. Available options are: --registry --noExample --noSnapshot |
-| `axp help`                                   | `axp -h`          | Show the general help output                                                                         |
-| `axp <command> --help`                       | `<shortcut> -h`   | Show the help output for a given command                                                             |
-| `axp --version`                              | `axp -V`          | axp version                                                                                          |
+| command                                      | shortcut          | Function                                                                                   |
+| -------------------------------------------- | ----------------- | ------------------------------------------------------------------------------------------ |
+| `axp init`                                   | `axp --init -v 2` | Initialize a new project in the current directory                                          |
+| `axp add <type> [-n Name] [--test] [--jest]` | `axp a`           | Create a new application with the given type and name                                      |
+| `axp addFeature <project> <feature>`         | `axp af`          | Add a new feature to the project (test / jest / storybook)                                 |
+| `axp list`                                   | `axp ls`          | List all existing projects and check if some unreferenced projects are in the package.json |
+| `axp clean`                                  | `axp c`           | Remove unreferenced commands in the package.json                                           |
+| `axp help`                                   | `axp -h`          | Show the general help output                                                               |
+| `axp <command> --help`                       | `<shortcut> -h`   | Show the help output for a given command                                                   |
+| `axp --version`                              | `axp -V`          | axp version                                                                                |
 
 ## 🤓 Developer tools
 
