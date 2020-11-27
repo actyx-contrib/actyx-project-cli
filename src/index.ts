@@ -30,7 +30,7 @@ export const cli = (): void => {
     .description('Add a new gui or node application to the project')
     .usage('ui|node [--appName name] [--jest]')
     .alias('a')
-    .option('-n --appName <appName>', 'name for the new project')
+    .option('-n --appName <appName>', 'name for the new project (ui | node)')
     .option('--jest', 'add jest as testing framework')
     .option('--test', 'add jest as testing framework')
     .option('--storybook', 'add Storybook for developing UI components in isolation')
