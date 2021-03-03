@@ -1,6 +1,6 @@
 {
   "name": "@actyx-contrib/axp",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "Actyx Project CLI tool to create and maintain your TypeScript based projects",
   "bin": {
     "axp": "bin/axp"
