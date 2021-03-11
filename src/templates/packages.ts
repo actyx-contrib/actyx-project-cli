@@ -42,7 +42,7 @@ export const uiPackages = (version: PondVersions): ReadonlyArray<string> => {
 }
 
 export const uiDevPackages = [
-  'parcel-bundler@1.2.3',
+  'parcel-bundler@1.12.3',
   '@types/react',
   '@types/react-dom',
   'typescript',
