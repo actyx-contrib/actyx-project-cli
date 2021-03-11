@@ -31,14 +31,20 @@ export const cli = (): void => {
     .usage('ui|node [--appName name] [--jest]')
     .alias('a')
     .option('-n --appName <appName>', 'name for the new project (ui | node)')
+    .option('--cordova', 'add a cordova template to the application (ui projects only)')
     .option('--jest', 'add jest as testing framework')
     .option('--test', 'add jest as testing framework')
-    .option('--storybook', 'add Storybook for developing UI components in isolation')
+    .option(
+      '--storybook',
+      'add Storybook for developing UI components in isolation (ui projects only)',
+    )
     .action(add)
   program
     .command('addFeature <project> <feature>')
-    .usage('name test|jest|storybook')
-    .description('Add a new feature to an existing app in the project. (test|jest|storybook)')
+    .usage('name cordova|test|jest|storybook')
+    .description(
+      'Add a new feature to an existing app in the project. (cordova|test|jest|storybook)',
+    )
     .alias('af')
     .action(addFeature)
   program

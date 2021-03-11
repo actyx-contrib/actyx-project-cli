@@ -115,7 +115,7 @@ const addUI = async (command: Command): Promise<void> => {
   const appName = toKebabCaseFileName(command.appName || (await getAppName()))
 
   if (doAppExist(appName)) {
-    console.log(chalk`{red ${appName}} is already existing. Please use another name`)
+    console.log(chalk`{red ${appName}} already exists. Please use another name`)
     return
   }
 
@@ -164,6 +164,9 @@ const addUI = async (command: Command): Promise<void> => {
   }
   if (command.storybook) {
     await addNewFeature(appName, `./src/${appName}`, 'storybook')
+  }
+  if (command.cordova) {
+    await addNewFeature(appName, `./src/${appName}`, 'cordova')
   }
   console.log(chalk`{green done}`)
 }

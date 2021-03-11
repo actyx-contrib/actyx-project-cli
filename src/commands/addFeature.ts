@@ -33,6 +33,12 @@ import {
   storybookWebpack,
   storybookAppStory,
 } from '../templates/ui/storybook'
+import {
+  cordovaBuildScripts,
+  cordovaConfigXml,
+  cordovaGitIgnore,
+  cordovaPackageJson,
+} from '../templates/ui/cordova'
 
 export const addFeature = async (
   project: string,
@@ -49,7 +55,7 @@ export const addFeature = async (
   const projectPath = `./src/${toKebabCaseFileName(project)}`
   if (!existsSync(projectPath)) {
     console.log(
-      chalk`{red Project ${projectPath} do not exist.} {white Use} {yellow axp list} {white to get all existing projects}`,
+      chalk`{red Project ${projectPath} doesn't exist.} {white Use} {yellow axp list} {white to get all existing projects}`,
     )
     return
   }
@@ -71,6 +77,10 @@ export const addNewFeature = async (
       addStorybook(appName)
       break
     }
+    case 'cordova': {
+      addCordova(appName, projectPath)
+      break
+    }
     default:
       console.log(chalk`{red Feature ${feature} is not supported}`)
       return
@@ -81,7 +91,7 @@ const addJest = async (appName: string, projectPath: string): Promise<void> => {
   const scripts = JSON.parse(readFileSync('./package.json').toString()).scripts
   const startScript = Object.keys(scripts).find(k => k.includes(`:${appName}:start`))
   if (!startScript) {
-    console.log(chalk`{red App ${appName} do not exist in Package.json.}`)
+    console.log(chalk`{red App ${appName} doesn't exist in package.json.}`)
     return
   }
   const [projectType] = startScript.split(':')
@@ -116,7 +126,7 @@ const addStorybook = async (appName: string): Promise<void> => {
   const scripts = JSON.parse(readFileSync('./package.json').toString()).scripts
   const startScript = Object.keys(scripts).find(k => k.includes(`:${appName}:start`))
   if (!startScript) {
-    console.log(chalk`{red App ${appName} do not exist in Package.json.}`)
+    console.log(chalk`{red App ${appName} doesn't exist in package.json.}`)
     return
   }
   const [projectType] = startScript.split(':')
@@ -150,6 +160,55 @@ const addStorybook = async (appName: string): Promise<void> => {
 
   if (existsSync(`src/${appName}/App.tsx`) && !existsSync(`src/${appName}/App.stories.tsx`)) {
     writeFileSync(`src/${appName}/App.stories.tsx`, storybookAppStory(appName))
+  }
+
+  const packageJson = JSON.parse(readFileSync('./package.json').toString())
+  packageJson.scripts = {
+    ...packageJson.scripts,
+    storybook: 'start-storybook -p 6006',
+  }
+  writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
+  createExampleDone()
+}
+
+const addCordova = async (appName: string, projectPath: string): Promise<void> => {
+  const scripts = JSON.parse(readFileSync('./package.json').toString()).scripts
+  const startScript = Object.keys(scripts).find(k => k.includes(`:${appName}:start`))
+  if (!startScript) {
+    console.log(chalk`{red App ${appName} doesn't exist in package.json.}`)
+    return
+  }
+  const [projectType] = startScript.split(':')
+  if (projectType !== 'ui') {
+    console.log(
+      chalk`{red App ${appName} cannot add Cordova, it can be added only to a UI project.}`,
+    )
+    return
+  }
+
+  const createExampleDone = createSpinner('Setup cordova template')
+
+  const cordovaDir = `${projectPath}/cordova`
+  if (!existsSync(cordovaDir)) {
+    mkdirSync(cordovaDir, { recursive: true })
+
+    if (!existsSync(`${cordovaDir}/package.json`)) {
+      writeFileSync(`${cordovaDir}/package.json`, cordovaPackageJson(appName))
+    }
+    if (!existsSync(`${cordovaDir}/config.xml`)) {
+      writeFileSync(`${cordovaDir}/config.xml`, cordovaConfigXml(appName))
+    }
+    if (!existsSync(`${cordovaDir}/.gitignore`)) {
+      writeFileSync(`${cordovaDir}/.gitignore`, cordovaGitIgnore)
+    }
+    if (!existsSync(`${cordovaDir}/scripts/buildApp.js`)) {
+      mkdirSync(`${cordovaDir}/scripts`, { recursive: true })
+      writeFileSync(`${cordovaDir}/scripts/buildApp.js`, cordovaBuildScripts(appName))
+    }
+    if (!existsSync(`${cordovaDir}/www/gitkeep`)) {
+      mkdirSync(`${cordovaDir}/www`, { recursive: true })
+      writeFileSync(`${cordovaDir}/www/gitkeep`, '')
+    }
   }
 
   const packageJson = JSON.parse(readFileSync('./package.json').toString())
