@@ -110,6 +110,13 @@ const main = () => {
 
   writeFileSync(join(outputDir, 'gitkeep'), '')
 
+  console.log(\`➡️ add cordova to the index.html\`)
+  const indexHtml = readFileSync(join(outputDir, 'index.html'), "utf8")
+  const indexHtmlWithCordova = indexHtml.replace(
+    '<body>',
+    '<body><script type="text/javascript" src="cordova.js"></script>'
+  )
+  writeFileSync(join(outputDir, 'index.html'), indexHtmlWithCordova)
   console.log('✅build done')
 }
 main()
