@@ -86,7 +86,7 @@ export const cordovaBuildScripts = (
 const appName = '${appName}'
 
 console.log('⚙️ start build ' + appName)
-const { copySync, removeSync, writeFileSync } = require('fs-extra')
+const { copySync, removeSync, writeFileSync, readFileSync } = require('fs-extra')
 const { resolve, join } = require('path')
 const { execSync } = require('child_process')
 
