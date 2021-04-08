@@ -33,7 +33,7 @@ export const cordovaPackageJson = (appName: string): string => `{
   "cordova": {
     "plugins": {
       "cordova-plugin-whitelist": {}
-    },
+    }
   }
 }
 `
