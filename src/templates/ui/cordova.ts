@@ -92,7 +92,7 @@ const { execSync } = require('child_process')
 
 var dir = resolve(__dirname, '..')
 var projectMain = resolve(dir, '../../..')
-var htmlSource = join(projectMain, \`build/\${appName}/release\`)
+var htmlSource = join(projectMain, \`src/\${appName}/release\`)
 var outputDir = join(dir, 'www')
 
 const main = () => {
