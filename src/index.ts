@@ -41,7 +41,7 @@ export const cli = (): void => {
     .action(add)
   program
     .command('addFeature <project> <feature>')
-    .usage('name cordova|test|jest|storybook')
+    .usage('appName test|jest|storybook|cordova')
     .description(
       'Add a new feature to an existing app in the project. (cordova|test|jest|storybook)',
     )
