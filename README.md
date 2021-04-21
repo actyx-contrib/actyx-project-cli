@@ -66,17 +66,17 @@ In AXP some widely used standard tools have been integrated, which can be activa
 
 ### UI apps
 
-Following features are available for your ui application
+The following features are available for your UI application.
 
-- `test` / `jest`: Add jest as test suit to your application and generate a example test for you. ([jestjs.io](https://jestjs.io/docs/getting-started))
+- `test` / `jest`: Add jest as test suit to your application and generate an example test for you. ([jestjs.io](https://jestjs.io/docs/getting-started))
 - `storybook`: Add storybook to your complete project and add an example to your selected app. ([storybook.js.org](https://storybook.js.org/docs/react/get-started/introduction))
 - `cordova`: Add a cordova wrapper in the app to package your app as executable for Android / Windows / MAC. ([cordova.apache.org](https://cordova.apache.org/))
 
 ### Node apps
 
-Following features are available for a node application
+The following features are available for a node application.
 
-- `test` / `jest`: both commands add jest as test suit to your application and generate a example test for you ([jestjs.io](https://jestjs.io/docs/getting-started))
+- `test` / `jest`: both commands add jest as test suit to your application and generate an example test for you ([jestjs.io](https://jestjs.io/docs/getting-started))
 
 ## 📖 Commands
 
