@@ -30,9 +30,9 @@ The init step is optional. You can directly create an new app with `axp add [ui|
 
 ## 📑 React application
 
-Create a new React-App with the `axp add ui` command. It will user _parcel_ as build tool and setup _jest_ for tests.
+Create a new React-App with the `axp add ui` command. It will user _parcel_ as build tool.
 
-Additional to this. The actyx manifest for a WebView App is generated.
+The actyx manifest for a WebView app is generated automatically.
 
 ```bash
 axp add ui --appName "awesome Ui"
@@ -46,9 +46,9 @@ After executing this command you will find some new scripts in you package.json
 
 ## 📑 Node application
 
-Create a new Node.js with the `axp add node` command. It will setup _jest_ for tests.
+Create a new Node.js with the `axp add node` command.
 
-Additional to this. The actyx manifest for a docker App is generated.
+It automatically generates the actyx manifest and the necessary files to Dockerize your app.
 
 ```bash
 axp add node --appName "awesome App" --test
@@ -60,20 +60,38 @@ After executing this command you will find some new scripts in you package.json
 - `node:<appName>:build` build the node js application to deploy it
 - `node:<appName>:package` use the ax-manifest to create a deployable package
 
+## 🛠️ Add features
+
+In AXP some widely used standard tools have been integrated, which can be activated via `axp addFeature <appName> <feature>`.
+
+### UI apps
+
+The following features are available for your UI application.
+
+- `test` / `jest`: Add jest as test suit to your application and generate an example test for you. ([jestjs.io](https://jestjs.io/docs/getting-started))
+- `storybook`: Add storybook to your complete project and add an example to your selected app. ([storybook.js.org](https://storybook.js.org/docs/react/get-started/introduction))
+- `cordova`: Add a cordova wrapper in the app to package your app as executable for Android / Windows / MAC. ([cordova.apache.org](https://cordova.apache.org/))
+
+### Node apps
+
+The following features are available for a node application.
+
+- `test` / `jest`: both commands add jest as test suit to your application and generate an example test for you ([jestjs.io](https://jestjs.io/docs/getting-started))
+
 ## 📖 Commands
 
 This list is a overview of the existing commands. Use the integrated help to get detailed information about the commands
 
-| command                                      | shortcut          | Function                                                                                   |
-| -------------------------------------------- | ----------------- | ------------------------------------------------------------------------------------------ |
-| `axp init`                                   | `axp --init -v 2` | Initialize a new project in the current directory                                          |
-| `axp add <type> [-n Name] [--test] [--jest]` | `axp a`           | Create a new application with the given type and name                                      |
-| `axp addFeature <project> <feature>`         | `axp af`          | Add a new feature to the project (test / jest / storybook)                                 |
-| `axp list`                                   | `axp ls`          | List all existing projects and check if some unreferenced projects are in the package.json |
-| `axp clean`                                  | `axp c`           | Remove unreferenced commands in the package.json                                           |
-| `axp help`                                   | `axp -h`          | Show the general help output                                                               |
-| `axp <command> --help`                       | `<shortcut> -h`   | Show the help output for a given command                                                   |
-| `axp --version`                              | `axp -V`          | axp version                                                                                |
+| command                                      | shortcut          | Function                                                                           |
+| -------------------------------------------- | ----------------- | ---------------------------------------------------------------------------------- |
+| `axp init`                                   | `axp --init -v 2` | Initialize a new project in the current directory                                  |
+| `axp add <type> [-n Name] [--test] [--jest]` | `axp a`           | Create a new application with the given type and name                              |
+| `axp addFeature <appName> <feature>`         | `axp af`          | Add a new feature to the appName (test / jest / storybook / cordova)               |
+| `axp list`                                   | `axp ls`          | List all existing apps and check if some unreferenced apps are in the package.json |
+| `axp clean`                                  | `axp c`           | Remove unreferenced commands in the package.json                                   |
+| `axp help`                                   | `axp -h`          | Show the general help output                                                       |
+| `axp <command> --help`                       | `<shortcut> -h`   | Show the help output for a given command                                           |
+| `axp --version`                              | `axp -V`          | axp version                                                                        |
 
 ## 🤓 Developer tools
 
