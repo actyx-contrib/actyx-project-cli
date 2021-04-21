@@ -19,11 +19,7 @@ The installed `axp` tool will create you a monorepo with git, ESLint, and TypeSc
 In this project, you can add your apps with the `axp add <appType>` command.
 
 ```bash
-# Pond Version 1
-axp init -v 1
-# Pond Version 2
 axp init
-axp init -v 2
 ```
 
 The init step is optional. You can directly create an new app with `axp add [ui|node]`
