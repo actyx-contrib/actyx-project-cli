@@ -163,3 +163,6 @@ export const storePondVersion = (version: PondVersions): void => {
   }
   writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
 }
+
+export const createRuntimeStuff = (version: PondVersions): boolean =>
+  version === PondVersions.Version1 || version === PondVersions.Version2
