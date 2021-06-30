@@ -13,12 +13,12 @@ jobs:
         with:
           node-version: '14'
       - name: Install dependencies
-        run: npm install
+        run: npm run install
       - name: check licence headers
-        run: npm license:check
+        run: npm run license:check
       - name: check dependencies licencees
-        run: npm license:check-dep
+        run: npm run license:check-dep
       - name: run linter check
-        run: npm lint
+        run: npm run lint
       - name: run jest test
-        run: npm test
+        run: npm run test
