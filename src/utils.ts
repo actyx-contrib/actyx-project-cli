@@ -15,7 +15,7 @@
  */
 import { exec } from 'child_process'
 import chalk from 'chalk'
-import { existsSync, readFileSync, writeFileSync } from 'fs'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { parse, join, dirname } from 'path'
 import { getProjects } from './commands/list'
 
@@ -166,3 +166,24 @@ export const storePondVersion = (version: PondVersions): void => {
 
 export const createRuntimeStuff = (version: PondVersions): boolean =>
   version === PondVersions.Version1 || version === PondVersions.Version2
+
+export const writeFileSyncIfNotExists = (
+  path: string,
+  content: string | NodeJS.ArrayBufferView,
+): void => {
+  if (!existsSync(path)) {
+    writeFileSync(path, content)
+  }
+}
+
+export const writeFileInPathSyncIfNotExists = (
+  path: string,
+  fileName: string,
+  content: string | NodeJS.ArrayBufferView,
+): void => {
+  const filePath = join(path, fileName)
+  if (!existsSync(filePath)) {
+    mkdirSync(path, { recursive: true })
+    writeFileSync(filePath, content)
+  }
+}
