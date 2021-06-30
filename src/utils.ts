@@ -27,19 +27,10 @@ export const removeDot = (fileList: string[]): string[] =>
 
 export const toKebabCaseFileName = (input: string): string =>
   input
+    .trim()
     .split(/[\ \',\.]/)
     .join('-')
     .toLowerCase()
-
-export const toPascalCase = (str: string): string => {
-  const parts = str.split(/\ -_/)
-  return parts
-    .map(p => {
-      const [first = '', ...rest] = p
-      return `${first.toUpperCase()}${rest.join('')}`
-    })
-    .join('')
-}
 
 export const createSpinner = (text: string): (() => void) => {
   const icons = '⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏'.split('')
