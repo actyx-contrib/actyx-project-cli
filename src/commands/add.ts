@@ -27,6 +27,7 @@ import {
   doAppExist,
   getPondVersion,
   delay,
+  createRuntimeStuff,
 } from '../utils'
 import { isProjectInitialized, initProject } from './init'
 import { mkdirSync, readFileSync, writeFileSync } from 'fs'
@@ -128,10 +129,12 @@ const addUI = async (command: Command): Promise<void> => {
   writeFileSync(`./src/${appName}/App.tsx`, defaultAppTsx)
   setupProjectDone()
 
-  const addActyxDone = createSpinner('Add Actyx manifest')
-  writeFileSync(`./src/${appName}/ax-manifest.yml`, axWebManifestYml(appName))
-  writeFileSync(`./src/${appName}/settings-schema.json`, settingsSchema)
-  addActyxDone()
+  if (createRuntimeStuff(pondVersion)) {
+    const addActyxDone = createSpinner('Add Actyx manifest')
+    writeFileSync(`./src/${appName}/ax-manifest.yml`, axWebManifestYml(appName))
+    writeFileSync(`./src/${appName}/settings-schema.json`, settingsSchema)
+    addActyxDone()
+  }
 
   if (!packageInstalled(uiPackages(pondVersion))) {
     const instDepSpinDone = createSpinner('Install dependencies')
@@ -151,7 +154,12 @@ const addUI = async (command: Command): Promise<void> => {
     ...packageJson.scripts,
     [`ui:${appName}:start`]: `parcel src/${appName}/index.html --out-dir build/${appName}/debug`,
     [`ui:${appName}:build`]: `parcel build src/${appName}/index.html --out-dir src/${appName}/release --public-url ./`,
-    [`ui:${appName}:package`]: `ax apps package src/${appName}/ax-manifest.yml`,
+  }
+  if (createRuntimeStuff(pondVersion)) {
+    packageJson.scripts = {
+      ...packageJson.scripts,
+      [`ui:${appName}:package`]: `ax apps package src/${appName}/ax-manifest.yml`,
+    }
   }
   writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
   addScriptsDone()
@@ -182,14 +190,16 @@ const addNode = async (command: Command): Promise<void> => {
   writeFileSync(`./src/${appName}/index.ts`, defaultIndexTs)
   setupProjectDone()
 
-  const addActyxDone = createSpinner('Add Actyx manifest')
-  writeFileSync(`./src/${appName}/Dockerfile`, dockerfile(appName))
-  writeFileSync(`./src/${appName}/ax-manifest.yml`, axDockerManifestYml(appName))
-  writeFileSync(`./src/${appName}/docker-compose-amd64.yml`, dockerComposeAmd64(appName))
-  writeFileSync(`./src/${appName}/docker-compose-arm64v8.yml`, dockerComposeArm64v8(appName))
-  writeFileSync(`./src/${appName}/settings-schema.json`, settingsSchema)
-  writeFileSync(`./src/${appName}/package-prod.json`, packageJsonProd(appName, pondVersion))
-  addActyxDone()
+  if (createRuntimeStuff(pondVersion)) {
+    const addActyxDone = createSpinner('Add Actyx manifest')
+    writeFileSync(`./src/${appName}/Dockerfile`, dockerfile(appName))
+    writeFileSync(`./src/${appName}/ax-manifest.yml`, axDockerManifestYml(appName))
+    writeFileSync(`./src/${appName}/docker-compose-amd64.yml`, dockerComposeAmd64(appName))
+    writeFileSync(`./src/${appName}/docker-compose-arm64v8.yml`, dockerComposeArm64v8(appName))
+    writeFileSync(`./src/${appName}/settings-schema.json`, settingsSchema)
+    writeFileSync(`./src/${appName}/package-prod.json`, packageJsonProd(appName, pondVersion))
+    addActyxDone()
+  }
 
   if (!packageInstalled(nodePackages(pondVersion))) {
     const instDepDone = createSpinner('Install dependencies')
@@ -210,9 +220,14 @@ const addNode = async (command: Command): Promise<void> => {
     ...packageJson.scripts,
     [`node:${appName}:start`]: `nodemon --watch src/${appName} --exec ts-node src/${appName}/index.ts`,
     [`node:${appName}:build`]: `tsc src/${appName}/index.ts --outDir build/${appName} --esModuleInterop --skipLibCheck`,
-    [`node:${appName}:docker:build`]: `npm run node:${appName}:build && docker build -t ${appName} -f src/${appName}/Dockerfile .`,
-    [`node:${appName}:docker:build-aarch64`]: `npm run node:${appName}:build && docker buildx build --platform linux/arm64 -t ${appName}-aarch64 -f src/${appName}/Dockerfile --load .`,
-    [`node:${appName}:package`]: `ax apps package src/${appName}/ax-manifest.yml`,
+  }
+  if (createRuntimeStuff(pondVersion)) {
+    packageJson.scripts = {
+      ...packageJson.scripts,
+      [`node:${appName}:docker:build`]: `npm run node:${appName}:build && docker build -t ${appName} -f src/${appName}/Dockerfile .`,
+      [`node:${appName}:docker:build-aarch64`]: `npm run node:${appName}:build && docker buildx build --platform linux/arm64 -t ${appName}-aarch64 -f src/${appName}/Dockerfile --load .`,
+      [`node:${appName}:package`]: `ax apps package src/${appName}/ax-manifest.yml`,
+    }
   }
   writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
   addScriptsDone()
