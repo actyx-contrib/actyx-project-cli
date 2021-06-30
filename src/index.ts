@@ -34,6 +34,7 @@ export const cli = (): void => {
     .option('--cordova', 'add a cordova template to the application (ui projects only)')
     .option('--jest', 'add jest as testing framework')
     .option('--test', 'add jest as testing framework')
+    .option('--docker', 'add template docker files (node projects only)')
     .option(
       '--storybook',
       'add Storybook for developing UI components in isolation (ui projects only)',
@@ -41,9 +42,9 @@ export const cli = (): void => {
     .action(add)
   program
     .command('addFeature <project> <feature>')
-    .usage('appName test|jest|storybook|cordova')
+    .usage('appName test|jest|storybook|cordova|docker')
     .description(
-      'Add a new feature to an existing app in the project. (cordova|test|jest|storybook)',
+      'Add a new feature to an existing app in the project. (cordova|test|jest|storybook|docker)',
     )
     .alias('af')
     .action(addFeature)

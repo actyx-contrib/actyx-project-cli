@@ -43,6 +43,7 @@ import {
   cordovaPackageJson,
 } from '../templates/ui/cordova'
 import { dockerfile, packageJsonProd } from '../templates/node'
+import { join } from 'path'
 
 export const addFeature = async (
   project: string,
@@ -56,7 +57,7 @@ export const addFeature = async (
     return
   }
 
-  const projectPath = `./src/${toKebabCaseFileName(project)}`
+  const projectPath = join('.', 'src', toKebabCaseFileName(project))
   if (!existsSync(projectPath)) {
     console.log(
       chalk`{red Project ${projectPath} doesn't exist.} {white Use} {yellow axp list} {white to get all existing projects}`,
@@ -64,7 +65,7 @@ export const addFeature = async (
     return
   }
 
-  addNewFeature(project, `./src/${project}`, feature)
+  addNewFeature(project, join('.', 'src', project), feature)
 }
 
 export const addNewFeature = async (
