@@ -43,8 +43,6 @@ export const initProject = async (command: Command): Promise<void> => {
   clear()
   drawHeader()
 
-  changeToProjectRoot() // ignore output, isProjectInitialized will take care
-
   if (isProjectInitialized()) {
     console.log(chalk.red('Project is already initialized'))
     return
