@@ -15,13 +15,7 @@
  */
 import { readdirSync, writeFileSync, mkdirSync } from 'fs'
 import chalk from 'chalk'
-import {
-  createSpinner,
-  run,
-  changeToProjectRoot,
-  parsePondVersion,
-  storePondVersion,
-} from '../utils'
+import { createSpinner, run, parsePondVersion, storePondVersion } from '../utils'
 import {
   editorConfig,
   eslintrcJs,
