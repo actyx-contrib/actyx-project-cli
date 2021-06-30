@@ -8,6 +8,7 @@
     "node_modules/",
     "lib/",
     "coverage/",
+    ".github/",
     "add-license-text",
     "jest.config.js",
     "**/*.storyshot",

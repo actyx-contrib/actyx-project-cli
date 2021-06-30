@@ -3,7 +3,7 @@ on: [push]
 
 jobs:
   tests:
-    name: Licence, linter, test
+    name: License, Linter, Test
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
