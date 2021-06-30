@@ -13,7 +13,7 @@ jobs:
         with:
           node-version: '14'
       - name: Install dependencies
-        run: npm run install
+        run: npm install
       - name: check licence headers
         run: npm run license:check
       - name: check dependencies licencees
