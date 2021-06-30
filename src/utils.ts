@@ -126,14 +126,17 @@ export const delay = (ms: number): Promise<void> => new Promise(res => setTimeou
 export enum PondVersions {
   Version1 = 1,
   Version2 = 2,
+  Version3 = 3,
 }
-export const defaultPondVersions = PondVersions.Version2
+export const defaultPondVersions = PondVersions.Version3
 export const parsePondVersion = (version: string): PondVersions => {
   switch (parseInt(version)) {
     case 1:
       return PondVersions.Version1
     case 2:
       return PondVersions.Version2
+    case 3:
+      return PondVersions.Version3
     default:
       return defaultPondVersions
   }
