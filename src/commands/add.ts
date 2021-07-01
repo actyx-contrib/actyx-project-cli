@@ -125,7 +125,7 @@ const addUI = async (command: Command): Promise<void> => {
 
   const setupProjectDone = createSpinner('Create template')
   writeFileSync(`./src/${appName}/index.html`, defaultHtml(appName))
-  writeFileSync(`./src/${appName}/root.tsx`, defaultRootTsx)
+  writeFileSync(`./src/${appName}/root.tsx`, defaultRootTsx(pondVersion))
   writeFileSync(`./src/${appName}/App.tsx`, defaultAppTsx)
   setupProjectDone()
 
@@ -187,7 +187,7 @@ const addNode = async (command: Command): Promise<void> => {
   const pondVersion = getPondVersion()
 
   const setupProjectDone = createSpinner('Create template')
-  writeFileSync(`./src/${appName}/index.ts`, defaultIndexTs)
+  writeFileSync(`./src/${appName}/index.ts`, defaultIndexTs(pondVersion))
   setupProjectDone()
 
   if (createRuntimeStuff(pondVersion)) {

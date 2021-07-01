@@ -14,19 +14,57 @@
  * limitations under the License.
  */
 import { PondVersions } from '../../utils'
-export const defaultIndexTs = `import { Pond } from '@actyx/pond'
+
+export const defaultIndexTs = (version: PondVersions): string => {
+  switch (version) {
+    case PondVersions.Version1:
+    case PondVersions.Version2:
+      return defaultIndexTsV1_2
+    case PondVersions.Version3:
+    default:
+      return defaultIndexTsWithManifest
+  }
+}
+
+export const defaultIndexTsV1_2 = `import { Pond } from '@actyx/pond'
 
 Pond.default().then((pond) => {
   // start something awesome here
   // -------------------------------
   //
   // For the first time here?
-  // https://developer.actyx.com/docs/pond/getting-started
+  // https://developer.actyx.com/docs/how-to/overview
   //
   // You will find help and examples on:
-  // https://developer.actyx.com/docs/pond/guides/hello-world
+  // https://developer.actyx.com/docs/tutorials/overview
   // https://developer.actyx.com/blog
 })
+`
+export const defaultIndexTsWithManifest = `import { Pond } from '@actyx/pond'
+import manifest from './manifest'
+
+Pond.default(manifest).then((pond) => {
+  // start something awesome here
+  // -------------------------------
+  //
+  // For the first time here?
+  // https://developer.actyx.com/docs/how-to/overview
+  //
+  // You will find help and examples on:
+  // https://developer.actyx.com/docs/tutorials/overview
+  // https://developer.actyx.com/blog
+})
+`
+
+export const appManifest = (appName: string): string => `import { AppManifest } from "@actyx/pond"
+
+export const manifest: AppManifest = {
+  appId: 'com.example.node.app',
+  displayName: '${appName}',
+  version: '0.0.1'
+}
+
+export default manifest
 `
 
 export const dockerfile = (appName: string): string => `FROM node:10-alpine as build

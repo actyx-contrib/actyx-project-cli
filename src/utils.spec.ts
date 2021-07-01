@@ -82,10 +82,17 @@ describe('utils', () => {
     expect(parsePondVersion('')).toBe(defaultPondVersions)
     expect(parsePondVersion('0')).toBe(defaultPondVersions)
   })
+
   it('createRuntimeStuff', () => {
     expect(createRuntimeStuff(PondVersions.Version1)).toBeTruthy()
     expect(createRuntimeStuff(PondVersions.Version2)).toBeTruthy()
     expect(createRuntimeStuff(PondVersions.Version3)).toBeFalsy()
+  })
+
+  it('createAppManifest', () => {
+    expect(createRuntimeStuff(PondVersions.Version1)).toBeFalsy()
+    expect(createRuntimeStuff(PondVersions.Version2)).toBeFalsy()
+    expect(createRuntimeStuff(PondVersions.Version3)).toBeTruthy()
   })
 
   it('packageInstalled', () => {

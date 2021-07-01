@@ -1,3 +1,5 @@
+import { PondVersions } from '../../utils'
+
 /*
  *Copyright 2020 Actyx AG
  *
@@ -83,18 +85,65 @@ export const defaultHtml = (appName: string): string => `<!DOCTYPE html>
 </html>
 `
 
-export const defaultRootTsx = `import * as React from 'react'
+export const appManifest = (appName: string): string => `import { AppManifest } from "@actyx/pond"
+
+export const manifest: AppManifest = {
+  appId: 'com.example.ui.app',
+  displayName: '${appName}',
+  version: '0.0.1'
+}
+
+export default manifest
+`
+
+export const defaultRootTsx = (version: PondVersions): string => {
+  switch (version) {
+    case PondVersions.Version1:
+    case PondVersions.Version2:
+      return defaultRootTsxV1_2
+    case PondVersions.Version3:
+    default:
+      return defaultRootTsxWithManifest
+  }
+}
+
+export const defaultRootTsxV1_2 = `import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Pond } from '@actyx-contrib/react-pond'
 import { App } from './App'
 
 const onError = () => {
   setTimeout(() => location.reload(), 2500)
+  return <div>Failed to connect to Actyx</div>
 }
 
 ReactDOM.render(
   <React.StrictMode>
-    <Pond loadComponent={<div>Connecting to ActyxOS</div>} onError={onError}>
+    <Pond loadComponent={<div>Connecting to Actyx</div>} onError={onError}>
+      <App />
+    </Pond>
+  </React.StrictMode>,
+  document.getElementById('root'),
+)
+`
+export const defaultRootTsxWithManifest = `import * as React from 'react'
+import * as ReactDOM from 'react-dom'
+import { Pond } from '@actyx-contrib/react-pond'
+import { App } from './App'
+import manifest from './manifest'
+
+const onError = () => {
+  setTimeout(() => location.reload(), 2500)
+  return <div>Failed to connect to Actyx</div>
+}
+
+ReactDOM.render(
+  <React.StrictMode>
+    <Pond
+      manifest={manifest}
+      loadComponent={<div>Connecting to Actyx</div>}
+      onError={onError}
+    >
       <App />
     </Pond>
   </React.StrictMode>,

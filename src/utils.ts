@@ -158,6 +158,9 @@ export const storePondVersion = (version: PondVersions): void => {
 export const createRuntimeStuff = (version: PondVersions): boolean =>
   version === PondVersions.Version1 || version === PondVersions.Version2
 
+export const createAppManifest = (version: PondVersions): boolean =>
+  version === PondVersions.Version3
+
 export const writeFileSyncIfNotExists = (
   path: string,
   content: string | NodeJS.ArrayBufferView,
