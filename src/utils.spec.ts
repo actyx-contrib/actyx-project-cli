@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import {
+  createAppManifest,
   createRuntimeStuff,
   createSpinner,
   defaultPondVersions,
@@ -90,9 +91,9 @@ describe('utils', () => {
   })
 
   it('createAppManifest', () => {
-    expect(createRuntimeStuff(PondVersions.Version1)).toBeFalsy()
-    expect(createRuntimeStuff(PondVersions.Version2)).toBeFalsy()
-    expect(createRuntimeStuff(PondVersions.Version3)).toBeTruthy()
+    expect(createAppManifest(PondVersions.Version1)).toBeFalsy()
+    expect(createAppManifest(PondVersions.Version2)).toBeFalsy()
+    expect(createAppManifest(PondVersions.Version3)).toBeTruthy()
   })
 
   it('packageInstalled', () => {
