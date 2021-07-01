@@ -28,10 +28,17 @@ import {
   getPondVersion,
   delay,
   createRuntimeStuff,
+  createAppManifest,
 } from '../utils'
 import { isProjectInitialized, initProject } from './init'
 import { mkdirSync, readFileSync, writeFileSync } from 'fs'
-import { defaultHtml, defaultRootTsx, defaultAppTsx, axWebManifestYml } from '../templates/ui'
+import {
+  defaultHtml,
+  defaultRootTsx,
+  defaultAppTsx,
+  axWebManifestYml,
+  appUiManifest,
+} from '../templates/ui'
 import {
   defaultIndexTs,
   axDockerManifestYml,
@@ -40,6 +47,7 @@ import {
   settingsSchema,
   dockerfile,
   packageJsonProd,
+  appNodeManifest,
 } from '../templates/node'
 import { addNewFeature } from './addFeature'
 import { uiPackages, uiDevPackages, nodePackages, nodeDevPackages } from '../templates/packages'
@@ -161,6 +169,11 @@ const addUI = async (command: Command): Promise<void> => {
       [`ui:${appName}:package`]: `ax apps package src/${appName}/ax-manifest.yml`,
     }
   }
+  if (createAppManifest(pondVersion)) {
+    const addManifestDone = createSpinner('Add Actyx app manifest')
+    writeFileSync(`./src/${appName}/manifest.ts`, appUiManifest(appName))
+    addManifestDone()
+  }
   writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
   addScriptsDone()
 
@@ -200,6 +213,11 @@ const addNode = async (command: Command): Promise<void> => {
     writeFileSync(`./src/${appName}/package-prod.json`, packageJsonProd(appName, pondVersion))
     addActyxDone()
   }
+  if (createAppManifest(pondVersion)) {
+    const addManifestDone = createSpinner('Add Actyx app manifest')
+    writeFileSync(`./src/${appName}/manifest.ts`, appNodeManifest(appName))
+    addManifestDone()
+  }
 
   if (!packageInstalled(nodePackages(pondVersion))) {
     const instDepDone = createSpinner('Install dependencies')
@@ -237,6 +255,9 @@ const addNode = async (command: Command): Promise<void> => {
   }
   if (command.jest) {
     await addNewFeature(appName, `./src/${appName}`, 'jest')
+  }
+  if (command.docker) {
+    await addNewFeature(appName, `./src/${appName}`, 'docker')
   }
   console.log(chalk`{green done}`)
 }

@@ -85,7 +85,7 @@ export const defaultHtml = (appName: string): string => `<!DOCTYPE html>
 </html>
 `
 
-export const appManifest = (appName: string): string => `import { AppManifest } from "@actyx/pond"
+export const appUiManifest = (appName: string): string => `import { AppManifest } from "@actyx/pond"
 
 export const manifest: AppManifest = {
   appId: 'com.example.ui.app',

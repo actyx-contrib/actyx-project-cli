@@ -56,7 +56,9 @@ Pond.default(manifest).then((pond) => {
 })
 `
 
-export const appManifest = (appName: string): string => `import { AppManifest } from "@actyx/pond"
+export const appNodeManifest = (
+  appName: string,
+): string => `import { AppManifest } from "@actyx/pond"
 
 export const manifest: AppManifest = {
   appId: 'com.example.node.app',
