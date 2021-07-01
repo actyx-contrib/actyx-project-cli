@@ -17,7 +17,7 @@ import { Command } from 'commander'
 import { initProject, add, addFeature, list, clean } from './commands'
 import { axpVersion } from './utils'
 
-export const cli = (): void => {
+export const cli = (args: string[]): void => {
   const program = new Command()
   program.version('Actyx Project tool V:' + axpVersion)
   program
@@ -59,5 +59,5 @@ export const cli = (): void => {
     .alias('c')
     .action(clean)
 
-  program.parse(process.argv)
+  program.parse(args)
 }
