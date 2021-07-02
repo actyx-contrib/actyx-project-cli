@@ -124,8 +124,8 @@ export const parsePondVersion = (version: string | undefined): PondVersions => {
   if (version === '' || version === undefined) {
     return defaultPondVersion
   }
-  if (`${parseInt(version)}` !== version ) {
-    throw new Error(`Version ${version} is in an invalid format`);
+  if (`${parseInt(version)}` !== version) {
+    throw new Error(`Version ${version} is in an invalid format`)
   }
   switch (parseInt(version)) {
     case 1:
@@ -135,7 +135,7 @@ export const parsePondVersion = (version: string | undefined): PondVersions => {
     case 3:
       return PondVersions.Version3
     default:
-      throw new Error(`Version ${version} is not supported`);
+      throw new Error(`Version ${version} is not supported`)
   }
 }
 export const getPondVersion = (): PondVersions => {
