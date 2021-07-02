@@ -15,9 +15,9 @@
  */
 import {
   createAppManifest,
-  createRuntimeStuff,
+  createRuntimeSupport,
   createSpinner,
-  defaultPondVersions,
+  defaultPondVersion,
   findUp,
   packageInstalled,
   parsePondVersion,
@@ -72,22 +72,25 @@ describe('utils', () => {
     expect(PondVersions.Version1).toBe(1)
     expect(PondVersions.Version2).toBe(2)
     expect(PondVersions.Version3).toBe(3)
-    expect(defaultPondVersions).toBe(PondVersions.Version3)
+    expect(defaultPondVersion).toBe(PondVersions.Version3)
   })
   it('parsePondVersion', () => {
     expect(parsePondVersion('1')).toBe(PondVersions.Version1)
     expect(parsePondVersion('2')).toBe(PondVersions.Version2)
     expect(parsePondVersion('3')).toBe(PondVersions.Version3)
-    expect(parsePondVersion('4')).toBe(defaultPondVersions)
-    expect(parsePondVersion('NO')).toBe(defaultPondVersions)
-    expect(parsePondVersion('')).toBe(defaultPondVersions)
-    expect(parsePondVersion('0')).toBe(defaultPondVersions)
+    expect(parsePondVersion('')).toBe(defaultPondVersion)
+    expect(parsePondVersion(undefined)).toBe(defaultPondVersion)
+
+    expect(() => parsePondVersion('0')).toThrow('Version 0 is not supported')
+    expect(() => parsePondVersion('4')).toThrow('Version 4 is not supported')
+    expect(() => parsePondVersion('1.2.3')).toThrow('Version 1.2.3 is in an invalid format')
+    expect(() => parsePondVersion('NO')).toThrow('Version NO is in an invalid format')
   })
 
-  it('createRuntimeStuff', () => {
-    expect(createRuntimeStuff(PondVersions.Version1)).toBeTruthy()
-    expect(createRuntimeStuff(PondVersions.Version2)).toBeTruthy()
-    expect(createRuntimeStuff(PondVersions.Version3)).toBeFalsy()
+  it('createRuntimeSupport', () => {
+    expect(createRuntimeSupport(PondVersions.Version1)).toBeTruthy()
+    expect(createRuntimeSupport(PondVersions.Version2)).toBeTruthy()
+    expect(createRuntimeSupport(PondVersions.Version3)).toBeFalsy()
   })
 
   it('createAppManifest', () => {

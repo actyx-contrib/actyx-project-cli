@@ -27,7 +27,7 @@ import {
   doAppExist,
   getPondVersion,
   delay,
-  createRuntimeStuff,
+  createRuntimeSupport,
   createAppManifest,
 } from '../utils'
 import { isProjectInitialized, initProject } from './init'
@@ -137,7 +137,7 @@ const addUI = async (command: Command): Promise<void> => {
   writeFileSync(`./src/${appName}/App.tsx`, defaultAppTsx)
   setupProjectDone()
 
-  if (createRuntimeStuff(pondVersion)) {
+  if (createRuntimeSupport(pondVersion)) {
     const addActyxDone = createSpinner('Add Actyx manifest')
     writeFileSync(`./src/${appName}/ax-manifest.yml`, axWebManifestYml(appName))
     writeFileSync(`./src/${appName}/settings-schema.json`, settingsSchema)
@@ -163,7 +163,7 @@ const addUI = async (command: Command): Promise<void> => {
     [`ui:${appName}:start`]: `parcel src/${appName}/index.html --out-dir build/${appName}/debug`,
     [`ui:${appName}:build`]: `parcel build src/${appName}/index.html --out-dir src/${appName}/release --public-url ./`,
   }
-  if (createRuntimeStuff(pondVersion)) {
+  if (createRuntimeSupport(pondVersion)) {
     packageJson.scripts = {
       ...packageJson.scripts,
       [`ui:${appName}:package`]: `ax apps package src/${appName}/ax-manifest.yml`,
@@ -203,7 +203,7 @@ const addNode = async (command: Command): Promise<void> => {
   writeFileSync(`./src/${appName}/index.ts`, defaultIndexTs(pondVersion))
   setupProjectDone()
 
-  if (createRuntimeStuff(pondVersion)) {
+  if (createRuntimeSupport(pondVersion)) {
     const addActyxDone = createSpinner('Add Actyx manifest')
     writeFileSync(`./src/${appName}/Dockerfile`, dockerfile(appName))
     writeFileSync(`./src/${appName}/ax-manifest.yml`, axDockerManifestYml(appName))
@@ -239,7 +239,7 @@ const addNode = async (command: Command): Promise<void> => {
     [`node:${appName}:start`]: `nodemon --watch src/${appName} --exec ts-node src/${appName}/index.ts`,
     [`node:${appName}:build`]: `tsc src/${appName}/index.ts --outDir build/${appName} --esModuleInterop --skipLibCheck`,
   }
-  if (createRuntimeStuff(pondVersion)) {
+  if (createRuntimeSupport(pondVersion)) {
     packageJson.scripts = {
       ...packageJson.scripts,
       [`node:${appName}:docker:build`]: `npm run node:${appName}:build && docker build -t ${appName} -f src/${appName}/Dockerfile .`,

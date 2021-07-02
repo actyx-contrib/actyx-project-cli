@@ -119,8 +119,14 @@ export enum PondVersions {
   Version2 = 2,
   Version3 = 3,
 }
-export const defaultPondVersions = PondVersions.Version3
-export const parsePondVersion = (version: string): PondVersions => {
+export const defaultPondVersion = PondVersions.Version3
+export const parsePondVersion = (version: string | undefined): PondVersions => {
+  if (version === '' || version === undefined) {
+    return defaultPondVersion
+  }
+  if (`${parseInt(version)}` !== version ) {
+    throw new Error(`Version ${version} is in an invalid format`);
+  }
   switch (parseInt(version)) {
     case 1:
       return PondVersions.Version1
@@ -129,20 +135,20 @@ export const parsePondVersion = (version: string): PondVersions => {
     case 3:
       return PondVersions.Version3
     default:
-      return defaultPondVersions
+      throw new Error(`Version ${version} is not supported`);
   }
 }
 export const getPondVersion = (): PondVersions => {
   try {
     const packageJson = JSON.parse(readFileSync('./package.json').toString())
     if (!packageJson.axp) {
-      storePondVersion(defaultPondVersions)
-      return defaultPondVersions
+      storePondVersion(defaultPondVersion)
+      return defaultPondVersion
     } else {
       return parsePondVersion(packageJson.axp.pondVersion)
     }
   } catch (_) {
-    return defaultPondVersions
+    return defaultPondVersion
   }
 }
 export const storePondVersion = (version: PondVersions): void => {
@@ -155,7 +161,7 @@ export const storePondVersion = (version: PondVersions): void => {
   writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
 }
 
-export const createRuntimeStuff = (version: PondVersions): boolean =>
+export const createRuntimeSupport = (version: PondVersions): boolean =>
   version === PondVersions.Version1 || version === PondVersions.Version2
 
 export const createAppManifest = (version: PondVersions): boolean =>
