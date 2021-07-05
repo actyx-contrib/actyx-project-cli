@@ -90,9 +90,11 @@ export const packageJsonProd = (appName: string, pondVersion: PondVersions): str
   "license": "ISC",
   "dependencies": {
     "@actyx/pond": ${
-      pondVersion === PondVersions.Version1 ? '"1.1"'
-      : pondVersion === PondVersions.Version2 ? '"2"'
-      : '"3"'
+      pondVersion === PondVersions.Version1
+        ? '"1.1"'
+        : pondVersion === PondVersions.Version2
+        ? '"2"'
+        : '"3"'
     }
   }
 }
