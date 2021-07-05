@@ -31,30 +31,27 @@ Create a new React-App with the `axp add ui` command. It will user _parcel_ as b
 The actyx manifest for a WebView app is generated automatically.
 
 ```bash
-axp add ui --appName "awesome Ui"
+axp add ui --appName "awesome Ui" --test
 ```
 
 After executing this command you will find some new scripts in you package.json
 
 - `ui:<appName>:start` run the app in dev mode with automatic rebuild
 - `ui:<appName>:build` build the React application to deploy it
-- `ui:<appName>:package` use the ax-manifest to create a deployable package
 
 ## 📑 Node application
 
 Create a new Node.js with the `axp add node` command.
 
-It automatically generates the actyx manifest and the necessary files to Dockerize your app.
-
 ```bash
-axp add node --appName "awesome App" --test
+axp add node --appName "awesome App" --test --docker
 ```
 
 After executing this command you will find some new scripts in you package.json
 
 - `node:<appName>:start` run the `index.ts` in your application
 - `node:<appName>:build` build the node js application to deploy it
-- `node:<appName>:package` use the ax-manifest to create a deployable package
+- `node:<appName>:clean` remove the build folder.
 
 ## 🛠️ Add features
 
@@ -72,7 +69,8 @@ The following features are available for your UI application.
 
 The following features are available for a node application.
 
-- `test` / `jest`: both commands add jest as test suit to your application and generate an example test for you ([jestjs.io](https://jestjs.io/docs/getting-started))
+- `test` / `jest`: Both commands add jest as test suit to your application and generate an example test for you ([jestjs.io](https://jestjs.io/docs/getting-started))
+- `docker`: Create some docker definitions to deploy your application as container ([docker.com](https://docs.docker.com/engine/reference/builder/))
 
 ## 📖 Commands
 
@@ -80,9 +78,9 @@ This list is a overview of the existing commands. Use the integrated help to get
 
 | command                                      | shortcut          | Function                                                                           |
 | -------------------------------------------- | ----------------- | ---------------------------------------------------------------------------------- |
-| `axp init`                                   | `axp --init -v 2` | Initialize a new project in the current directory                                  |
+| `axp init`                                   | `axp --init -v 3` | Initialize a new project in the current directory                                  |
 | `axp add <type> [-n Name] [--test] [--jest]` | `axp a`           | Create a new application with the given type and name                              |
-| `axp addFeature <appName> <feature>`         | `axp af`          | Add a new feature to the appName (test / jest / storybook / cordova)               |
+| `axp addFeature <appName> <feature>`         | `axp af`          | Add a new feature to the appName (test / jest / storybook / cordova / docker)      |
 | `axp list`                                   | `axp ls`          | List all existing apps and check if some unreferenced apps are in the package.json |
 | `axp clean`                                  | `axp c`           | Remove unreferenced commands in the package.json                                   |
 | `axp help`                                   | `axp -h`          | Show the general help output                                                       |
