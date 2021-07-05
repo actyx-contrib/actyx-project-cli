@@ -61,12 +61,12 @@ export const nodePackages = (version: PondVersions): ReadonlyArray<string> => {
         'rxjs@5.5.12',
         '@actyx/os-sdk',
         '@actyx-contrib/registry@1',
-        "rimraf",
+        'rimraf',
       ]
     case PondVersions.Version2:
-      return ['@actyx/pond@2', '@actyx/os-sdk', "rimraf"]
+      return ['@actyx/pond@2', '@actyx/os-sdk', 'rimraf']
     case PondVersions.Version3:
-      return ['@actyx/pond@3', '@actyx/sdk@0.1.2', "rimraf"]
+      return ['@actyx/pond@3', '@actyx/sdk@0.1.2', 'rimraf']
   }
 }
 
