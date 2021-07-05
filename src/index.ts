@@ -17,12 +17,12 @@ import { Command } from 'commander'
 import { initProject, add, addFeature, list, clean } from './commands'
 import { axpVersion } from './utils'
 
-export const cli = (): void => {
+export const cli = (args: string[]): void => {
   const program = new Command()
   program.version('Actyx Project tool V:' + axpVersion)
   program
     .command('init')
-    .option('-v <version>', 'Define the actyx pond version. [1, 2] (default: 2)')
+    .option('-v <version>', 'Define the actyx pond version. [1, 2, 3] (default: 3)')
     .description('Initialize axp project')
     .action(initProject)
   program
@@ -34,6 +34,7 @@ export const cli = (): void => {
     .option('--cordova', 'add a cordova template to the application (ui projects only)')
     .option('--jest', 'add jest as testing framework')
     .option('--test', 'add jest as testing framework')
+    .option('--docker', 'add template docker files (node projects only)')
     .option(
       '--storybook',
       'add Storybook for developing UI components in isolation (ui projects only)',
@@ -41,9 +42,9 @@ export const cli = (): void => {
     .action(add)
   program
     .command('addFeature <project> <feature>')
-    .usage('appName test|jest|storybook|cordova')
+    .usage('appName test|jest|storybook|cordova|docker')
     .description(
-      'Add a new feature to an existing app in the project. (cordova|test|jest|storybook)',
+      'Add a new feature to an existing app in the project. (cordova|test|jest|storybook|docker)',
     )
     .alias('af')
     .action(addFeature)
@@ -58,5 +59,5 @@ export const cli = (): void => {
     .alias('c')
     .action(clean)
 
-  program.parse(process.argv)
+  program.parse(args)
 }

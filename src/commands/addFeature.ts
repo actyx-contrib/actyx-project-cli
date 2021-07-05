@@ -21,6 +21,9 @@ import {
   toKebabCaseFileName,
   packageInstalled,
   changeToProjectRoot,
+  writeFileSyncIfNotExists,
+  writeFileInPathSyncIfNotExists,
+  getPondVersion,
 } from '../utils'
 import { existsSync, writeFileSync, readFileSync, mkdirSync } from 'fs'
 import clear from 'clear'
@@ -39,6 +42,8 @@ import {
   cordovaGitIgnore,
   cordovaPackageJson,
 } from '../templates/ui/cordova'
+import { dockerfile, packageJsonProd } from '../templates/node'
+import { join } from 'path'
 
 export const addFeature = async (
   project: string,
@@ -52,7 +57,7 @@ export const addFeature = async (
     return
   }
 
-  const projectPath = `./src/${toKebabCaseFileName(project)}`
+  const projectPath = join('.', 'src', toKebabCaseFileName(project))
   if (!existsSync(projectPath)) {
     console.log(
       chalk`{red Project ${projectPath} doesn't exist.} {white Use} {yellow axp list} {white to get all existing projects}`,
@@ -60,7 +65,7 @@ export const addFeature = async (
     return
   }
 
-  addNewFeature(project, `./src/${project}`, feature)
+  addNewFeature(project, join('.', 'src', project), feature)
 }
 
 export const addNewFeature = async (
@@ -79,6 +84,10 @@ export const addNewFeature = async (
     }
     case 'cordova': {
       addCordova(appName, projectPath)
+      break
+    }
+    case 'docker': {
+      addDocker(appName, projectPath)
       break
     }
     default:
@@ -103,9 +112,7 @@ const addJest = async (appName: string, projectPath: string): Promise<void> => {
   }
 
   const createExampleDone = createSpinner('setup jest config and example')
-  if (!existsSync('./jest.config.js')) {
-    writeFileSync('./jest.config.js', jestConfigJs)
-  }
+  writeFileSyncIfNotExists('./jest.config.js', jestConfigJs)
   writeFileSync(`${projectPath}/index.spec.ts`, jestExample(appName))
   createExampleDone()
 
@@ -147,15 +154,9 @@ const addStorybook = async (appName: string): Promise<void> => {
 
   if (!existsSync('.storybook')) {
     mkdirSync('.storybook', { recursive: true })
-    if (!existsSync('.storybook/main.js')) {
-      writeFileSync('.storybook/main.js', storybookMain)
-    }
-    if (!existsSync('.storybook/preview.js')) {
-      writeFileSync('.storybook/preview.js', storybookPreview)
-    }
-    if (!existsSync('.storybook/webpack.config.js')) {
-      writeFileSync('.storybook/webpack.config.js', storybookWebpack)
-    }
+    writeFileSyncIfNotExists('.storybook/main.js', storybookMain)
+    writeFileSyncIfNotExists('.storybook/preview.js', storybookPreview)
+    writeFileSyncIfNotExists('.storybook/webpack.config.js', storybookWebpack)
   }
 
   if (existsSync(`src/${appName}/App.tsx`) && !existsSync(`src/${appName}/App.stories.tsx`)) {
@@ -192,23 +193,15 @@ const addCordova = async (appName: string, projectPath: string): Promise<void> =
   if (!existsSync(cordovaDir)) {
     mkdirSync(cordovaDir, { recursive: true })
 
-    if (!existsSync(`${cordovaDir}/package.json`)) {
-      writeFileSync(`${cordovaDir}/package.json`, cordovaPackageJson(appName))
-    }
-    if (!existsSync(`${cordovaDir}/config.xml`)) {
-      writeFileSync(`${cordovaDir}/config.xml`, cordovaConfigXml(appName))
-    }
-    if (!existsSync(`${cordovaDir}/.gitignore`)) {
-      writeFileSync(`${cordovaDir}/.gitignore`, cordovaGitIgnore)
-    }
-    if (!existsSync(`${cordovaDir}/scripts/buildApp.js`)) {
-      mkdirSync(`${cordovaDir}/scripts`, { recursive: true })
-      writeFileSync(`${cordovaDir}/scripts/buildApp.js`, cordovaBuildScripts(appName))
-    }
-    if (!existsSync(`${cordovaDir}/www/gitkeep`)) {
-      mkdirSync(`${cordovaDir}/www`, { recursive: true })
-      writeFileSync(`${cordovaDir}/www/gitkeep`, '')
-    }
+    writeFileSyncIfNotExists(`${cordovaDir}/package.json`, cordovaPackageJson(appName))
+    writeFileSyncIfNotExists(`${cordovaDir}/config.xml`, cordovaConfigXml(appName))
+    writeFileSyncIfNotExists(`${cordovaDir}/.gitignore`, cordovaGitIgnore)
+    writeFileInPathSyncIfNotExists(
+      `${cordovaDir}/scripts`,
+      'buildApp.js',
+      cordovaBuildScripts(appName),
+    )
+    writeFileInPathSyncIfNotExists(`${cordovaDir}/www`, 'gitkeep', '')
   }
 
   const packageJson = JSON.parse(readFileSync('./package.json').toString())
@@ -218,4 +211,40 @@ const addCordova = async (appName: string, projectPath: string): Promise<void> =
   }
   writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
   createExampleDone()
+}
+
+const addDocker = async (appName: string, projectPath: string): Promise<void> => {
+  const scripts = JSON.parse(readFileSync('./package.json').toString()).scripts
+  const startScript = Object.keys(scripts).find(k => k.includes(`:${appName}:start`))
+  if (!startScript) {
+    console.log(chalk`{red App ${appName} doesn't exist in package.json.}`)
+    return
+  }
+
+  const pondVersion = getPondVersion()
+  const [projectType] = startScript.split(':')
+  if (projectType !== 'node') {
+    console.log(
+      chalk`{red App ${appName} - ${projectType} can't add Docker. Docker can be added to a node project only.}`,
+    )
+    return
+  }
+
+  const addDockerDone = createSpinner('add docker files')
+  writeFileSyncIfNotExists(`${projectPath}/Dockerfile`, dockerfile(appName))
+  writeFileSyncIfNotExists(
+    `${projectPath}/package-prod.json`,
+    packageJsonProd(appName, pondVersion),
+  )
+  addDockerDone()
+
+  const addScriptsDone = createSpinner('Add docker:build to package.json')
+  const packageJson = JSON.parse(readFileSync('./package.json').toString())
+  packageJson.scripts = {
+    ...packageJson.scripts,
+    [`node:${appName}:docker:build`]: `npm run node:${appName}:build && docker build -t ${appName} -f src/${appName}/Dockerfile .`,
+    [`node:${appName}:docker:build-aarch64`]: `npm run node:${appName}:build && docker buildx build --platform linux/arm64 -t ${appName}-aarch64 -f src/${appName}/Dockerfile --load .`,
+  }
+  writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
+  addScriptsDone()
 }

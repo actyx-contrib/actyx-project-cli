@@ -1,0 +1,24 @@
+name: on-Push tests
+on: [push]
+
+jobs:
+  tests:
+    name: License, Linter, Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install dependencies
+        run: npm install
+      - name: check licence headers
+        run: npm run license:check
+      - name: check dependencies licencees
+        run: npm run license:check-dep
+      - name: run linter check
+        run: npm run lint
+      - name: run jest test
+        run: npm run test

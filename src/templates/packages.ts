@@ -35,9 +35,11 @@ export const uiPackages = (version: PondVersions): ReadonlyArray<string> => {
         'react',
         'react-dom',
         '@actyx/industrial-ui',
-        '@actyx/pond',
+        '@actyx/pond@2',
         '@actyx-contrib/react-pond@2',
       ]
+    case PondVersions.Version3:
+      return ['react', 'react-dom', '@actyx/pond@3', '@actyx-contrib/react-pond@3']
   }
 }
 
@@ -58,10 +60,13 @@ export const nodePackages = (version: PondVersions): ReadonlyArray<string> => {
         'io-ts-types@0.4.1',
         'rxjs@5.5.12',
         '@actyx/os-sdk',
-        '@actyx-contrib/registry',
+        '@actyx-contrib/registry@1',
+        'rimraf',
       ]
     case PondVersions.Version2:
-      return ['@actyx/pond@2', '@actyx/os-sdk']
+      return ['@actyx/pond@2', '@actyx/os-sdk', 'rimraf']
+    case PondVersions.Version3:
+      return ['@actyx/pond@3', '@actyx/sdk@0.1.2', 'rimraf']
   }
 }
 

@@ -15,13 +15,7 @@
  */
 import { readdirSync, writeFileSync, mkdirSync } from 'fs'
 import chalk from 'chalk'
-import {
-  createSpinner,
-  run,
-  changeToProjectRoot,
-  parsePondVersion,
-  storePondVersion,
-} from '../utils'
+import { createSpinner, run, parsePondVersion, storePondVersion } from '../utils'
 import {
   editorConfig,
   eslintrcJs,
@@ -42,8 +36,6 @@ export const isProjectInitialized = (): boolean => {
 export const initProject = async (command: Command): Promise<void> => {
   clear()
   drawHeader()
-
-  changeToProjectRoot() // ignore output, isProjectInitialized will take care
 
   if (isProjectInitialized()) {
     console.log(chalk.red('Project is already initialized'))

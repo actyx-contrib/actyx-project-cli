@@ -27,10 +27,18 @@ import {
   doAppExist,
   getPondVersion,
   delay,
+  createRuntimeSupport,
+  createAppManifest,
 } from '../utils'
 import { isProjectInitialized, initProject } from './init'
 import { mkdirSync, readFileSync, writeFileSync } from 'fs'
-import { defaultHtml, defaultRootTsx, defaultAppTsx, axWebManifestYml } from '../templates/ui'
+import {
+  defaultHtml,
+  defaultRootTsx,
+  defaultAppTsx,
+  axWebManifestYml,
+  appUiManifest,
+} from '../templates/ui'
 import {
   defaultIndexTs,
   axDockerManifestYml,
@@ -39,6 +47,7 @@ import {
   settingsSchema,
   dockerfile,
   packageJsonProd,
+  appNodeManifest,
 } from '../templates/node'
 import { addNewFeature } from './addFeature'
 import { uiPackages, uiDevPackages, nodePackages, nodeDevPackages } from '../templates/packages'
@@ -124,14 +133,16 @@ const addUI = async (command: Command): Promise<void> => {
 
   const setupProjectDone = createSpinner('Create template')
   writeFileSync(`./src/${appName}/index.html`, defaultHtml(appName))
-  writeFileSync(`./src/${appName}/root.tsx`, defaultRootTsx)
+  writeFileSync(`./src/${appName}/root.tsx`, defaultRootTsx(pondVersion))
   writeFileSync(`./src/${appName}/App.tsx`, defaultAppTsx)
   setupProjectDone()
 
-  const addActyxDone = createSpinner('Add Actyx manifest')
-  writeFileSync(`./src/${appName}/ax-manifest.yml`, axWebManifestYml(appName))
-  writeFileSync(`./src/${appName}/settings-schema.json`, settingsSchema)
-  addActyxDone()
+  if (createRuntimeSupport(pondVersion)) {
+    const addActyxDone = createSpinner('Add Actyx manifest')
+    writeFileSync(`./src/${appName}/ax-manifest.yml`, axWebManifestYml(appName))
+    writeFileSync(`./src/${appName}/settings-schema.json`, settingsSchema)
+    addActyxDone()
+  }
 
   if (!packageInstalled(uiPackages(pondVersion))) {
     const instDepSpinDone = createSpinner('Install dependencies')
@@ -151,7 +162,17 @@ const addUI = async (command: Command): Promise<void> => {
     ...packageJson.scripts,
     [`ui:${appName}:start`]: `parcel src/${appName}/index.html --out-dir build/${appName}/debug`,
     [`ui:${appName}:build`]: `parcel build src/${appName}/index.html --out-dir src/${appName}/release --public-url ./`,
-    [`ui:${appName}:package`]: `ax apps package src/${appName}/ax-manifest.yml`,
+  }
+  if (createRuntimeSupport(pondVersion)) {
+    packageJson.scripts = {
+      ...packageJson.scripts,
+      [`ui:${appName}:package`]: `ax apps package src/${appName}/ax-manifest.yml`,
+    }
+  }
+  if (createAppManifest(pondVersion)) {
+    const addManifestDone = createSpinner('Add Actyx app manifest')
+    writeFileSync(`./src/${appName}/manifest.ts`, appUiManifest(appName))
+    addManifestDone()
   }
   writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
   addScriptsDone()
@@ -179,17 +200,24 @@ const addNode = async (command: Command): Promise<void> => {
   const pondVersion = getPondVersion()
 
   const setupProjectDone = createSpinner('Create template')
-  writeFileSync(`./src/${appName}/index.ts`, defaultIndexTs)
+  writeFileSync(`./src/${appName}/index.ts`, defaultIndexTs(pondVersion))
   setupProjectDone()
 
-  const addActyxDone = createSpinner('Add Actyx manifest')
-  writeFileSync(`./src/${appName}/Dockerfile`, dockerfile(appName))
-  writeFileSync(`./src/${appName}/ax-manifest.yml`, axDockerManifestYml(appName))
-  writeFileSync(`./src/${appName}/docker-compose-amd64.yml`, dockerComposeAmd64(appName))
-  writeFileSync(`./src/${appName}/docker-compose-arm64v8.yml`, dockerComposeArm64v8(appName))
-  writeFileSync(`./src/${appName}/settings-schema.json`, settingsSchema)
-  writeFileSync(`./src/${appName}/package-prod.json`, packageJsonProd(appName, pondVersion))
-  addActyxDone()
+  if (createRuntimeSupport(pondVersion)) {
+    const addActyxDone = createSpinner('Add Actyx manifest')
+    writeFileSync(`./src/${appName}/Dockerfile`, dockerfile(appName))
+    writeFileSync(`./src/${appName}/ax-manifest.yml`, axDockerManifestYml(appName))
+    writeFileSync(`./src/${appName}/docker-compose-amd64.yml`, dockerComposeAmd64(appName))
+    writeFileSync(`./src/${appName}/docker-compose-arm64v8.yml`, dockerComposeArm64v8(appName))
+    writeFileSync(`./src/${appName}/settings-schema.json`, settingsSchema)
+    writeFileSync(`./src/${appName}/package-prod.json`, packageJsonProd(appName, pondVersion))
+    addActyxDone()
+  }
+  if (createAppManifest(pondVersion)) {
+    const addManifestDone = createSpinner('Add Actyx app manifest')
+    writeFileSync(`./src/${appName}/manifest.ts`, appNodeManifest(appName))
+    addManifestDone()
+  }
 
   if (!packageInstalled(nodePackages(pondVersion))) {
     const instDepDone = createSpinner('Install dependencies')
@@ -210,9 +238,15 @@ const addNode = async (command: Command): Promise<void> => {
     ...packageJson.scripts,
     [`node:${appName}:start`]: `nodemon --watch src/${appName} --exec ts-node src/${appName}/index.ts`,
     [`node:${appName}:build`]: `tsc src/${appName}/index.ts --outDir build/${appName} --esModuleInterop --skipLibCheck`,
-    [`node:${appName}:docker:build`]: `npm run node:${appName}:build && docker build -t ${appName} -f src/${appName}/Dockerfile .`,
-    [`node:${appName}:docker:build-aarch64`]: `npm run node:${appName}:build && docker buildx build --platform linux/arm64 -t ${appName}-aarch64 -f src/${appName}/Dockerfile --load .`,
-    [`node:${appName}:package`]: `ax apps package src/${appName}/ax-manifest.yml`,
+    [`node:${appName}:clean`]: `rimraf build/${appName}`,
+  }
+  if (createRuntimeSupport(pondVersion)) {
+    packageJson.scripts = {
+      ...packageJson.scripts,
+      [`node:${appName}:docker:build`]: `npm run node:${appName}:build && docker build -t ${appName} -f src/${appName}/Dockerfile .`,
+      [`node:${appName}:docker:build-aarch64`]: `npm run node:${appName}:build && docker buildx build --platform linux/arm64 -t ${appName}-aarch64 -f src/${appName}/Dockerfile --load .`,
+      [`node:${appName}:package`]: `ax apps package src/${appName}/ax-manifest.yml`,
+    }
   }
   writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
   addScriptsDone()
@@ -222,6 +256,9 @@ const addNode = async (command: Command): Promise<void> => {
   }
   if (command.jest) {
     await addNewFeature(appName, `./src/${appName}`, 'jest')
+  }
+  if (command.docker) {
+    await addNewFeature(appName, `./src/${appName}`, 'docker')
   }
   console.log(chalk`{green done}`)
 }

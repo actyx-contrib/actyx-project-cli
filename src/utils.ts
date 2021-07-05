@@ -15,7 +15,7 @@
  */
 import { exec } from 'child_process'
 import chalk from 'chalk'
-import { existsSync, readFileSync, writeFileSync } from 'fs'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { parse, join, dirname } from 'path'
 import { getProjects } from './commands/list'
 
@@ -27,19 +27,10 @@ export const removeDot = (fileList: string[]): string[] =>
 
 export const toKebabCaseFileName = (input: string): string =>
   input
+    .trim()
     .split(/[\ \',\.]/)
     .join('-')
     .toLowerCase()
-
-export const toPascalCase = (str: string): string => {
-  const parts = str.split(/\ -_/)
-  return parts
-    .map(p => {
-      const [first = '', ...rest] = p
-      return `${first.toUpperCase()}${rest.join('')}`
-    })
-    .join('')
-}
 
 export const createSpinner = (text: string): (() => void) => {
   const icons = '⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏'.split('')
@@ -126,29 +117,38 @@ export const delay = (ms: number): Promise<void> => new Promise(res => setTimeou
 export enum PondVersions {
   Version1 = 1,
   Version2 = 2,
+  Version3 = 3,
 }
-export const defaultPondVersions = PondVersions.Version2
-export const parsePondVersion = (version: string): PondVersions => {
+export const defaultPondVersion = PondVersions.Version3
+export const parsePondVersion = (version: string | undefined): PondVersions => {
+  if (version === '' || version === undefined) {
+    return defaultPondVersion
+  }
+  if (`${parseInt(version)}` !== version) {
+    throw new Error(`Version ${version} is in an invalid format`)
+  }
   switch (parseInt(version)) {
     case 1:
       return PondVersions.Version1
     case 2:
       return PondVersions.Version2
+    case 3:
+      return PondVersions.Version3
     default:
-      return defaultPondVersions
+      throw new Error(`Version ${version} is not supported`)
   }
 }
 export const getPondVersion = (): PondVersions => {
   try {
     const packageJson = JSON.parse(readFileSync('./package.json').toString())
     if (!packageJson.axp) {
-      storePondVersion(defaultPondVersions)
-      return defaultPondVersions
+      storePondVersion(defaultPondVersion)
+      return defaultPondVersion
     } else {
-      return parsePondVersion(packageJson.axp.pondVersion)
+      return parsePondVersion(`${packageJson.axp.pondVersion}`)
     }
   } catch (_) {
-    return defaultPondVersions
+    return defaultPondVersion
   }
 }
 export const storePondVersion = (version: PondVersions): void => {
@@ -159,4 +159,31 @@ export const storePondVersion = (version: PondVersions): void => {
     pondVersion: version,
   }
   writeFileSync('./package.json', JSON.stringify(packageJson, undefined, 2))
+}
+
+export const createRuntimeSupport = (version: PondVersions): boolean =>
+  version === PondVersions.Version1 || version === PondVersions.Version2
+
+export const createAppManifest = (version: PondVersions): boolean =>
+  version === PondVersions.Version3
+
+export const writeFileSyncIfNotExists = (
+  path: string,
+  content: string | NodeJS.ArrayBufferView,
+): void => {
+  if (!existsSync(path)) {
+    writeFileSync(path, content)
+  }
+}
+
+export const writeFileInPathSyncIfNotExists = (
+  path: string,
+  fileName: string,
+  content: string | NodeJS.ArrayBufferView,
+): void => {
+  const filePath = join(path, fileName)
+  if (!existsSync(filePath)) {
+    mkdirSync(path, { recursive: true })
+    writeFileSync(filePath, content)
+  }
 }
