@@ -238,6 +238,7 @@ const addNode = async (command: Command): Promise<void> => {
     ...packageJson.scripts,
     [`node:${appName}:start`]: `nodemon --watch src/${appName} --exec ts-node src/${appName}/index.ts`,
     [`node:${appName}:build`]: `tsc src/${appName}/index.ts --outDir build/${appName} --esModuleInterop --skipLibCheck`,
+    [`node:${appName}:clean`]: `rimraf build/${appName}`,
   }
   if (createRuntimeSupport(pondVersion)) {
     packageJson.scripts = {

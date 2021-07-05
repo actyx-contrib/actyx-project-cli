@@ -69,7 +69,7 @@ export const manifest: AppManifest = {
 export default manifest
 `
 
-export const dockerfile = (appName: string): string => `FROM node:10-alpine as build
+export const dockerfile = (appName: string): string => `FROM node:16-alpine as build
 WORKDIR /usr/src/app
 
 COPY src/${appName}/package-prod.json ./package.json
@@ -78,16 +78,19 @@ COPY build/${appName}/. .
 
 FROM node:10-alpine
 COPY --from=build /usr/src/app /
-CMD ["node", "${appName}/index.js"]
+CMD ["node", "./${appName}/index.js"]
 `
-
 export const packageJsonProd = (appName: string, pondVersion: PondVersions): string => `{
   "name": "${appName}",
   "version": "1.0.0",
   "main": "${appName}/index.js",
   "license": "ISC",
   "dependencies": {
-    "@actyx/pond": ${pondVersion === PondVersions.Version1 ? '"1.1"' : '"2"'}
+    "@actyx/pond": ${
+      pondVersion === PondVersions.Version1 ? '"1.1"'
+      : pondVersion === PondVersions.Version2 ? '"2"'
+      : '"3"'
+    }
   }
 }
 `
