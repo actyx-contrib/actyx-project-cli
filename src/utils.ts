@@ -145,7 +145,7 @@ export const getPondVersion = (): PondVersions => {
       storePondVersion(defaultPondVersion)
       return defaultPondVersion
     } else {
-      return parsePondVersion(packageJson.axp.pondVersion)
+      return parsePondVersion(`${packageJson.axp.pondVersion}`)
     }
   } catch (_) {
     return defaultPondVersion
