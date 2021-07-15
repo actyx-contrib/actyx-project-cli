@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { createRuntimeSupport, PondVersions } from '../../utils'
+
 export const cordovaPackageJson = (appName: string): string => `{
   "name": "${appName}",
   "displayName": "${appName}",
@@ -39,7 +41,7 @@ export const cordovaPackageJson = (appName: string): string => `{
 `
 
 export const cordovaConfigXml = (appName: string): string => `<?xml version='1.0' encoding='utf-8'?>
-<widget id="${appName}" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.example.change.me.${appName}" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>${appName}</name>
     <description>
         TODO
@@ -79,9 +81,11 @@ node_modules/
 !/www/gitkeep
 `
 
-export const cordovaBuildScripts = (
-  appName: string,
-): string => `/* eslint-disable @typescript-eslint/no-var-requires */
+export const cordovaBuildScripts = (appName: string, pondVersion: PondVersions): string => {
+  const distPath = createRuntimeSupport(pondVersion)
+    ? `src/\${appName}/release`
+    : `build/\${appName}/release`
+  return `/* eslint-disable @typescript-eslint/no-var-requires */
 'use strict'
 const appName = '${appName}'
 
@@ -92,7 +96,7 @@ const { execSync } = require('child_process')
 
 var dir = resolve(__dirname, '..')
 var projectMain = resolve(dir, '../../..')
-var htmlSource = join(projectMain, \`src/\${appName}/release\`)
+var htmlSource = join(projectMain, \`${distPath}\`)
 var outputDir = join(dir, 'www')
 
 const main = () => {
@@ -121,3 +125,4 @@ const main = () => {
 }
 main()
 `
+}
