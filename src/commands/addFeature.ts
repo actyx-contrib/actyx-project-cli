@@ -186,6 +186,7 @@ const addCordova = async (appName: string, projectPath: string): Promise<void> =
     )
     return
   }
+  const pondVersion = getPondVersion()
 
   const createExampleDone = createSpinner('Setup cordova template')
 
@@ -199,7 +200,7 @@ const addCordova = async (appName: string, projectPath: string): Promise<void> =
     writeFileInPathSyncIfNotExists(
       `${cordovaDir}/scripts`,
       'buildApp.js',
-      cordovaBuildScripts(appName),
+      cordovaBuildScripts(appName, pondVersion),
     )
     writeFileInPathSyncIfNotExists(`${cordovaDir}/www`, 'gitkeep', '')
   }
