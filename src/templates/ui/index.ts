@@ -166,11 +166,11 @@ export const App = (): JSX.Element => {
           </a>
         </li>
         <li>
-          <a href="https://developer.actyx.com/docs/pond/getting-started">Pond - getting-started</a>
+          <a href="https://developer.actyx.com/docs/how-to/overview">Actyx - how-to</a>
         </li>
         <li>
-          <a href="https://developer.actyx.com/docs/pond/guides/hello-world">
-            Guides - hello-world
+          <a href="https://developer.actyx.com/docs/how-to/actyx-pond/introduction">
+            Introduction to Actyx Pond
           </a>
         </li>
       </ul>
