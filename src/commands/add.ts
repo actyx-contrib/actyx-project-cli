@@ -166,6 +166,8 @@ const addUI = async (command: Command): Promise<void> => {
     packageJson.scripts = {
       ...packageJson.scripts,
       [`ui:${appName}:package`]: `ax apps package src/${appName}/ax-manifest.yml`,
+      // fix bug in `ax apps package`
+      // build to src/${appName}/release to make ax apps package working
       [`ui:${appName}:build`]: `parcel build src/${appName}/index.html --out-dir src/${appName}/release --public-url ./`,
     }
   } else {
