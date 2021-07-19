@@ -161,12 +161,20 @@ const addUI = async (command: Command): Promise<void> => {
   packageJson.scripts = {
     ...packageJson.scripts,
     [`ui:${appName}:start`]: `parcel src/${appName}/index.html --out-dir build/${appName}/debug`,
-    [`ui:${appName}:build`]: `parcel build src/${appName}/index.html --out-dir src/${appName}/release --public-url ./`,
   }
   if (createRuntimeSupport(pondVersion)) {
     packageJson.scripts = {
       ...packageJson.scripts,
       [`ui:${appName}:package`]: `ax apps package src/${appName}/ax-manifest.yml`,
+      // fix bug in `ax apps package`
+      // build to src/${appName}/release to make ax apps package working
+      [`ui:${appName}:build`]: `parcel build src/${appName}/index.html --out-dir src/${appName}/release --public-url ./`,
+    }
+  } else {
+    packageJson.scripts = {
+      ...packageJson.scripts,
+      [`ui:${appName}:package`]: `ax apps package src/${appName}/ax-manifest.yml`,
+      [`ui:${appName}:build`]: `parcel build src/${appName}/index.html --out-dir build/${appName}/release --public-url ./`,
     }
   }
   if (createAppManifest(pondVersion)) {
