@@ -41,7 +41,10 @@ export const cordovaPackageJson = (appName: string): string => `{
 `
 
 export const cordovaConfigXml = (appName: string): string => `<?xml version='1.0' encoding='utf-8'?>
-<widget id="com.example.change.me.${appName}" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.example.change.me.${appName}" version="1.0.0"
+    xmlns="http://www.w3.org/ns/widgets"
+    xmlns:cdv="http://cordova.apache.org/ns/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <name>${appName}</name>
     <description>
         TODO
@@ -59,6 +62,9 @@ export const cordovaConfigXml = (appName: string): string => `<?xml version='1.0
     <allow-intent href="geo:*" />
     <platform name="android">
         <allow-intent href="market:*" />
+        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
+            <application android:usesCleartextTraffic="true" />
+        </edit-config>
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
