@@ -1,3 +1,7 @@
+# IMPORTANT NOTICE
+
+**This repository has been archived and is no longer maintained. You are welcome to copy the code into your own projects and continue using it at your own discretion and risk.**
+
 <img width="130px" src="https://raw.githubusercontent.com/actyx-contrib/actyx-project-cli/master/axp-icon.png?token=AATHWQLXCUBBKEM6TMDEXYC674JUG">
 
 # Actyx-Project-CLI
